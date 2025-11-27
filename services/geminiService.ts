@@ -1,10 +1,17 @@
-
-
 import { GoogleGenAI } from "@google/genai";
 import { SCHEDULE, ASSIGNMENTS } from '../constants';
 
+// Initialize API Key safely
 const apiKey = process.env.API_KEY || '';
-const ai = new GoogleGenAI({ apiKey });
+let ai: GoogleGenAI | null = null;
+
+try {
+  if (apiKey) {
+    ai = new GoogleGenAI({ apiKey });
+  }
+} catch (error) {
+  console.error("Failed to initialize GoogleGenAI:", error);
+}
 
 const SYLLABUS_CONTEXT = `
 You are a Teaching Assistant for POL SCI 335: Comparative Political Systems.
@@ -43,8 +50,8 @@ If asked to write an essay, refuse and offer to help outline or brainstorm inste
 `;
 
 export const getChatResponse = async (history: {role: string, parts: {text: string}[]}[], message: string) => {
-  if (!apiKey) {
-    return "API Key is missing. Please set the REACT_APP_GEMINI_API_KEY environment variable.";
+  if (!apiKey || !ai) {
+    return "API Key is missing. Please set the REACT_APP_GEMINI_API_KEY environment variable in Vercel.";
   }
 
   try {
@@ -68,8 +75,8 @@ export const getChatResponse = async (history: {role: string, parts: {text: stri
 };
 
 export const generateProjectOutline = async (country: string, interest: string) => {
-  if (!apiKey) {
-    return "API Key is missing. Please set the REACT_APP_GEMINI_API_KEY environment variable.";
+  if (!apiKey || !ai) {
+    return "API Key is missing. Please set the REACT_APP_GEMINI_API_KEY environment variable in Vercel.";
   }
 
   const prompt = `
