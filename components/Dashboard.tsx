@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SCHEDULE, ASSIGNMENTS } from '../constants';
 import { Week } from '../types';
@@ -10,10 +11,31 @@ const Dashboard: React.FC = () => {
   const [currentWeek, setCurrentWeek] = useState<Week | null>(null);
 
   useEffect(() => {
-    // Simple mock logic to find "current" week based on a simulated date
-    // In a real app, use new Date() and compare ranges
-    const mockDateIndex = 3; // Simulating Week 4
-    setCurrentWeek(SCHEDULE[mockDateIndex]);
+    const calculateCurrentWeek = () => {
+      const now = new Date();
+      const semesterStart = new Date('2026-01-20'); // Course Start Date
+      const semesterEnd = new Date('2026-05-09');   // Course End Date
+
+      // If before semester starts, show Week 1
+      if (now < semesterStart) {
+        return SCHEDULE[0];
+      }
+
+      // If after semester ends, show Finals Week
+      if (now > semesterEnd) {
+        return SCHEDULE[SCHEDULE.length - 1];
+      }
+
+      // Calculate week difference
+      const oneWeek = 1000 * 60 * 60 * 24 * 7;
+      const diffInTime = now.getTime() - semesterStart.getTime();
+      const weekIndex = Math.floor(diffInTime / oneWeek);
+
+      // Return current week or last week if index out of bounds
+      return SCHEDULE[weekIndex] || SCHEDULE[SCHEDULE.length - 1];
+    };
+
+    setCurrentWeek(calculateCurrentWeek());
   }, []);
 
   const gradeData = ASSIGNMENTS.map(a => ({ name: a.name, value: a.weight }));

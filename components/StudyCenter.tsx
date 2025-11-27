@@ -128,7 +128,7 @@ const FlashcardPlayer: React.FC<{ cards: Flashcard[], onBack: () => void }> = ({
       </div>
 
       <div 
-        className="w-full aspect-[16/10] cursor-pointer group"
+        className="w-full aspect-[16/10] cursor-pointer group perspective-1000"
         style={{ perspective: '1000px' }}
         onClick={() => setIsFlipped(!isFlipped)}
       >
@@ -140,10 +140,13 @@ const FlashcardPlayer: React.FC<{ cards: Flashcard[], onBack: () => void }> = ({
           }}
         >
           
-          {/* Front */}
+          {/* Front Face */}
           <div 
-            className="absolute w-full h-full bg-white rounded-2xl shadow-lg border border-gray-200 p-8 flex flex-col items-center justify-center"
-            style={{ backfaceVisibility: 'hidden' }}
+            className="absolute inset-0 w-full h-full bg-white rounded-2xl shadow-lg border border-gray-200 p-8 flex flex-col items-center justify-center backface-hidden"
+            style={{ 
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden' 
+            }}
           >
             <span className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-4 bg-blue-50 px-3 py-1 rounded-full">
               {currentCard.category}
@@ -152,11 +155,12 @@ const FlashcardPlayer: React.FC<{ cards: Flashcard[], onBack: () => void }> = ({
             <p className="text-xs text-gray-400 absolute bottom-6">Click to flip</p>
           </div>
 
-          {/* Back */}
+          {/* Back Face */}
           <div 
-            className="absolute w-full h-full bg-uwm-black rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center text-white text-center"
+            className="absolute inset-0 w-full h-full bg-uwm-black rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center text-white text-center backface-hidden"
             style={{ 
               backfaceVisibility: 'hidden', 
+              WebkitBackfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)' 
             }}
           >
@@ -166,13 +170,13 @@ const FlashcardPlayer: React.FC<{ cards: Flashcard[], onBack: () => void }> = ({
       </div>
 
       <div className="flex items-center gap-4 mt-8">
-        <button onClick={prevCard} className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50 border border-gray-200 text-gray-600">
+        <button onClick={(e) => { e.stopPropagation(); prevCard(); }} className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50 border border-gray-200 text-gray-600">
           <ChevronLeft />
         </button>
-        <button onClick={() => setIsFlipped(!isFlipped)} className="px-6 py-3 bg-uwm-gold text-uwm-black font-bold rounded-lg shadow-sm hover:bg-yellow-400 transition-colors min-w-[140px]">
+        <button onClick={(e) => { e.stopPropagation(); setIsFlipped(!isFlipped); }} className="px-6 py-3 bg-uwm-gold text-uwm-black font-bold rounded-lg shadow-sm hover:bg-yellow-400 transition-colors min-w-[140px]">
           {isFlipped ? 'Show Term' : 'Show Definition'}
         </button>
-        <button onClick={nextCard} className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50 border border-gray-200 text-gray-600">
+        <button onClick={(e) => { e.stopPropagation(); nextCard(); }} className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50 border border-gray-200 text-gray-600">
           <ChevronRight />
         </button>
       </div>
@@ -281,17 +285,6 @@ const QuizEngine: React.FC<{ level: QuizLevel, onComplete: (score: number) => vo
   };
 
   if (showResults) {
-    const finalCalculatedScore = selectedOption && isCorrect ? score : score; // Logic adjusted in next() but for display safely use passed prop logic or internal
-    // To be safe, let's re-calculate percentage based on displayed state when component re-renders for result
-    // Actually, 'score' state holds correct answers excluding the last one if not updated.
-    // Let's rely on the logic: if we are here, 'score' was updated. 
-    // Wait, setScore is async. The logic in 'next()' passed the correct value to onComplete.
-    // For display here, we need to be careful.
-    
-    // Simplified display logic:
-    // The 'score' state lags by one if we just finished.
-    // BUT we already handled the "onComplete" logic. 
-    // Let's correct the display score:
     const displayScore = isCorrect ? score + 1 : score;
     const percentage = Math.round((displayScore / level.questions.length) * 100);
     const passed = percentage >= level.minScoreToUnlock;
