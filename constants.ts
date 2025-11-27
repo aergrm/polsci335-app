@@ -16,8 +16,40 @@ export const SCHEDULE: Week[] = [
   { id: 9, dates: "Mar 17-21", title: "SPRING BREAK", topics: ["No Class"], readings: [] },
   { id: 10, dates: "Mar 24-28", title: "Legislative Institutions", topics: ["Bicameralism", "Interest Groups"], readings: ["Lijphart Ch 10-11"], due: ["Project Part 2: Bibliography"] },
   { id: 11, dates: "Mar 31-Apr 4", title: "Constitutions & Courts", topics: ["Judicial Review", "Rigidity"], readings: ["Lijphart Ch 12"], due: ["Quiz 3"] },
-  { id: 12, dates: "Apr 7-11", title: "Federalism", topics: ["Unitary vs Federal", "Decentralization"], readings: ["Lijphart Ch 13 (Federalism)"] },
-  { id: 13, dates: "Apr 14-18", title: "Central Banks", topics: ["Independence", "Economic Governance"], readings: ["Lijphart Ch 13 (Central Banks)"], due: ["Essay 2", "Quiz 4"] },
+  { 
+    id: 12, 
+    dates: "Apr 7-11", 
+    title: "Federalism & Economic Governance", 
+    topics: [
+      "Federal vs. Unitary Systems", 
+      "Fiscal Federalism", 
+      "Central Bank Independence", 
+      "Economic Coordination"
+    ], 
+    readings: [
+      "Lijphart Ch 13",
+      "Riker (1975) or Rodden (2004)",
+      "Alesina & Summers (1993)"
+    ] 
+  },
+  { 
+    id: 13, 
+    dates: "Apr 14-18", 
+    title: "Institutions & Foreign Policy", 
+    topics: [
+      "Domestic Institutions & Foreign Policy", 
+      "Presidential vs Parliamentary", 
+      "Two-Level Games", 
+      "Treaty Ratification"
+    ], 
+    readings: [
+      "Putnam (1988): Two-Level Games",
+      "Hagan (1993)",
+      "Auerswald (1999)",
+      "Martin (2000)"
+    ], 
+    due: ["Essay 2", "Quiz 4"] 
+  },
   { id: 14, dates: "Apr 21-25", title: "Democratic Performance", topics: ["Measuring Quality", "Policy Outcomes"], readings: ["Lijphart Ch 14-16"], due: ["Project Presentations Begin"] },
   { id: 15, dates: "Apr 28-May 2", title: "Challenges to Democracy", topics: ["Backsliding", "Populism"], readings: ["Lijphart Ch 17"], due: ["Presentations Conclude", "Quiz 5"] },
   { id: 16, dates: "May 5-9", title: "Finals Week", topics: ["No Final Exam"], readings: [], due: ["Project Part 4: Final Paper"] }
