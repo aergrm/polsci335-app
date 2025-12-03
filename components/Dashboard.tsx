@@ -13,8 +13,9 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const calculateCurrentWeek = () => {
       const now = new Date();
-      const semesterStart = new Date('2026-01-20'); // Course Start Date
-      const semesterEnd = new Date('2026-05-09');   // Course End Date
+      // Use YYYY, MM-1, DD format to avoid timezone parsing issues
+      const semesterStart = new Date(2026, 0, 20); // Jan 20, 2026
+      const semesterEnd = new Date(2026, 4, 9);    // May 9, 2026
 
       // If before semester starts, show Week 1
       if (now < semesterStart) {

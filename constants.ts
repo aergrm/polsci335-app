@@ -21,15 +21,17 @@ export const SCHEDULE: Week[] = [
     dates: "Apr 7-11", 
     title: "Federalism & Economic Governance", 
     topics: [
-      "Federal vs. Unitary Systems", 
-      "Fiscal Federalism", 
-      "Central Bank Independence", 
-      "Economic Coordination"
+      "Federal vs. unitary systems and territorial power division",
+      "Fiscal federalism and intergovernmental transfers",
+      "Central bank independence across regime types",
+      "Economic coordination in federal and unitary systems",
+      "Monetary policy and democratic accountability"
     ], 
     readings: [
-      "Lijphart Ch 13",
-      "Riker (1975) or Rodden (2004)",
-      "Alesina & Summers (1993)"
+      "Lijphart Ch 13: Central Banks and Federalism",
+      "Riker (1975): 'Federalism' OR Rodden (2004)",
+      "Alesina & Summers (1993): Central Bank Independence",
+      "Wibbels (2005) (Optional)"
     ] 
   },
   { 
@@ -37,16 +39,19 @@ export const SCHEDULE: Week[] = [
     dates: "Apr 14-18", 
     title: "Institutions & Foreign Policy", 
     topics: [
-      "Domestic Institutions & Foreign Policy", 
-      "Presidential vs Parliamentary", 
-      "Two-Level Games", 
-      "Treaty Ratification"
+      "How domestic institutions shape foreign policy choices",
+      "Presidential vs. parliamentary systems in international affairs",
+      "Coalition governments and foreign policy constraints",
+      "Electoral pressures and international commitments",
+      "Ratification requirements and treaty compliance",
+      "Two-level games in international negotiations"
     ], 
     readings: [
-      "Putnam (1988): Two-Level Games",
-      "Hagan (1993)",
-      "Auerswald (1999)",
-      "Martin (2000)"
+      "Putnam (1988): 'Diplomacy and Domestic Politics' (Two-Level Games)",
+      "Hagan (1993): 'Political Opposition and Foreign Policy'",
+      "Auerswald (1999): 'Inward Bound'",
+      "Martin (2000): Democratic Commitments (Ch 1)",
+      "Schultz (2001) (Optional)"
     ], 
     due: ["Essay 2", "Quiz 4"] 
   },
@@ -173,6 +178,10 @@ export const CONCEPT_FLASHCARDS: Flashcard[] = [
   { id: 'c10', category: 'Concept', front: 'Hung Parliament', back: 'A situation in a Westminster system where no single party has an absolute majority.' },
   { id: 'c11', category: 'Concept', front: 'Executive Dominance', back: 'When the cabinet is much stronger than the legislature, typical of Westminster systems (e.g., UK).' },
   { id: 'c12', category: 'Concept', front: 'Magic Formula', back: 'The 2:2:2:1 party distribution in the Swiss Federal Council used from 1959 to 2003.' },
+  { id: 'c13', category: 'Concept', front: 'Plural Society', back: 'A society divided by segmental cleavages (religious, ideological, linguistic, cultural) with distinct subsocieties.' },
+  { id: 'c14', category: 'Concept', front: 'Gallagher Index', back: 'A measure of the disproportionality between votes received and seats allocated in an election.' },
+  { id: 'c15', category: 'Concept', front: 'Parliamentary Sovereignty', back: 'The doctrine that the legislature (Parliament) has absolute supremacy and is not subject to judicial review (UK).' },
+  { id: 'c16', category: 'Concept', front: 'Grand Coalition', back: 'A governing coalition that includes the major parties, often used in times of crisis or in consociational democracies.' },
 ];
 
 export const QUIZ_LEVELS: QuizLevel[] = [
