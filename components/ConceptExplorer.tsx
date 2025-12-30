@@ -87,15 +87,15 @@ const ConceptExplorer: React.FC = () => {
                     </div>
 
                     {/* Consensus Card */}
-                    <div className="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-6 rounded-xl shadow-lg transform transition hover:scale-[1.02] flex flex-col">
+                    <div className="bg-gradient-to-br from-indigo-700 to-blue-800 text-white p-6 rounded-xl shadow-lg transform transition hover:scale-[1.02] flex flex-col">
                       <div className="flex items-center justify-between mb-6 border-b border-white/20 pb-4">
-                        <h4 className="font-serif text-xl font-bold text-amber-100">Consensus</h4>
-                        <span className="text-xs font-bold uppercase tracking-widest bg-amber-900/20 px-2 py-1 rounded text-amber-50">Inclusive</span>
+                        <h4 className="font-serif text-xl font-bold text-indigo-100">Consensus</h4>
+                        <span className="text-xs font-bold uppercase tracking-widest bg-indigo-900/20 px-2 py-1 rounded text-indigo-50">Inclusive</span>
                       </div>
                       <div className="flex-grow flex items-center justify-center text-center">
                         <p className="text-xl font-medium leading-relaxed">{dim.consensus}</p>
                       </div>
-                      <div className="mt-6 pt-4 border-t border-white/10 text-xs text-amber-100 opacity-80 flex justify-between">
+                      <div className="mt-6 pt-4 border-t border-white/10 text-xs text-indigo-200 opacity-80 flex justify-between">
                          <span>Model Characteristics</span>
                          <span>Power-Sharing</span>
                       </div>

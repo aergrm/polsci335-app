@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { SCHEDULE, ASSIGNMENTS } from '../constants';
 import { Week } from '../types';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { BookOpen, Calendar, AlertCircle } from 'lucide-react';
 
-const COLORS = ['#FFBD00', '#101820', '#4D4D4D', '#9ca3af', '#d1d5db', '#f3f4f6'];
+const COLORS = ['#1e3a8a', '#3b82f6', '#60a5fa', '#94a3b8', '#cbd5e1', '#f1f5f9'];
 
 const Dashboard: React.FC = () => {
   const [currentWeek, setCurrentWeek] = useState<Week | null>(null);
@@ -47,8 +46,8 @@ const Dashboard: React.FC = () => {
       <div className="bg-uwm-black text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
         <div className="relative z-10">
           <h1 className="text-3xl font-serif font-bold mb-2">POL SCI 335</h1>
-          <p className="text-uwm-gold text-lg">Comparative Political Systems</p>
-          <div className="mt-4 flex items-center gap-2 text-sm text-gray-300">
+          <p className="text-blue-200 text-lg">Comparative Political Systems</p>
+          <div className="mt-4 flex items-center gap-2 text-sm text-blue-100">
             <span className="bg-white/10 px-3 py-1 rounded-full">Spring 2026</span>
             <span className="bg-white/10 px-3 py-1 rounded-full">Ahmet Ergurum</span>
           </div>
@@ -74,17 +73,17 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-slate-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <BookOpen className="w-4 h-4" /> Readings
+                <BookOpen className="w-4 h-4 text-uwm-black" /> Readings
               </h3>
               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
                 {currentWeek?.readings.map((r, i) => <li key={i}>{r}</li>) || <li>No readings</li>}
               </ul>
             </div>
-            <div className="bg-amber-50 p-4 rounded-lg border border-amber-100">
-              <h3 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+              <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4" /> Due This Week
               </h3>
-              <ul className="list-disc list-inside text-sm text-amber-700 space-y-1">
+              <ul className="list-disc list-inside text-sm text-blue-700 space-y-1">
                 {currentWeek?.due && currentWeek.due.length > 0 ? (
                    currentWeek.due.map((d, i) => <li key={i} className="font-medium">{d}</li>)
                 ) : (
@@ -126,17 +125,17 @@ const Dashboard: React.FC = () => {
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <h2 className="text-lg font-bold text-gray-800 mb-4">Key Course Policies</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="p-3 bg-red-50 rounded border border-red-100">
-            <h4 className="font-bold text-red-800 mb-1">AI Policy</h4>
-            <p className="text-red-700">Brainstorming/Outlining: OK. <br/>Generating Content: <strong>PROHIBITED</strong>. <br/>Must cite AI usage.</p>
+          <div className="p-3 bg-slate-50 rounded border border-slate-200">
+            <h4 className="font-bold text-slate-800 mb-1">AI Policy</h4>
+            <p className="text-slate-700">Brainstorming/Outlining: OK. <br/>Generating Content: <strong>PROHIBITED</strong>. <br/>Must cite AI usage.</p>
           </div>
           <div className="p-3 bg-blue-50 rounded border border-blue-100">
             <h4 className="font-bold text-blue-800 mb-1">Attendance</h4>
             <p className="text-blue-700">3 unexcused absences allowed. -2% grade per absence after that.</p>
           </div>
-          <div className="p-3 bg-green-50 rounded border border-green-100">
-            <h4 className="font-bold text-green-800 mb-1">Late Work</h4>
-            <p className="text-green-700">24hr grace period. -10% per day after. Max 5 days late.</p>
+          <div className="p-3 bg-indigo-50 rounded border border-indigo-100">
+            <h4 className="font-bold text-indigo-800 mb-1">Late Work</h4>
+            <p className="text-indigo-700">24hr grace period. -10% per day after. Max 5 days late.</p>
           </div>
         </div>
       </div>

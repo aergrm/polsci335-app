@@ -1,10 +1,12 @@
-
-import React, { useState, useEffect } from 'react';
-import { DEMOCRACY_DIMENSIONS, CONCEPT_FLASHCARDS, QUIZ_LEVELS } from '../constants';
+import React, { useState, useEffect, useRef } from 'react';
+import { DEMOCRACY_DIMENSIONS, CONCEPT_FLASHCARDS, QUIZ_LEVELS, APPROVED_COUNTRIES } from '../constants';
 import { Flashcard, QuizLevel, QuizQuestion } from '../types';
-import { Layers, Brain, ChevronLeft, ChevronRight, Trophy, Lock, Unlock, CheckCircle, XCircle, RotateCcw } from 'lucide-react';
+import { 
+  Layers, Brain, ChevronLeft, ChevronRight, Trophy, Lock, Unlock, 
+  CheckCircle, XCircle, RotateCcw, Timer, Zap, Map, Info, HelpCircle 
+} from 'lucide-react';
 
-type Mode = 'menu' | 'flashcards' | 'quiz';
+type Mode = 'menu' | 'flashcards' | 'quiz' | 'mania' | 'profiler';
 
 const StudyCenter: React.FC = () => {
   const [mode, setMode] = useState<Mode>('menu');
@@ -14,53 +16,341 @@ const StudyCenter: React.FC = () => {
       {mode === 'menu' && <StudyMenu onSelect={setMode} />}
       {mode === 'flashcards' && <FlashcardDeckSelection onBack={() => setMode('menu')} />}
       {mode === 'quiz' && <QuizLevelSelect onBack={() => setMode('menu')} />}
+      {mode === 'mania' && <ModelMania onBack={() => setMode('menu')} />}
+      {mode === 'profiler' && <CountryProfiler onBack={() => setMode('menu')} />}
     </div>
   );
 };
 
 const StudyMenu: React.FC<{ onSelect: (mode: Mode) => void }> = ({ onSelect }) => (
-  <div className="max-w-4xl mx-auto w-full space-y-8 p-4">
+  <div className="max-w-5xl mx-auto w-full space-y-8 p-4">
     <div className="text-center space-y-2">
       <h2 className="text-3xl font-serif font-bold text-uwm-black">Study Center</h2>
-      <p className="text-gray-600">Master the Lijphart Framework through active recall.</p>
+      <p className="text-gray-600">Master the Lijphart Framework through interactive gameplay.</p>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <button 
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <MenuCard 
+        title="Flashcards" 
+        desc="Core dimensions and key terminology review." 
+        icon={<Layers size={28} />}
+        color="bg-blue-50 text-blue-600"
         onClick={() => onSelect('flashcards')}
-        className="group bg-white p-8 rounded-xl shadow-sm border-2 border-transparent hover:border-blue-500 transition-all flex flex-col items-center text-center space-y-4"
-      >
-        <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-          <Layers size={32} />
-        </div>
-        <div>
-          <h3 className="text-xl font-bold text-gray-900">Flashcards</h3>
-          <p className="text-sm text-gray-500 mt-2">Review dimensions and key concepts like "Manufactured Majority".</p>
-        </div>
-      </button>
-
-      <button 
+      />
+      <MenuCard 
+        title="Tiered Quiz" 
+        desc="Novice to Expert. Unlock levels by scoring 70%." 
+        icon={<Brain size={28} />}
+        color="bg-indigo-50 text-indigo-600"
         onClick={() => onSelect('quiz')}
-        className="group bg-white p-8 rounded-xl shadow-sm border-2 border-transparent hover:border-uwm-gold transition-all flex flex-col items-center text-center space-y-4"
-      >
-        <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-          <Brain size={32} />
-        </div>
-        <div>
-          <h3 className="text-xl font-bold text-gray-900">Tiered Quiz</h3>
-          <p className="text-sm text-gray-500 mt-2">Progress from Novice to Expert. Unlock levels by passing.</p>
-        </div>
-      </button>
+      />
+      <MenuCard 
+        title="Model Mania" 
+        desc="Sort traits into buckets in a race against time." 
+        icon={<Zap size={28} />}
+        color="bg-amber-50 text-amber-600"
+        onClick={() => onSelect('mania')}
+      />
+      <MenuCard 
+        title="Country Profiler" 
+        desc="Identify countries based on their institutions." 
+        icon={<Map size={28} />}
+        color="bg-emerald-50 text-emerald-600"
+        onClick={() => onSelect('profiler')}
+      />
     </div>
   </div>
 );
 
-// --- FLASHCARDS COMPONENTS ---
+const MenuCard = ({ title, desc, icon, color, onClick }: any) => (
+  <button 
+    onClick={onClick}
+    className="group bg-white p-6 rounded-xl shadow-sm border-2 border-transparent hover:border-uwm-gold transition-all flex flex-col items-center text-center space-y-4 h-full"
+  >
+    <div className={`w-14 h-14 ${color} rounded-full flex items-center justify-center group-hover:scale-110 transition-transform`}>
+      {icon}
+    </div>
+    <div>
+      <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+      <p className="text-xs text-gray-500 mt-2">{desc}</p>
+    </div>
+  </button>
+);
+
+// --- NEW GAME: MODEL MANIA (SORTING) ---
+
+const ModelMania: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const [gameState, setGameState] = useState<'start' | 'playing' | 'end'>('start');
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [currentTrait, setCurrentTrait] = useState<{ text: string, type: 'W' | 'C' } | null>(null);
+  const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
+
+  const traits = [
+    { text: "Single-party majority cabinets", type: 'W' },
+    { text: "Executive power-sharing", type: 'C' },
+    { text: "Two-party system", type: 'W' },
+    { text: "Multiparty system", type: 'C' },
+    { text: "Proportional Representation", type: 'C' },
+    { text: "Plurality elections", type: 'W' },
+    { text: "Unitary & Centralized", type: 'W' },
+    { text: "Federal & Decentralized", type: 'C' },
+    { text: "Unicameral legislature", type: 'W' },
+    { text: "Strong bicameralism", type: 'C' },
+    { text: "Flexible constitution", type: 'W' },
+    { text: "Rigid constitution", type: 'C' },
+    { text: "Judicial Review", type: 'C' },
+    { text: "Central Bank Independence", type: 'C' },
+    { text: "Corporatism", type: 'C' },
+    { text: "Pluralism", type: 'W' },
+    { text: "Parliamentary Sovereignty", type: 'W' },
+    { text: "Inclusive", type: 'C' },
+    { text: "Exclusive", type: 'W' },
+    { text: "Executive Dominance", type: 'W' }
+  ] as const;
+
+  const startGame = () => {
+    setGameState('playing');
+    setScore(0);
+    setTimeLeft(30);
+    setNextTrait();
+  };
+
+  const setNextTrait = () => {
+    const random = traits[Math.floor(Math.random() * traits.length)];
+    setCurrentTrait(random);
+  };
+
+  useEffect(() => {
+    let timer: any;
+    if (gameState === 'playing' && timeLeft > 0) {
+      timer = setInterval(() => setTimeLeft(t => t - 1), 1000);
+    } else if (timeLeft === 0) {
+      setGameState('end');
+    }
+    return () => clearInterval(timer);
+  }, [gameState, timeLeft]);
+
+  const handleSort = (choice: 'W' | 'C') => {
+    if (!currentTrait) return;
+    if (choice === currentTrait.type) {
+      setScore(s => s + 10);
+      setFeedback('correct');
+    } else {
+      setScore(s => Math.max(0, s - 5));
+      setFeedback('wrong');
+    }
+    setTimeout(() => {
+      setFeedback(null);
+      setNextTrait();
+    }, 400);
+  };
+
+  if (gameState === 'start') {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+        <Zap className="w-16 h-16 text-amber-500 mb-6" />
+        <h2 className="text-3xl font-bold mb-2">Model Mania</h2>
+        <p className="text-gray-500 mb-8 max-w-md">Sort as many institutional traits as you can into Westminster vs. Consensus in 30 seconds!</p>
+        <button onClick={startGame} className="bg-uwm-black text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-800 shadow-lg">Start Game</button>
+        <button onClick={onBack} className="mt-4 text-sm text-gray-500">Back to Menu</button>
+      </div>
+    );
+  }
+
+  if (gameState === 'end') {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+        <Trophy className="w-20 h-20 text-uwm-gold mb-6" />
+        <h2 className="text-4xl font-black mb-2">{score} Points!</h2>
+        <p className="text-gray-500 mb-8">Great job sorting those institutional variables.</p>
+        <div className="flex gap-4">
+          <button onClick={startGame} className="bg-uwm-black text-white px-8 py-3 rounded-xl font-bold">Play Again</button>
+          <button onClick={onBack} className="bg-white border px-8 py-3 rounded-xl font-bold">Back to Menu</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto w-full p-4 flex flex-col items-center h-full">
+      <div className="w-full flex justify-between items-center mb-12">
+        <div className="flex items-center gap-2 text-uwm-black font-bold">
+          <Timer className="w-5 h-5" /> {timeLeft}s
+        </div>
+        <div className="text-2xl font-black text-uwm-gold">{score}</div>
+      </div>
+
+      <div className={`w-full aspect-video bg-white rounded-2xl shadow-xl border-4 flex items-center justify-center p-8 transition-all duration-200 ${
+        feedback === 'correct' ? 'border-green-500 bg-green-50 scale-105' : 
+        feedback === 'wrong' ? 'border-red-500 bg-red-50 shake' : 'border-gray-100'
+      }`}>
+        <h3 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-800">
+          {currentTrait?.text}
+        </h3>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6 w-full mt-12">
+        <button 
+          onClick={() => handleSort('W')}
+          className="bg-uwm-black hover:bg-slate-800 text-white py-6 rounded-2xl font-bold text-xl shadow-lg transition-transform active:scale-95"
+        >
+          Westminster
+        </button>
+        <button 
+          onClick={() => handleSort('C')}
+          className="bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-2xl font-bold text-xl shadow-lg transition-transform active:scale-95"
+        >
+          Consensus
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// --- NEW GAME: COUNTRY PROFILER ---
+
+const CountryProfiler: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const [currentLevel, setCurrentLevel] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [correctCount, setCorrectCount] = useState(0);
+
+  const countryChallenges = [
+    {
+      country: "Switzerland",
+      clues: ["The magic formula for cabinets", "Extreme multiparty system", "Symmetric bicameralism", "Federal & Decentralized"],
+      explanation: "Switzerland is the prototype of Consensus democracy across all dimensions."
+    },
+    {
+      country: "Germany",
+      clues: ["Constructive vote of no confidence", "Strong Federalism", "Symmetric Bicameralism", "Independent Central Bank (Bundesbank heritage)"],
+      explanation: "Germany is a prime example of a consensus-oriented federal system in Europe."
+    },
+    {
+      country: "Israel",
+      clues: ["Extreme PR with low thresholds", "Unicameral legislature", "No written constitution", "Unitary state"],
+      explanation: "Israel is highly consensual on the executives-parties dimension but majoritarian on the federal-unitary dimension."
+    },
+    {
+      country: "New Zealand",
+      clues: ["Shifted from FPP to MMP in 1996", "Abolished its upper house in 1950", "Unitary and centralized", "Historically a 'purer' Westminster case than the UK"],
+      explanation: "New Zealand's electoral reform (1996) significantly moved it toward the consensus model."
+    },
+    {
+      country: "Belgium",
+      clues: ["Incongruent Federalism", "Segmented cleavages", "Consociational power-sharing", "Judicial Review established in 1980s"],
+      explanation: "Belgium's federalism is designed specifically to manage its deep linguistic and cultural divisions."
+    }
+  ];
+
+  const current = countryChallenges[currentLevel];
+
+  const handleGuess = (choice: string) => {
+    setSelectedCountry(choice);
+    if (choice === current.country) {
+      setCorrectCount(c => c + 1);
+    }
+    setShowResult(true);
+  };
+
+  const next = () => {
+    if (currentLevel < countryChallenges.length - 1) {
+      setCurrentLevel(l => l + 1);
+      setSelectedCountry(null);
+      setShowResult(false);
+    } else {
+      setShowResult(true); // Final score screen logic
+    }
+  };
+
+  if (currentLevel === countryChallenges.length - 1 && showResult && selectedCountry) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+        <Trophy className="w-20 h-20 text-emerald-500 mb-6" />
+        <h2 className="text-3xl font-bold mb-2">Profiler Complete!</h2>
+        <p className="text-gray-500 mb-8">You identified {correctCount} out of {countryChallenges.length} country profiles correctly.</p>
+        <button onClick={onBack} className="bg-uwm-black text-white px-8 py-3 rounded-xl font-bold">Return to Menu</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto w-full p-4 flex flex-col h-full animate-fade-in">
+      <div className="flex justify-between items-center mb-8">
+        <button onClick={onBack} className="text-sm text-gray-500 hover:text-black">← Exit Game</button>
+        <div className="text-sm font-bold text-gray-400">PROFILE {currentLevel + 1} OF {countryChallenges.length}</div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Clues Card */}
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 h-fit">
+          <div className="flex items-center gap-2 mb-6">
+            <HelpCircle className="text-emerald-500 w-6 h-6" />
+            <h3 className="text-xl font-bold text-gray-800">Identify the Country:</h3>
+          </div>
+          <ul className="space-y-4">
+            {current.clues.map((clue, i) => (
+              <li key={i} className="flex items-start gap-3 bg-slate-50 p-4 rounded-lg border border-slate-100 text-slate-700 font-medium">
+                <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xs flex-shrink-0">{i+1}</span>
+                {clue}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Guess Card */}
+        <div className="space-y-6">
+          {!showResult ? (
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Select Country</h4>
+              <div className="grid grid-cols-2 gap-2">
+                {APPROVED_COUNTRIES.map(c => (
+                  <button 
+                    key={c}
+                    onClick={() => handleGuess(c)}
+                    className="p-3 text-sm text-left border rounded-lg hover:bg-emerald-50 hover:border-emerald-200 transition-all font-medium"
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className={`p-8 rounded-2xl shadow-lg border-l-8 animate-fade-in ${
+              selectedCountry === current.country ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500'
+            }`}>
+              <div className="flex items-center gap-2 mb-4">
+                {selectedCountry === current.country ? (
+                  <CheckCircle className="text-green-600 w-8 h-8" />
+                ) : (
+                  <XCircle className="text-red-600 w-8 h-8" />
+                )}
+                <h4 className="text-2xl font-bold">{selectedCountry === current.country ? 'Correct!' : 'Not Quite'}</h4>
+              </div>
+              <p className="text-lg mb-4">The answer is <strong>{current.country}</strong>.</p>
+              <div className="bg-white/50 p-4 rounded-lg border border-current/10 text-sm leading-relaxed mb-6">
+                <strong>Why?</strong> {current.explanation}
+              </div>
+              <button 
+                onClick={next}
+                className="w-full py-3 bg-uwm-black text-white font-bold rounded-xl hover:bg-gray-800 flex items-center justify-center gap-2"
+              >
+                Next Challenge <ChevronRight size={18} />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- EXISTING FLASHCARDS & QUIZ COMPONENTS (Updated with blue/navy theme) ---
 
 const FlashcardDeckSelection: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [selectedDeck, setSelectedDeck] = useState<Flashcard[] | null>(null);
 
-  // Convert Dimensions to Flashcard format
   const dimensionCards: Flashcard[] = DEMOCRACY_DIMENSIONS.map(d => ({
     id: d.id,
     category: 'Dimension',
@@ -97,7 +387,7 @@ const FlashcardDeckSelection: React.FC<{ onBack: () => void }> = ({ onBack }) =>
             <h3 className="font-bold text-lg">Key Concepts</h3>
             <p className="text-sm text-gray-500">Specific terminology (e.g., Magic Formula, Corporatism)</p>
           </div>
-          <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded">{CONCEPT_FLASHCARDS.length} Cards</span>
+          <span className="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded">{CONCEPT_FLASHCARDS.length} Cards</span>
         </button>
       </div>
     </div>
@@ -171,13 +461,13 @@ const FlashcardPlayer: React.FC<{ cards: Flashcard[], onBack: () => void }> = ({
 
       <div className="flex items-center gap-4 mt-8">
         <button onClick={(e) => { e.stopPropagation(); prevCard(); }} className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50 border border-gray-200 text-gray-600">
-          <ChevronLeft />
+          <ChevronLeft size={20} />
         </button>
-        <button onClick={(e) => { e.stopPropagation(); setIsFlipped(!isFlipped); }} className="px-6 py-3 bg-uwm-gold text-uwm-black font-bold rounded-lg shadow-sm hover:bg-yellow-400 transition-colors min-w-[140px]">
+        <button onClick={(e) => { e.stopPropagation(); setIsFlipped(!isFlipped); }} className="px-6 py-3 bg-uwm-gold text-white font-bold rounded-lg shadow-sm hover:bg-blue-600 transition-colors min-w-[140px]">
           {isFlipped ? 'Show Term' : 'Show Definition'}
         </button>
         <button onClick={(e) => { e.stopPropagation(); nextCard(); }} className="p-3 rounded-full bg-white shadow-md hover:bg-gray-50 border border-gray-200 text-gray-600">
-          <ChevronRight />
+          <ChevronRight size={20} />
         </button>
       </div>
     </div>
@@ -292,7 +582,7 @@ const QuizEngine: React.FC<{ level: QuizLevel, onComplete: (score: number) => vo
     return (
       <div className="flex flex-col items-center justify-center h-full p-6 text-center animate-fade-in">
         <div className={`p-10 rounded-2xl shadow-lg max-w-md w-full border-t-8 ${passed ? 'border-green-500 bg-white' : 'border-red-500 bg-white'}`}>
-          {passed ? <Trophy className="w-16 h-16 text-uwm-gold mx-auto mb-4" /> : <RotateCcw className="w-16 h-16 text-gray-400 mx-auto mb-4" />}
+          {passed ? <Trophy className="w-16 h-16 text-blue-500 mx-auto mb-4" /> : <RotateCcw className="w-16 h-16 text-gray-400 mx-auto mb-4" />}
           
           <h2 className="text-3xl font-bold text-gray-900 mb-2">{passed ? 'Level Complete!' : 'Try Again'}</h2>
           <p className="text-gray-500 mb-6">You scored</p>
@@ -317,7 +607,6 @@ const QuizEngine: React.FC<{ level: QuizLevel, onComplete: (score: number) => vo
 
   return (
     <div className="max-w-3xl mx-auto w-full p-6 flex flex-col h-full justify-center">
-      {/* Progress Bar */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Level {level.level}: {level.title}</span>
@@ -331,7 +620,6 @@ const QuizEngine: React.FC<{ level: QuizLevel, onComplete: (score: number) => vo
         </div>
       </div>
 
-      {/* Question Card */}
       <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
         <h3 className="text-xl md:text-2xl font-medium text-gray-900 mb-8 leading-relaxed">
           {question.question}
@@ -362,10 +650,9 @@ const QuizEngine: React.FC<{ level: QuizLevel, onComplete: (score: number) => vo
           ))}
         </div>
 
-        {/* Feedback Area */}
         <div className={`mt-6 overflow-hidden transition-all duration-300 ${selectedOption ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="bg-gray-50 p-4 rounded-lg text-sm text-gray-700 border-l-4 border-uwm-black">
-            <span className="font-bold block mb-1">Explanation:</span>
+            <span className="font-bold block mb-1 text-uwm-black">Explanation:</span>
             {question.explanation}
           </div>
           <div className="mt-4 flex justify-end">
