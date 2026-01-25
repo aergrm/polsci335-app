@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from "@google/genai";
 import { SCHEDULE, ASSIGNMENTS } from '../constants';
 
@@ -16,6 +17,7 @@ try {
 const SYLLABUS_CONTEXT = `
 You are a Teaching Assistant for POL SCI 335: Comparative Political Systems.
 Instructor: Ahmet Ergurum.
+Semester: Spring 2026.
 Textbook: Patterns of Democracy by Arend Lijphart (2nd ed).
 
 KEY THEORETICAL FRAMEWORK:
@@ -40,13 +42,15 @@ ${JSON.stringify(ASSIGNMENTS)}
 Schedule:
 ${JSON.stringify(SCHEDULE)}
 
-AI POLICY:
+STRICT AI POLICY (FROM SYLLABUS):
+- The use of Generative AI is NOT allowed for assignment completion in part (generating ideas is okay) or in whole (submitting text).
+- SUBMITTING DIRECT TEXT FROM AI IS ACADEMIC MISCONDUCT.
 - Permitted: Brainstorming, outlining, research assistance, explaining concepts.
 - PROHIBITED: Generating essay content, answering quiz questions directly, writing the analysis for the student.
 
 Your Goal: Help the student understand these 10 specific variables and guide them in their Country Analysis Project.
 
-If asked to write an essay, refuse and offer to help outline or brainstorm instead.
+If asked to write an essay, REFUSE and cite the syllabus policy. Offer to help outline or brainstorm instead.
 `;
 
 export const getChatResponse = async (history: {role: string, parts: {text: string}[]}[], message: string) => {
@@ -83,14 +87,15 @@ export const generateProjectOutline = async (country: string, interest: string) 
     Create a detailed research project outline for a comparative politics paper on ${country}.
     The student is specifically interested in: "${interest}".
     
-    The outline must follow this structure:
-    1. Introduction (Puzzle/Question)
-    2. Historical Context
-    3. Analysis of Key Institutions (Focus on 2-3 relevant Lijphart variables)
-    4. Assessment of Democratic Quality
-    5. Conclusion
+    The outline must follow this structure based on the syllabus project requirements:
+    1. Introduction (Why this country? Historical/Political Context)
+    2. Institutional Analysis (Apply Lijphart's framework: Exec-Leg, Electoral/Party System, Federalism, etc.)
+    3. Economic Governance or Foreign Policy Implications (Choose one focus area)
+    4. Overall Assessment (Westminster vs Consensus spectrum placement)
+    5. Conclusion (Implications for democratic quality)
     
     Keep it academic, structured, and helpful for an undergraduate student.
+    REMINDER: Do not write the paper. Provide an outline only.
   `;
 
   try {

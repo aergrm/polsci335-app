@@ -5,68 +5,59 @@ export const INSTRUCTOR = "Ahmet Ergurum";
 export const SEMESTER = "Spring 2026";
 
 export const SCHEDULE: Week[] = [
-  { id: 1, dates: "Jan 20-24", title: "Introduction", topics: ["Comparative Method", "Course Overview"], readings: ["Lijphart Ch 1"] },
-  { id: 2, dates: "Jan 27-31", title: "Models of Democracy I", topics: ["Westminster Model", "Majoritarian Democracy"], readings: ["Lijphart Ch 2"] },
-  { id: 3, dates: "Feb 3-7", title: "Models of Democracy II", topics: ["Consensus Model", "Comparing Models"], readings: ["Lijphart Ch 3"], due: ["Quiz 1"] },
-  { id: 4, dates: "Feb 10-14", title: "Party Systems", topics: ["Two-party vs Multiparty", "Effective # of parties"], readings: ["Lijphart Ch 4-5"], due: ["Project Part 1: Proposal"] },
-  { id: 5, dates: "Feb 17-21", title: "Electoral Systems I", topics: ["Majoritarian vs PR", "Electoral Formulas"], readings: ["Lijphart Ch 8"] },
-  { id: 6, dates: "Feb 24-28", title: "Electoral Systems II", topics: ["Disproportionality", "Thresholds"], readings: ["Lijphart Ch 9 (Electoral Systems cont.)"], due: ["Quiz 2"] },
-  { id: 7, dates: "Mar 3-7", title: "Exec-Leg Relations I", topics: ["Presidential vs Parliamentary"], readings: ["Lijphart Ch 6-7"], due: ["Essay 1"] },
-  { id: 8, dates: "Mar 10-14", title: "Exec-Leg Relations II", topics: ["Cabinet Formation", "Executive Dominance"], readings: ["Lijphart Ch 6-7"], due: ["MIDTERM EXAM"] },
-  { id: 9, dates: "Mar 17-21", title: "SPRING BREAK", topics: ["No Class"], readings: [] },
-  { id: 10, dates: "Mar 24-28", title: "Legislative Institutions", topics: ["Bicameralism", "Interest Groups"], readings: ["Lijphart Ch 10-11"], due: ["Project Part 2: Bibliography"] },
-  { id: 11, dates: "Mar 31-Apr 4", title: "Constitutions & Courts", topics: ["Judicial Review", "Rigidity"], readings: ["Lijphart Ch 12"], due: ["Quiz 3"] },
+  { id: 1, dates: "Jan 27-30", title: "Introduction", topics: ["Comparative Method", "Course Overview"], readings: ["Lijphart Ch 1", "Syllabus"] },
+  { id: 2, dates: "Feb 3-5", title: "Models of Democracy I", topics: ["Westminster Model", "Majoritarian Democracy", "Group 1 Presentation"], readings: ["Lijphart Ch 2"] },
+  { id: 3, dates: "Feb 10-12", title: "Models of Democracy II", topics: ["Consensus Model", "Group 2 Presentation"], readings: ["Lijphart Ch 3"], due: ["Quiz 1 (Feb 10)"] },
+  { id: 4, dates: "Feb 17-19", title: "Party Systems", topics: ["Two-party vs Multiparty", "Effective # of parties"], readings: ["Lijphart Ch 4-5"], due: ["Project Part 1: Proposal (Feb 17)"] },
+  { id: 5, dates: "Feb 24-26", title: "Electoral Systems I", topics: ["Majoritarian vs PR", "Electoral Formulas", "Group 3 Presentation"], readings: ["Lijphart Ch 8"] },
+  { id: 6, dates: "Mar 3-5", title: "Electoral Systems II", topics: ["Disproportionality", "Thresholds", "Group 4 Presentation"], readings: ["Lijphart Ch 9"], due: ["Quiz 2 (Mar 3)"] },
+  { id: 7, dates: "Mar 10-12", title: "Exec-Leg Relations I", topics: ["Cabinets", "Group 5 Presentation"], readings: ["Lijphart Ch 6-7"], due: ["In-Class Essay 1 (Mar 10)"] },
+  { id: 8, dates: "Mar 17-19", title: "Exec-Leg Relations II", topics: ["Cabinet Formation", "Executive Dominance"], readings: ["Lijphart Ch 6-7"], due: ["MIDTERM EXAM (Mar 19)"] },
+  { id: 9, dates: "Mar 22-29", title: "SPRING BREAK", topics: ["NO CLASS"], readings: [] },
+  { id: 10, dates: "Mar 31-Apr 2", title: "Legislative Institutions", topics: ["Bicameralism", "Interest Groups"], readings: ["Lijphart Ch 10-11"], due: ["Project Part 2: Annotated Bibliography (Mar 31)"] },
+  { id: 11, dates: "Apr 7-9", title: "Constitutions & Courts", topics: ["Judicial Review", "Constitutional Rigidity", "Group 6 Presentation"], readings: ["Lijphart Ch 12"], due: ["Quiz 3 (Apr 7)"] },
   { 
     id: 12, 
-    dates: "Apr 7-11", 
+    dates: "Apr 14-16", 
     title: "Federalism & Economic Governance", 
     topics: [
-      "Federal vs. unitary systems and territorial power division",
-      "Fiscal federalism and intergovernmental transfers",
-      "Central bank independence across regime types",
-      "Economic coordination in federal and unitary systems",
-      "Monetary policy and democratic accountability"
+      "Federal vs. Unitary",
+      "Central Bank Independence",
+      "Group 7 Presentation"
     ], 
     readings: [
-      "Lijphart Ch 13: Central Banks and Federalism",
-      "Riker (1975): 'Federalism' OR Rodden (2004)",
-      "Alesina & Summers (1993): Central Bank Independence",
-      "Wibbels (2005) (Optional)"
+      "Lijphart Ch 13",
+      "Rodden (2004)",
+      "Additional readings on Canvas"
     ] 
   },
   { 
     id: 13, 
-    dates: "Apr 14-18", 
+    dates: "Apr 21-23", 
     title: "Institutions & Foreign Policy", 
     topics: [
-      "How domestic institutions shape foreign policy choices",
-      "Presidential vs. parliamentary systems in international affairs",
-      "Coalition governments and foreign policy constraints",
-      "Electoral pressures and international commitments",
-      "Ratification requirements and treaty compliance",
-      "Two-level games in international negotiations"
+      "Domestic Institutions & FP",
+      "Two-level games",
+      "Group 8 Presentation"
     ], 
     readings: [
-      "Putnam (1988): 'Diplomacy and Domestic Politics' (Two-Level Games)",
-      "Hagan (1993): 'Political Opposition and Foreign Policy'",
-      "Auerswald (1999): 'Inward Bound'",
-      "Martin (2000): Democratic Commitments (Ch 1)",
-      "Schultz (2001) (Optional)"
+      "Putnam (1988)",
+      "Hagan (1993)"
     ], 
-    due: ["Essay 2", "Quiz 4"] 
+    due: ["In-Class Essay 2 (Apr 21)"] 
   },
-  { id: 14, dates: "Apr 21-25", title: "Democratic Performance", topics: ["Measuring Quality", "Policy Outcomes"], readings: ["Lijphart Ch 14-16"], due: ["Project Presentations Begin"] },
-  { id: 15, dates: "Apr 28-May 2", title: "Challenges to Democracy", topics: ["Backsliding", "Populism"], readings: ["Lijphart Ch 17"], due: ["Presentations Conclude", "Quiz 5"] },
-  { id: 16, dates: "May 5-9", title: "Finals Week", topics: ["No Final Exam"], readings: [], due: ["Project Part 4: Final Paper"] }
+  { id: 14, dates: "Apr 28-30", title: "Democratic Performance", topics: ["Measuring Democratic Quality", "Project Presentations Begin"], readings: ["Lijphart Ch 14-16"], due: ["Project Presentations (Apr 30)"] },
+  { id: 15, dates: "May 5-7", title: "Challenges to Democracy", topics: ["Backsliding", "Populism", "Course Conclusion"], readings: ["Lijphart Ch 17"], due: ["Quiz 4 (May 5)", "Presentations Conclude (May 7)"] },
+  { id: 16, dates: "May 15", title: "Finals Week", topics: ["NO FINAL EXAM", "Final Paper Due"], readings: [], due: ["Project Part 4: Final Paper Due (May 15)"] }
 ];
 
 export const ASSIGNMENTS: Assignment[] = [
-  { id: 'att', name: 'Attendance', weight: 10, category: 'Participation' },
-  { id: 'part', name: 'Participation', weight: 10, category: 'Participation' },
-  { id: 'quiz', name: '5 Quizzes', weight: 25, category: 'Quiz' },
-  { id: 'essay', name: '2 Essays', weight: 30, category: 'Essay' },
-  { id: 'mid', name: 'Midterm', weight: 10, category: 'Exam' },
-  { id: 'proj', name: 'Country Project', weight: 15, category: 'Project' },
+  { id: 'att', name: 'Participation & Attendance', weight: 15, category: 'Participation' },
+  { id: 'pres', name: 'Country Presentation', weight: 10, category: 'Presentation' },
+  { id: 'quiz', name: '4 Quizzes (5% each)', weight: 20, category: 'Quiz' },
+  { id: 'essay', name: '2 In-Class Essays (10% each)', weight: 20, category: 'Essay' },
+  { id: 'mid', name: 'Midterm Exam', weight: 15, category: 'Exam' },
+  { id: 'proj', name: 'Country Analysis Project', weight: 20, category: 'Project' },
 ];
 
 export const DEMOCRACY_DIMENSIONS: DemocracyDimension[] = [
@@ -333,19 +324,21 @@ export const QUIZ_LEVELS: QuizLevel[] = [
 ];
 
 export const APPROVED_COUNTRIES = [
-  "Germany",
-  "France",
-  "Japan",
-  "India",
-  "Brazil",
-  "South Africa",
+  "United Kingdom",
+  "New Zealand",
+  "Australia",
   "Switzerland",
   "Belgium",
   "Netherlands",
-  "Italy",
   "Spain",
+  "Sweden",
+  "Germany",
+  "Ireland",
+  "Japan",
+  "France",
+  "Finland",
+  "Austria",
   "Canada",
-  "Australia",
-  "New Zealand",
-  "Israel"
+  "India",
+  "Brazil"
 ];

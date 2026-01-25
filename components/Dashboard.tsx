@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SCHEDULE, ASSIGNMENTS } from '../constants';
 import { Week } from '../types';
@@ -13,8 +14,9 @@ const Dashboard: React.FC = () => {
     const calculateCurrentWeek = () => {
       const now = new Date();
       // Use YYYY, MM-1, DD format to avoid timezone parsing issues
-      const semesterStart = new Date(2026, 0, 20); // Jan 20, 2026
-      const semesterEnd = new Date(2026, 4, 9);    // May 9, 2026
+      // Semester starts Tue Jan 27, 2026
+      const semesterStart = new Date(2026, 0, 27); // Jan 27, 2026
+      const semesterEnd = new Date(2026, 4, 15);   // May 15, 2026
 
       // If before semester starts, show Week 1
       if (now < semesterStart) {
@@ -131,11 +133,11 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="p-3 bg-blue-50 rounded border border-blue-100">
             <h4 className="font-bold text-blue-800 mb-1">Attendance</h4>
-            <p className="text-blue-700">3 unexcused absences allowed. -2% grade per absence after that.</p>
+            <p className="text-blue-700">Mandatory. Notify instructor in advance for absences. No make-ups for quizzes unless excused.</p>
           </div>
           <div className="p-3 bg-indigo-50 rounded border border-indigo-100">
             <h4 className="font-bold text-indigo-800 mb-1">Late Work</h4>
-            <p className="text-indigo-700">24hr grace period. -10% per day after. Max 5 days late.</p>
+            <p className="text-indigo-700">Not accepted. Exceptions only for extraordinary circumstances.</p>
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ export interface Assignment {
   id: string;
   name: string;
   weight: number; // percentage
-  category: 'Participation' | 'Quiz' | 'Essay' | 'Exam' | 'Project';
+  category: 'Participation' | 'Quiz' | 'Essay' | 'Exam' | 'Project' | 'Presentation';
   dueDate?: string;
 }
 
