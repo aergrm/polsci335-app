@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { SCHEDULE, ASSIGNMENTS } from '../constants';
 import { Week } from '../types';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { BookOpen, Calendar, AlertCircle } from 'lucide-react';
 
-const COLORS = ['#1e3a8a', '#3b82f6', '#60a5fa', '#94a3b8', '#cbd5e1', '#f1f5f9'];
+const COLORS = ['#1e3a8a', '#2563eb', '#3b82f6', '#60a5fa', '#94a3b8', '#cbd5e1'];
 
 const Dashboard: React.FC = () => {
   const [currentWeek, setCurrentWeek] = useState<Week | null>(null);
@@ -96,29 +96,49 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Grade Distribution Chart */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+        {/* Grade Distribution Chart with Custom Legend */}
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-[400px]">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Grade Weight</h2>
-          <div className="flex-grow min-h-[200px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={gradeData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {gradeData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend iconSize={8} wrapperStyle={{fontSize: '12px'}} />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="flex flex-col h-full">
+            {/* Chart Area */}
+            <div className="h-[200px] w-full flex-shrink-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={gradeData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={55}
+                    outerRadius={75}
+                    paddingAngle={3}
+                    dataKey="value"
+                  >
+                    {gradeData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Custom Legend Area */}
+            <div className="flex-grow overflow-y-auto mt-4 pr-2">
+               <div className="grid grid-cols-1 gap-2">
+                 {gradeData.map((entry, index) => (
+                   <div key={index} className="flex items-start text-sm">
+                     <span 
+                       className="w-3 h-3 rounded-full mt-1 mr-2 flex-shrink-0" 
+                       style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                     />
+                     <div className="flex flex-col leading-tight">
+                       <span className="text-gray-700 font-medium">{entry.name}</span>
+                       <span className="text-gray-400 text-xs">{entry.value}%</span>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+            </div>
           </div>
         </div>
       </div>
@@ -127,9 +147,11 @@ const Dashboard: React.FC = () => {
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <h2 className="text-lg font-bold text-gray-800 mb-4">Key Course Policies</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="p-3 bg-slate-50 rounded border border-slate-200">
-            <h4 className="font-bold text-slate-800 mb-1">AI Policy</h4>
-            <p className="text-slate-700">Brainstorming/Outlining: OK. <br/>Generating Content: <strong>PROHIBITED</strong>. <br/>Must cite AI usage.</p>
+          <div className="p-3 bg-red-50 rounded border border-red-200">
+            <h4 className="font-bold text-red-800 mb-1">AI Policy</h4>
+            <p className="text-red-700">
+              Use of Generative AI is <strong>NOT allowed</strong> for assignment completion in part or in whole.
+            </p>
           </div>
           <div className="p-3 bg-blue-50 rounded border border-blue-100">
             <h4 className="font-bold text-blue-800 mb-1">Attendance</h4>

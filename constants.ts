@@ -5,7 +5,7 @@ export const INSTRUCTOR = "Ahmet Ergurum";
 export const SEMESTER = "Spring 2026";
 
 export const SCHEDULE: Week[] = [
-  { id: 1, dates: "Jan 27-30", title: "Introduction", topics: ["Comparative Method", "Course Overview"], readings: ["Lijphart Ch 1", "Syllabus"] },
+  { id: 1, dates: "Jan 27 & 29", title: "Introduction", topics: ["Comparative Method", "Course Overview"], readings: ["Lijphart Ch 1", "Syllabus"] },
   { id: 2, dates: "Feb 3-5", title: "Models of Democracy I", topics: ["Westminster Model", "Majoritarian Democracy", "Group 1 Presentation"], readings: ["Lijphart Ch 2"] },
   { id: 3, dates: "Feb 10-12", title: "Models of Democracy II", topics: ["Consensus Model", "Group 2 Presentation"], readings: ["Lijphart Ch 3"], due: ["Quiz 1 (Feb 10)"] },
   { id: 4, dates: "Feb 17-19", title: "Party Systems", topics: ["Two-party vs Multiparty", "Effective # of parties"], readings: ["Lijphart Ch 4-5"], due: ["Project Part 1: Proposal (Feb 17)"] },
