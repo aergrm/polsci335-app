@@ -53,8 +53,10 @@ const App: React.FC = () => {
         </nav>
 
         <div className="absolute bottom-0 w-full p-6 text-xs text-gray-500 border-t border-gray-800">
-          <p>© 2026 UWM / Ahmet Ergurum</p>
-          <p className="mt-2 text-uwm-gold/50">App by React Engineer</p>
+          <div>
+            <p>© 2026 UWM / Ahmet Ergurum</p>
+            <p className="mt-2 text-uwm-gold/50">App by React Engineer</p>
+          </div>
         </div>
       </aside>
 
