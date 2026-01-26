@@ -3,12 +3,9 @@ import React, { useState } from 'react';
 import { SCHEDULE } from '../constants';
 import { Week } from '../types';
 import { 
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, Label, LabelList
-} from 'recharts';
-import { 
   ChevronRight, ArrowLeft, Microscope, Scale, 
   Variable, Globe, BookOpen, AlertTriangle, 
-  CheckCircle2, FlaskConical, Calculator
+  CheckCircle2, Users, Split, ShieldCheck, Swords, Handshake
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -158,31 +155,156 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
 // --- VISUALS FOR WEEK 1 ---
 
 const Week1Visuals: React.FC = () => {
-  // Data for the Methods Scatter Plot
-  const methodsData = [
-    { name: 'Case Study', x: 10, y: 10, type: 'Qualitative' },
-    { name: 'Comparative', x: 40, y: 50, type: 'Mixed' },
-    { name: 'Statistical', x: 80, y: 70, type: 'Quantitative' },
-    { name: 'Experimental', x: 90, y: 95, type: 'Ideal' },
-  ];
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-3 border border-gray-200 shadow-lg rounded text-xs">
-          <p className="font-bold text-gray-900">{payload[0].payload.name}</p>
-          <p className="text-gray-500">N (Cases): {payload[0].value}</p>
-          <p className="text-gray-500">Control: {payload[1].value}</p>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       
-      {/* 1. The Scientific Method Flow */}
+      {/* 1. The Core Definition: Majoritarian vs Consensus */}
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <Scale className="text-uwm-gold" /> The Core Definition: Who Governs?
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Majoritarian Card */}
+          <div className="bg-white rounded-2xl shadow-lg border-t-8 border-blue-600 overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+            <div className="p-8">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                   <h4 className="text-2xl font-serif font-bold text-gray-900">Majoritarian</h4>
+                   <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">The Westminster Model</span>
+                </div>
+                <div className="bg-blue-100 p-3 rounded-full">
+                  <Swords className="w-8 h-8 text-blue-600" />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h5 className="text-sm font-bold text-gray-500 uppercase mb-1">Core Principle</h5>
+                  <p className="text-gray-800 font-medium">"Government by the majority of the people."</p>
+                </div>
+                <div>
+                  <h5 className="text-sm font-bold text-gray-500 uppercase mb-1">Key Traits</h5>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>Exclusive & Competitive</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>Adversarial (Govt vs Opposition)</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>Winner-takes-all</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-8 py-4 text-xs text-gray-500 border-t border-gray-100">
+              Typical Example: United Kingdom
+            </div>
+          </div>
+
+          {/* Consensus Card */}
+          <div className="bg-white rounded-2xl shadow-lg border-t-8 border-indigo-600 overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+            <div className="p-8">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                   <h4 className="text-2xl font-serif font-bold text-gray-900">Consensus</h4>
+                   <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest">The Consensus Model</span>
+                </div>
+                <div className="bg-indigo-100 p-3 rounded-full">
+                  <Handshake className="w-8 h-8 text-indigo-600" />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h5 className="text-sm font-bold text-gray-500 uppercase mb-1">Core Principle</h5>
+                  <p className="text-gray-800 font-medium">"Government by as many people as possible."</p>
+                </div>
+                <div>
+                  <h5 className="text-sm font-bold text-gray-500 uppercase mb-1">Key Traits</h5>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>Inclusive & Bargaining</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>Compromise-oriented</li>
+                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>Power-sharing</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-8 py-4 text-xs text-gray-500 border-t border-gray-100">
+              Typical Example: Switzerland, Belgium
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. The Two Dimensions Visual */}
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <Variable className="text-uwm-gold" /> Lijphart's Two Dimensions of Democracy
+        </h3>
+        <p className="text-gray-600 mb-8 max-w-3xl">
+          Lijphart argues that democratic institutions cluster into two distinct dimensions. 
+          A country can be majoritarian on one dimension but consensual on the other (e.g., Canada).
+        </p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Dimension I: Executives-Parties */}
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
+             <div className="relative z-10">
+               <div className="flex items-center gap-3 mb-4">
+                 <Users className="text-blue-600 w-6 h-6" />
+                 <h4 className="text-lg font-bold text-gray-900">Dimension I: Executives-Parties</h4>
+               </div>
+               <p className="text-xs text-gray-500 mb-6 font-medium uppercase tracking-wide">
+                 Joint Power vs. Concentrated Power
+               </p>
+               
+               <div className="space-y-3">
+                 {[
+                   "Cabinets: Single-party vs. Coalition",
+                   "Executive-Legislative: Dominance vs. Balance",
+                   "Party System: Two-party vs. Multiparty",
+                   "Electoral System: Majoritarian vs. PR",
+                   "Interest Groups: Pluralist vs. Corporatist"
+                 ].map((item, i) => (
+                   <div key={i} className="flex items-center gap-3 text-sm text-gray-700 bg-gray-50 p-2 rounded border border-gray-100">
+                     <span className="font-bold text-blue-400">{i+1}.</span> {item}
+                   </div>
+                 ))}
+               </div>
+             </div>
+          </div>
+
+          {/* Dimension II: Federal-Unitary */}
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
+             <div className="relative z-10">
+               <div className="flex items-center gap-3 mb-4">
+                 <Split className="text-indigo-600 w-6 h-6" />
+                 <h4 className="text-lg font-bold text-gray-900">Dimension II: Federal-Unitary</h4>
+               </div>
+               <p className="text-xs text-gray-500 mb-6 font-medium uppercase tracking-wide">
+                 Divided Power vs. Unified Power
+               </p>
+               
+               <div className="space-y-3">
+                 {[
+                   "Federalism: Unitary vs. Federal",
+                   "Legislature: Unicameral vs. Bicameral",
+                   "Constitution: Flexible vs. Rigid",
+                   "Judicial Review: Legislature final vs. Court review",
+                   "Central Bank: Dependent vs. Independent"
+                 ].map((item, i) => (
+                   <div key={i} className="flex items-center gap-3 text-sm text-gray-700 bg-gray-50 p-2 rounded border border-gray-100">
+                     <span className="font-bold text-indigo-400">{i+1}.</span> {item}
+                   </div>
+                 ))}
+               </div>
+             </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. The Scientific Method Flow (Methodology) */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
           <Microscope className="text-uwm-gold" /> The Scientific Method in Politics
@@ -223,70 +345,10 @@ const Week1Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. The Methods Hierarchy Chart */}
+      {/* 4. The Fundamental Problem (Methodology) */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <Scale className="text-uwm-gold" /> Lijphart's Hierarchy of Methods
-        </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white p-4 rounded-xl shadow-sm border border-gray-100 h-[350px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart margin={{ top: 20, right: 30, bottom: 20, left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  type="number" 
-                  dataKey="x" 
-                  name="Number of Cases (N)" 
-                  unit="%" 
-                  tick={false}
-                  label={{ value: 'Number of Cases (N) →', position: 'bottom', offset: 0 }} 
-                />
-                <YAxis 
-                  type="number" 
-                  dataKey="y" 
-                  name="Level of Control" 
-                  unit="%" 
-                  tick={false}
-                  label={{ value: 'Level of Control (Internal Validity) →', angle: -90, position: 'insideLeft' }} 
-                />
-                <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
-                <ReferenceLine x={50} stroke="#cbd5e1" strokeDasharray="3 3" />
-                <ReferenceLine y={50} stroke="#cbd5e1" strokeDasharray="3 3" />
-                <Scatter name="Methods" data={methodsData} fill="#8884d8">
-                  {methodsData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={['#ef4444', '#f59e0b', '#3b82f6', '#10b981'][index]} />
-                  ))}
-                  <LabelList dataKey="name" position="top" style={{ fontWeight: 'bold', fill: '#1e293b' }} />
-                </Scatter>
-              </ScatterChart>
-            </ResponsiveContainer>
-          </div>
-          
-          <div className="space-y-3">
-             <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-lg">
-               <h4 className="font-bold text-emerald-800 flex items-center gap-2"><FlaskConical className="w-4 h-4" /> Experimental</h4>
-               <p className="text-xs text-emerald-700 mt-1">The Gold Standard. High control over variables. Rarely possible in Pol Sci.</p>
-             </div>
-             <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg">
-               <h4 className="font-bold text-blue-800 flex items-center gap-2"><Calculator className="w-4 h-4" /> Statistical</h4>
-               <p className="text-xs text-blue-700 mt-1">Conceptual control through math (partial correlations). Requires large N.</p>
-             </div>
-             <div className="p-4 bg-amber-50 border border-amber-100 rounded-lg shadow-sm border-l-4 border-l-amber-500">
-               <h4 className="font-bold text-amber-800 flex items-center gap-2"><Scale className="w-4 h-4" /> Comparative</h4>
-               <p className="text-xs text-amber-700 mt-1"><strong>The Focus of this Course.</strong> Small N (e.g., 2-20 countries). Control achieved by careful case selection.</p>
-             </div>
-             <div className="p-4 bg-red-50 border border-red-100 rounded-lg">
-               <h4 className="font-bold text-red-800 flex items-center gap-2"><Microscope className="w-4 h-4" /> Case Study</h4>
-               <p className="text-xs text-red-700 mt-1">N=1. Deep context, but zero control. Good for generating hypotheses.</p>
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. The Fundamental Problem */}
-      <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <AlertTriangle className="text-uwm-gold" /> The Fundamental Problem
+          <AlertTriangle className="text-uwm-gold" /> The Comparative Method Challenge
         </h3>
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="md:w-1/2">
