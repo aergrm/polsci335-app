@@ -245,7 +245,8 @@ const Week1Visuals: React.FC = () => {
     { name: 'Germany', x: -0.7, y: -2.1, type: 'Consensus (Federal)' },
     { name: 'Israel', x: -1.3, y: 0.9, type: 'Consensus (Unitary)' },
     { name: 'India', x: -0.6, y: -1.0, type: 'Consensus (Federal)' },
-    { name: 'Japan', x: -0.3, y: -0.1, type: 'Mixed' },
+    // Corrected Japan: Unitary (Positive Y) & Slightly Majoritarian (Positive X) per Lijphart 2nd Ed
+    { name: 'Japan', x: 0.2, y: 0.9, type: 'Majoritarian (Unitary)' }, 
     { name: 'France', x: 0.7, y: 0.1, type: 'Majoritarian (Unitary)' },
     { name: 'Sweden', x: -0.8, y: 1.1, type: 'Consensus (Unitary)' },
   ], [reformSimulated]);
