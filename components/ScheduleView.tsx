@@ -10,7 +10,7 @@ import {
   ChevronRight, ArrowLeft, Microscope, Scale, 
   Variable, Globe, BookOpen, AlertTriangle, 
   CheckCircle2, Users, Split, ShieldCheck, Swords, Handshake,
-  Crown, Vote, Gavel, Building2
+  Crown, Vote, Gavel, Building2, Beaker
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -181,8 +181,183 @@ const Week1Visuals: React.FC = () => {
 
   return (
     <div className="space-y-12">
+
+      {/* 1. The Scientific Method Flow (Methodology) - MOVED TOP */}
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <Microscope className="text-uwm-gold" /> The Scientific Method in Politics
+        </h3>
+        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
+          <div className="flex items-center justify-between min-w-[600px] text-center">
+            
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-32 h-32 bg-blue-50 rounded-full border-4 border-blue-100 flex items-center justify-center p-4">
+                <span className="font-bold text-blue-900">Theory</span>
+              </div>
+              <p className="text-xs text-gray-500 max-w-[140px]">A general explanation of how the world works</p>
+            </div>
+
+            <div className="h-1 flex-1 bg-gray-200 mx-4 relative">
+              <div className="absolute right-0 -top-1.5 w-3 h-3 bg-gray-400 rounded-full"></div>
+            </div>
+
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-32 h-32 bg-indigo-50 rounded-full border-4 border-indigo-100 flex items-center justify-center p-4">
+                <span className="font-bold text-indigo-900">Hypothesis</span>
+              </div>
+              <p className="text-xs text-gray-500 max-w-[140px]">A specific, testable prediction derived from theory</p>
+            </div>
+
+            <div className="h-1 flex-1 bg-gray-200 mx-4 relative">
+              <div className="absolute right-0 -top-1.5 w-3 h-3 bg-gray-400 rounded-full"></div>
+            </div>
+
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-32 h-32 bg-emerald-50 rounded-full border-4 border-emerald-100 flex items-center justify-center p-4">
+                <span className="font-bold text-emerald-900">Testing</span>
+              </div>
+              <p className="text-xs text-gray-500 max-w-[140px]">Using cases/data to verify or falsify the hypothesis</p>
+            </div>
+          
+          </div>
+        </div>
+      </section>
+
+      {/* 2. The Fundamental Problem (Methodology) - MOVED TOP */}
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <AlertTriangle className="text-uwm-gold" /> The Comparative Method Challenge
+        </h3>
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="md:w-1/2">
+             <h4 className="text-2xl font-serif font-bold text-white mb-2">"Many Variables, Small N"</h4>
+             <p className="text-slate-300 leading-relaxed">
+               In comparative politics, we often have too many possible explanations (variables) and too few countries (cases) to test them on. 
+               It's like trying to solve an algebra equation with 5 unknowns but only 2 equations.
+             </p>
+          </div>
+          
+          <div className="md:w-1/2 bg-white/10 p-6 rounded-lg backdrop-blur-sm border border-white/20">
+            <h5 className="font-bold text-uwm-gold mb-3 border-b border-white/10 pb-2">Lijphart's Solutions</h5>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
+                <span>Increase N (Add more countries or historical cases)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
+                <span>Reduce the property space (Combine variables)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
+                <span><strong>Most Similar Systems Design (MSSD)</strong>: Compare countries that are similar in all respects except the variable of interest.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Research Design Strategy: MSSD vs MDSD - NEW SECTION */}
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <Beaker className="text-uwm-gold" /> Research Design: Solving the "Small N" Problem
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          {/* MSSD */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-emerald-500">
+            <div className="flex justify-between items-start mb-4">
+              <h4 className="font-bold text-lg text-gray-900">Most Similar Systems (MSSD)</h4>
+              <span className="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Method of Difference</span>
+            </div>
+            
+            {/* Visual Table */}
+            <div className="space-y-2 mb-4">
+              <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                <span className="w-1/3">Variable</span>
+                <span className="text-center w-1/4">Case A</span>
+                <span className="text-center w-1/4">Case B</span>
+              </div>
+              
+              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+                <span className="font-medium w-1/3 text-gray-600">Culture</span>
+                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
+                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
+              </div>
+              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+                <span className="font-medium w-1/3 text-gray-600">Economy</span>
+                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
+                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
+              </div>
+              <div className="flex justify-between items-center bg-blue-50 p-2 rounded border border-blue-200 text-sm">
+                <span className="font-bold text-blue-800 w-1/3">Electoral Sys.</span>
+                <span className="text-center w-1/4 text-blue-600 font-bold">PR</span>
+                <span className="text-center w-1/4 text-red-500 font-bold">Plurality</span>
+              </div>
+              
+              <div className="h-px bg-gray-200 my-2"></div>
+              
+              <div className="flex justify-between items-center bg-slate-100 p-2 rounded text-sm">
+                <span className="font-bold text-slate-800 w-1/3">Outcome</span>
+                <span className="text-center w-1/4 text-slate-600 font-bold">High</span>
+                <span className="text-center w-1/4 text-slate-600 font-bold">Low</span>
+              </div>
+            </div>
+            
+            <p className="text-xs text-gray-500 italic leading-relaxed">
+              <strong>Logic:</strong> Since cultural and economic factors are the same, the difference in outcome must be caused by the difference in Electoral Systems.
+            </p>
+          </div>
+
+          {/* MDSD */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500">
+            <div className="flex justify-between items-start mb-4">
+              <h4 className="font-bold text-lg text-gray-900">Most Different Systems (MDSD)</h4>
+              <span className="text-xs font-mono text-purple-600 bg-purple-50 px-2 py-1 rounded">Method of Agreement</span>
+            </div>
+            
+            {/* Visual Table */}
+            <div className="space-y-2 mb-4">
+              <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                <span className="w-1/3">Variable</span>
+                <span className="text-center w-1/4">Case A</span>
+                <span className="text-center w-1/4">Case B</span>
+              </div>
+              
+              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+                <span className="font-medium w-1/3 text-gray-600">Region</span>
+                <span className="text-center w-1/4 text-red-400 font-bold">Europe</span>
+                <span className="text-center w-1/4 text-red-400 font-bold">Asia</span>
+              </div>
+              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+                <span className="font-medium w-1/3 text-gray-600">Religion</span>
+                <span className="text-center w-1/4 text-red-400 font-bold">Christian</span>
+                <span className="text-center w-1/4 text-red-400 font-bold">Buddhist</span>
+              </div>
+              <div className="flex justify-between items-center bg-purple-50 p-2 rounded border border-purple-200 text-sm">
+                <span className="font-bold text-purple-800 w-1/3">Class</span>
+                <span className="text-center w-1/4 text-purple-600 font-bold">Worker</span>
+                <span className="text-center w-1/4 text-purple-600 font-bold">Worker</span>
+              </div>
+              
+              <div className="h-px bg-gray-200 my-2"></div>
+              
+              <div className="flex justify-between items-center bg-slate-100 p-2 rounded text-sm">
+                <span className="font-bold text-slate-800 w-1/3">Outcome</span>
+                <span className="text-center w-1/4 text-slate-600 font-bold">Revolt</span>
+                <span className="text-center w-1/4 text-slate-600 font-bold">Revolt</span>
+              </div>
+            </div>
+            
+             <p className="text-xs text-gray-500 italic leading-relaxed">
+              <strong>Logic:</strong> Since region and religion are different, the shared outcome (Revolution) must be caused by the shared factor (Social Class).
+            </p>
+          </div>
+
+        </div>
+      </section>
       
-      {/* 1. The Core Definition: Majoritarian vs Consensus */}
+      {/* 4. The Core Definition: Majoritarian vs Consensus */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Scale className="text-uwm-gold" /> The Core Definition: Who Governs?
@@ -257,7 +432,7 @@ const Week1Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. Conceptual Map of Democracy */}
+      {/* 5. Conceptual Map of Democracy */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Globe className="text-uwm-gold" /> Lijphart's Conceptual Map of Democracy
@@ -330,7 +505,7 @@ const Week1Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. The Two Dimensions Breakdown */}
+      {/* 6. The Two Dimensions Breakdown */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Variable className="text-uwm-gold" /> The 10 Variables (Divided by Dimension)
@@ -401,81 +576,6 @@ const Week1Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. The Scientific Method Flow (Methodology) */}
-      <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <Microscope className="text-uwm-gold" /> The Scientific Method in Politics
-        </h3>
-        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
-          <div className="flex items-center justify-between min-w-[600px] text-center">
-            
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-32 h-32 bg-blue-50 rounded-full border-4 border-blue-100 flex items-center justify-center p-4">
-                <span className="font-bold text-blue-900">Theory</span>
-              </div>
-              <p className="text-xs text-gray-500 max-w-[140px]">A general explanation of how the world works</p>
-            </div>
-
-            <div className="h-1 flex-1 bg-gray-200 mx-4 relative">
-              <div className="absolute right-0 -top-1.5 w-3 h-3 bg-gray-400 rounded-full"></div>
-            </div>
-
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-32 h-32 bg-indigo-50 rounded-full border-4 border-indigo-100 flex items-center justify-center p-4">
-                <span className="font-bold text-indigo-900">Hypothesis</span>
-              </div>
-              <p className="text-xs text-gray-500 max-w-[140px]">A specific, testable prediction derived from theory</p>
-            </div>
-
-            <div className="h-1 flex-1 bg-gray-200 mx-4 relative">
-              <div className="absolute right-0 -top-1.5 w-3 h-3 bg-gray-400 rounded-full"></div>
-            </div>
-
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-32 h-32 bg-emerald-50 rounded-full border-4 border-emerald-100 flex items-center justify-center p-4">
-                <span className="font-bold text-emerald-900">Testing</span>
-              </div>
-              <p className="text-xs text-gray-500 max-w-[140px]">Using cases/data to verify or falsify the hypothesis</p>
-            </div>
-          
-          </div>
-        </div>
-      </section>
-
-      {/* 5. The Fundamental Problem (Methodology) */}
-      <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <AlertTriangle className="text-uwm-gold" /> The Comparative Method Challenge
-        </h3>
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="md:w-1/2">
-             <h4 className="text-2xl font-serif font-bold text-white mb-2">"Many Variables, Small N"</h4>
-             <p className="text-slate-300 leading-relaxed">
-               In comparative politics, we often have too many possible explanations (variables) and too few countries (cases) to test them on. 
-               It's like trying to solve an algebra equation with 5 unknowns but only 2 equations.
-             </p>
-          </div>
-          
-          <div className="md:w-1/2 bg-white/10 p-6 rounded-lg backdrop-blur-sm border border-white/20">
-            <h5 className="font-bold text-uwm-gold mb-3 border-b border-white/10 pb-2">Lijphart's Solutions</h5>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
-                <span>Increase N (Add more countries or historical cases)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
-                <span>Reduce the property space (Combine variables)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
-                <span><strong>Most Similar Systems Design (MSSD)</strong>: Compare countries that are similar in all respects except the variable of interest.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
     </div>
   );
 };
@@ -528,4 +628,3 @@ const Week2Visuals: React.FC = () => {
 };
 
 export default ScheduleView;
-    
