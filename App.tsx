@@ -10,13 +10,16 @@ import { LayoutDashboard, Calendar, BookOpen, Brain } from 'lucide-react';
 const App: React.FC = () => {
   const [view, setView] = useState<ViewState>('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // This key forces the StudyCenter to re-render (reset to menu) when the nav item is clicked
+  // These keys force components to re-render (reset to main view) when the nav item is clicked
   const [studyCenterKey, setStudyCenterKey] = useState(0);
+  const [scheduleKey, setScheduleKey] = useState(0);
 
   const handleNavClick = (id: ViewState) => {
     if (id === 'study') {
-      // Increment key to force reset if already on study page or navigating to it
       setStudyCenterKey(prev => prev + 1);
+    }
+    if (id === 'schedule') {
+      setScheduleKey(prev => prev + 1);
     }
     setView(id);
     setIsMobileMenuOpen(false);
@@ -72,7 +75,7 @@ const App: React.FC = () => {
       <main className="flex-1 p-4 md:p-8 overflow-y-auto max-h-screen">
         <div className="max-w-6xl mx-auto h-full">
           {view === 'dashboard' && <Dashboard />}
-          {view === 'schedule' && <ScheduleView />}
+          {view === 'schedule' && <ScheduleView key={scheduleKey} />}
           {view === 'concepts' && <ConceptExplorer />}
           {view === 'study' && <StudyCenter key={studyCenterKey} />}
         </div>
