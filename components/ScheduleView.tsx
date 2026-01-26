@@ -269,16 +269,16 @@ const Week1Visuals: React.FC = () => {
         </p>
 
         <div className="bg-white p-4 md:p-8 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="h-[500px] w-full relative">
+          <div className="h-[600px] w-full relative">
             
             {/* Quadrant Labels */}
             <div className="absolute top-4 right-4 text-xs font-bold text-blue-500 bg-blue-50 px-2 py-1 rounded">Unitary-Majoritarian</div>
             <div className="absolute top-4 left-4 text-xs font-bold text-indigo-500 bg-indigo-50 px-2 py-1 rounded">Unitary-Consensus</div>
-            <div className="absolute bottom-4 left-4 text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded">Federal-Consensus</div>
-            <div className="absolute bottom-4 right-4 text-xs font-bold text-purple-500 bg-purple-50 px-2 py-1 rounded">Federal-Majoritarian</div>
+            <div className="absolute bottom-20 left-4 text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded">Federal-Consensus</div>
+            <div className="absolute bottom-20 right-4 text-xs font-bold text-purple-500 bg-purple-50 px-2 py-1 rounded">Federal-Majoritarian</div>
 
             <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+              <ScatterChart margin={{ top: 50, right: 30, bottom: 60, left: 50 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   type="number" 
@@ -292,7 +292,13 @@ const Week1Visuals: React.FC = () => {
                   type="number" 
                   dataKey="y" 
                   name="Federal-Unitary" 
-                  label={{ value: 'Federal ⟵ Dimension II ⟶ Unitary', angle: -90, position: 'insideLeft' }}
+                  label={{ 
+                    value: 'Federal ⟵ Dimension II ⟶ Unitary', 
+                    angle: -90, 
+                    position: 'left', // Moved to 'left' outside axis
+                    offset: 10,
+                    style: { textAnchor: 'middle' } 
+                  }}
                   domain={[-2.5, 2.5]}
                   ticks={[-2, -1, 0, 1, 2]}
                 />
@@ -307,6 +313,19 @@ const Week1Visuals: React.FC = () => {
                 </Scatter>
               </ScatterChart>
             </ResponsiveContainer>
+          </div>
+
+          <div className="mt-4 bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-amber-900 space-y-2">
+            <p className="font-bold flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4" /> 
+              Important: Data Context (1945–1996)
+            </p>
+            <p>
+              This map reflects the data analyzed in the 2nd Edition of <em>Patterns of Democracy</em> (published 1999), covering the period <strong>1945–1996</strong>.
+            </p>
+            <p>
+              <strong>Why does this matter?</strong> Political institutions change. For example, <strong>New Zealand</strong> appears as a "Majoritarian" prototype here. However, following its 1996 electoral reform to MMP (Mixed Member Proportional), it has shifted significantly toward the "Consensus" model. If a country's position seems outdated, it serves as evidence of institutional change over time.
+            </p>
           </div>
         </div>
       </section>
@@ -461,173 +480,52 @@ const Week1Visuals: React.FC = () => {
   );
 };
 
-// --- VISUALS FOR WEEK 2 ---
-
 const Week2Visuals: React.FC = () => {
-  // Data for Manufactured Majority Chart (Based on UK 2005 Election logic)
-  const ukElectionData = [
-    { name: 'Labour', votes: 35.2, seats: 55.0 },
-    { name: 'Conservatives', votes: 32.4, seats: 30.7 },
-    { name: 'Lib Dems', votes: 22.0, seats: 9.6 },
-    { name: 'Others', votes: 10.4, seats: 4.7 },
-  ];
-
   return (
     <div className="space-y-12">
-      
-      {/* 1. The Westminster Model Overview */}
-      <section>
-        <div className="bg-uwm-black text-white p-8 rounded-2xl shadow-xl border-l-8 border-uwm-gold">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
-            <div className="flex-1">
-              <h3 className="text-2xl font-serif font-bold text-white mb-2">The Westminster Model</h3>
-              <p className="text-blue-100 text-lg mb-4">
-                The prototype of majoritarian democracy. Power is concentrated in the hands of the majority party to ensure decisive governance.
-              </p>
-              <div className="flex gap-4 text-xs font-bold uppercase tracking-widest text-uwm-gold">
-                <span>Prototype: United Kingdom</span>
-                <span>•</span>
-                <span>Principle: Exclusivity</span>
-              </div>
-            </div>
-            <div className="bg-white/10 p-4 rounded-full">
-              <Crown className="w-12 h-12 text-uwm-gold" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. The Manufactured Majority Chart */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Vote className="text-uwm-gold" /> 1. The Manufactured Majority
-        </h3>
-        <p className="text-gray-600 mb-6 max-w-3xl">
-          The most distinct feature of Westminster systems is the electoral system's tendency to exaggerate the winner's victory. 
-          A party can win a majority of seats (100% of power) with a minority of votes.
-        </p>
-
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h4 className="text-center font-bold text-gray-700 mb-4">UK Election 2005: Votes vs. Seats</h4>
-          <div className="h-[350px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={ukElectionData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" />
-                <YAxis label={{ value: 'Percentage (%)', angle: -90, position: 'insideLeft' }} />
-                <Tooltip 
-                  cursor={{ fill: '#f8fafc' }}
-                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                />
-                <Legend />
-                <Bar dataKey="votes" name="% of Votes" fill="#94a3b8" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="seats" name="% of Seats" fill="#1e3a8a" radius={[4, 4, 0, 0]}>
-                  {ukElectionData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 0 ? '#1e3a8a' : '#64748b'} />
-                  ))}
-                  <LabelList dataKey="seats" position="top" formatter={(val: number) => `${val}%`} />
-                </Bar>
-                <ReferenceLine y={50} stroke="red" strokeDasharray="3 3" label={{ value: 'Majority (50%)', position: 'right', fill: 'red', fontSize: 12 }} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="mt-4 bg-blue-50 p-4 rounded-lg text-sm text-blue-800 border-l-4 border-blue-500">
-            <strong>Key Insight:</strong> Labour won 100% of the power (a parliamentary majority) with only 35.2% of the vote. 
-            This is a "Manufactured Majority" — the hallmark of majoritarianism.
-          </div>
-        </div>
-      </section>
-
-      {/* 3. The Fusion of Powers Diagram */}
-      <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Gavel className="text-uwm-gold" /> 2. Fusion of Power (Cabinet Dominance)
-        </h3>
-        
-        <div className="relative bg-white p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
-          {/* Diagram Flow */}
-          <div className="flex flex-col items-center gap-6 w-full max-w-lg">
-            
-            {/* Step 1: Voters */}
-            <div className="w-full text-center">
-              <div className="bg-gray-100 py-3 rounded-lg border border-gray-200 font-bold text-gray-600">
-                Voters
-              </div>
-              <div className="h-6 w-0.5 bg-gray-300 mx-auto"></div>
-              <div className="text-xs text-gray-400 font-medium bg-white px-2 -mt-3 z-10 relative inline-block">Elect</div>
-            </div>
-
-            {/* Step 2: Majority Party */}
-            <div className="w-full text-center">
-              <div className="bg-blue-600 text-white py-4 rounded-lg shadow-md font-bold text-lg">
-                Majority Party (House of Commons)
-              </div>
-              <div className="h-8 w-0.5 bg-blue-600 mx-auto"></div>
-            </div>
-
-            {/* Step 3: Cabinet */}
-            <div className="w-full bg-uwm-black text-white p-6 rounded-xl shadow-xl relative text-center">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-uwm-gold text-uwm-black px-4 py-1 rounded-full text-xs font-bold uppercase">
-                Dominant Power
-              </div>
-              <h4 className="text-2xl font-serif font-bold mb-2">The Cabinet</h4>
-              <p className="text-blue-200 text-sm">
-                Selected from the Majority Party. Fuses Executive and Legislative power.
-              </p>
-            </div>
-            
-            {/* Step 4: Policy */}
-             <div className="h-6 w-0.5 bg-gray-300 mx-auto"></div>
-             <div className="w-full text-center bg-green-50 py-3 rounded-lg border border-green-200 text-green-800 font-bold">
-               Unchecked Policy Implementation
-             </div>
-
-          </div>
-          
-          <div className="mt-8 text-sm text-gray-500 italic text-center max-w-md">
-            Unlike the US "Separation of Powers," the Westminster model fuses power. 
-            The Cabinet leads Parliament because they are the leaders of the majority party.
-          </div>
-        </div>
-      </section>
-
-      {/* 4. The 5 Majoritarian Traits (Executive-Parties Dimension) */}
-      <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Building2 className="text-uwm-gold" /> The 5 Pillars of Majoritarianism
+           <Crown className="text-uwm-gold" /> The Westminster Model (Majoritarian)
         </h3>
         <p className="text-gray-600 mb-6">
-          Lijphart identifies these 5 characteristics on the Executives-Parties dimension (Chapter 2).
+          The Westminster model is characterized by the concentration of power in the hands of the majority.
+          It is exclusive, competitive, and adversarial. The United Kingdom is the prototype.
         </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+             <h4 className="font-bold text-lg mb-4 text-blue-800">Key Characteristics</h4>
+             <ul className="space-y-3">
+               {[
+                 "Concentration of executive power (One-party cabinets)",
+                 "Fusion of power (Executive dominance)",
+                 "Asymmetric bicameralism (or Unicameralism)",
+                 "Two-party system",
+                 "Plurality elections (First-Past-The-Post)",
+                 "Unitary and Centralized government",
+                 "Unwritten Constitution & Parliamentary Sovereignty"
+               ].map((item, i) => (
+                 <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
+                   <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                   {item}
+                 </li>
+               ))}
+             </ul>
+           </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[
-            { title: "One-Party Cabinets", desc: "Power is concentrated in a single party. Coalitions are rare and seen as undemocratic or weak." },
-            { title: "Cabinet Dominance", desc: "The cabinet leads the legislature. It is not a co-equal branch; it is the superior organ." },
-            { title: "Two-Party System", desc: "Politics is dominated by two large parties (e.g., Conservative vs. Labour). Third parties exist but have no power." },
-            { title: "Majoritarian Elections", desc: "Plurality (First Past The Post) rules. Winner-take-all districts exaggerate the winner's victory." },
-            { title: "Pluralist Interest Groups", desc: "Free-for-all competition between pressure groups. No formal tripartite concertation." }
-          ].map((trait, i) => (
-            <div key={i} className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow hover:border-blue-300 group">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                  {i+1}
-                </div>
-                <h4 className="font-bold text-gray-900 leading-tight">{trait.title}</h4>
-              </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {trait.desc}
-              </p>
-            </div>
-          ))}
+           <div className="bg-blue-50 p-6 rounded-xl border border-blue-100">
+             <h4 className="font-bold text-lg mb-4 text-blue-900">Why "Westminster"?</h4>
+             <p className="text-sm text-blue-800 leading-relaxed">
+               Named after the Palace of Westminster in London, the seat of the British Parliament. 
+               This model prioritizes <strong>governing efficiency</strong> and <strong>accountability</strong> over broad representation.
+               Because single-party governments are common, voters know exactly who to blame or reward.
+             </p>
+           </div>
         </div>
       </section>
-
     </div>
   );
 };
 
 export default ScheduleView;
+    
