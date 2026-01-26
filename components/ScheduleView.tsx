@@ -1,16 +1,15 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { SCHEDULE } from '../constants';
 import { Week } from '../types';
 import { 
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, Label, LabelList,
-  BarChart, Bar, Legend
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList
 } from 'recharts';
 import { 
   ChevronRight, ArrowLeft, Microscope, Scale, 
   Variable, Globe, BookOpen, AlertTriangle, 
-  CheckCircle2, Users, Split, ShieldCheck, Swords, Handshake,
-  Crown, Vote, Gavel, Building2, Beaker
+  CheckCircle2, Users, Split, Swords, Handshake,
+  Crown, Beaker, PlayCircle, RefreshCw
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -159,13 +158,85 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
   );
 };
 
+// --- ISOLATED COMPONENT TO PREVENT RE-RENDERS ---
+const ScientificMethodDiagram: React.FC = () => {
+  const [activeSciStep, setActiveSciStep] = useState(0);
+
+  // Auto-cycle scientific method steps
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSciStep((prev) => (prev + 1) % 3);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section>
+      <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <Microscope className="text-uwm-gold" /> The Scientific Method in Political Science
+      </h3>
+      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
+        <div className="flex items-center justify-between min-w-[600px] text-center">
+          
+          <div className={`flex flex-col items-center gap-2 transition-all duration-500 ${activeSciStep === 0 ? 'scale-105' : 'opacity-70'}`}>
+            <div className={`w-32 h-32 rounded-full border-4 flex items-center justify-center p-4 shadow-sm transition-colors duration-500 ${activeSciStep === 0 ? 'bg-blue-100 border-blue-400' : 'bg-gray-50 border-gray-100'}`}>
+              <span className={`font-bold ${activeSciStep === 0 ? 'text-blue-900' : 'text-gray-400'}`}>Theory</span>
+            </div>
+            <p className="text-xs text-gray-500 max-w-[140px]">A general explanation of how the world works</p>
+          </div>
+
+          <div className="h-1 flex-1 bg-gray-100 mx-4 relative">
+            <div 
+              className={`absolute top-1/2 -translate-y-1/2 h-1 bg-blue-400 transition-all duration-[2000ms] ease-linear`} 
+              style={{ width: activeSciStep >= 1 ? '100%' : '0%' }}
+            />
+          </div>
+
+          <div className={`flex flex-col items-center gap-2 transition-all duration-500 ${activeSciStep === 1 ? 'scale-105' : 'opacity-70'}`}>
+            <div className={`w-32 h-32 rounded-full border-4 flex items-center justify-center p-4 shadow-sm transition-colors duration-500 ${activeSciStep === 1 ? 'bg-indigo-100 border-indigo-400' : 'bg-gray-50 border-gray-100'}`}>
+              <span className={`font-bold ${activeSciStep === 1 ? 'text-indigo-900' : 'text-gray-400'}`}>Hypothesis</span>
+            </div>
+            <p className="text-xs text-gray-500 max-w-[140px]">A specific, testable prediction</p>
+          </div>
+
+          <div className="h-1 flex-1 bg-gray-100 mx-4 relative">
+            <div 
+              className={`absolute top-1/2 -translate-y-1/2 h-1 bg-indigo-400 transition-all duration-[2000ms] ease-linear`} 
+              style={{ width: activeSciStep >= 2 ? '100%' : '0%' }}
+            />
+          </div>
+
+          <div className={`flex flex-col items-center gap-2 transition-all duration-500 ${activeSciStep === 2 ? 'scale-105' : 'opacity-70'}`}>
+            <div className={`w-32 h-32 rounded-full border-4 flex items-center justify-center p-4 shadow-sm transition-colors duration-500 ${activeSciStep === 2 ? 'bg-emerald-100 border-emerald-400' : 'bg-gray-50 border-gray-100'}`}>
+              <span className={`font-bold ${activeSciStep === 2 ? 'text-emerald-900' : 'text-gray-400'}`}>Testing</span>
+            </div>
+            <p className="text-xs text-gray-500 max-w-[140px]">Verifying with data/cases</p>
+          </div>
+        
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- VISUALS FOR WEEK 1 ---
 
 const Week1Visuals: React.FC = () => {
+  // --- STATE FOR INTERACTIVITY ---
+  const [reformSimulated, setReformSimulated] = useState(false);
+  const [hoveredDesign, setHoveredDesign] = useState<'mssd' | 'mdsd' | null>(null);
+
   // Data for Conceptual Map (Approximate coordinates from Lijphart Ch 14, Fig 14.1)
-  const mapData = [
+  // Memoized to prevent re-renders of the chart
+  const mapData = useMemo(() => [
     { name: 'UK', x: 1.2, y: 1.1, type: 'Majoritarian (Unitary)' },
-    { name: 'New Zealand', x: 0.5, y: 1.9, type: 'Majoritarian (Unitary)' },
+    { 
+      name: 'New Zealand', 
+      x: reformSimulated ? -0.8 : 1.8,  // Moves left on reform
+      y: 1.9, 
+      type: reformSimulated ? 'Mixed (Post-1996)' : 'Majoritarian (Unitary)',
+      isTarget: true
+    },
     { name: 'Barbados', x: 1.4, y: 0.4, type: 'Majoritarian (Unitary)' },
     { name: 'USA', x: 0.7, y: -1.9, type: 'Majoritarian (Federal)' },
     { name: 'Canada', x: 1.0, y: -1.5, type: 'Majoritarian (Federal)' },
@@ -177,53 +248,15 @@ const Week1Visuals: React.FC = () => {
     { name: 'Japan', x: -0.3, y: -0.1, type: 'Mixed' },
     { name: 'France', x: 0.7, y: 0.1, type: 'Majoritarian (Unitary)' },
     { name: 'Sweden', x: -0.8, y: 1.1, type: 'Consensus (Unitary)' },
-  ];
+  ], [reformSimulated]);
 
   return (
     <div className="space-y-12">
 
-      {/* 1. The Scientific Method Flow (Methodology) - MOVED TOP */}
-      <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <Microscope className="text-uwm-gold" /> The Scientific Method in Political Science
-        </h3>
-        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
-          <div className="flex items-center justify-between min-w-[600px] text-center">
-            
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-32 h-32 bg-blue-50 rounded-full border-4 border-blue-100 flex items-center justify-center p-4">
-                <span className="font-bold text-blue-900">Theory</span>
-              </div>
-              <p className="text-xs text-gray-500 max-w-[140px]">A general explanation of how the world works</p>
-            </div>
+      {/* 1. The Scientific Method Flow (Methodology) - ISOLATED COMPONENT */}
+      <ScientificMethodDiagram />
 
-            <div className="h-1 flex-1 bg-gray-200 mx-4 relative">
-              <div className="absolute right-0 -top-1.5 w-3 h-3 bg-gray-400 rounded-full"></div>
-            </div>
-
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-32 h-32 bg-indigo-50 rounded-full border-4 border-indigo-100 flex items-center justify-center p-4">
-                <span className="font-bold text-indigo-900">Hypothesis</span>
-              </div>
-              <p className="text-xs text-gray-500 max-w-[140px]">A specific, testable prediction derived from theory</p>
-            </div>
-
-            <div className="h-1 flex-1 bg-gray-200 mx-4 relative">
-              <div className="absolute right-0 -top-1.5 w-3 h-3 bg-gray-400 rounded-full"></div>
-            </div>
-
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-32 h-32 bg-emerald-50 rounded-full border-4 border-emerald-100 flex items-center justify-center p-4">
-                <span className="font-bold text-emerald-900">Testing</span>
-              </div>
-              <p className="text-xs text-gray-500 max-w-[140px]">Using cases/data to verify or falsify the hypothesis</p>
-            </div>
-          
-          </div>
-        </div>
-      </section>
-
-      {/* 2. The Fundamental Problem (Methodology) - MOVED TOP */}
+      {/* 2. The Fundamental Problem (Methodology) */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
           <AlertTriangle className="text-uwm-gold" /> The Comparative Method Challenge
@@ -242,7 +275,7 @@ const Week1Visuals: React.FC = () => {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
-                <span>Increase N (Add more countries or historical cases)</span>
+                <span>Increase N (Add more countries)</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
@@ -250,14 +283,14 @@ const Week1Visuals: React.FC = () => {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
-                <span><strong>Most Similar Systems Design (MSSD)</strong>: Compare countries that are similar in all respects except the variable of interest.</span>
+                <span><strong>MSSD</strong>: Compare similar countries.</span>
               </li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* 3. Research Design Strategy: MSSD vs MDSD - NEW SECTION */}
+      {/* 3. Research Design Strategy: MSSD vs MDSD - INTERACTIVE */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Beaker className="text-uwm-gold" /> Research Design: Solving the "Small N" Problem
@@ -265,7 +298,11 @@ const Week1Visuals: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           {/* MSSD */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-emerald-500">
+          <div 
+            className={`bg-white p-6 rounded-xl shadow-sm border-t-4 border-emerald-500 transition-all cursor-pointer ${hoveredDesign === 'mssd' ? 'ring-2 ring-emerald-200 shadow-md transform scale-[1.01]' : ''}`}
+            onMouseEnter={() => setHoveredDesign('mssd')}
+            onMouseLeave={() => setHoveredDesign(null)}
+          >
             <div className="flex justify-between items-start mb-4">
               <h4 className="font-bold text-lg text-gray-900">Most Similar Systems (MSSD)</h4>
               <span className="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Method of Difference</span>
@@ -279,17 +316,17 @@ const Week1Visuals: React.FC = () => {
                 <span className="text-center w-1/4">Case B</span>
               </div>
               
-              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
                 <span className="font-medium w-1/3 text-gray-600">Culture</span>
                 <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
                 <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
               </div>
-              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
                 <span className="font-medium w-1/3 text-gray-600">Economy</span>
                 <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
                 <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
               </div>
-              <div className="flex justify-between items-center bg-blue-50 p-2 rounded border border-blue-200 text-sm">
+              <div className={`flex justify-between items-center p-2 rounded border text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-blue-100 border-blue-300 shadow-sm' : 'bg-blue-50 border-blue-200'}`}>
                 <span className="font-bold text-blue-800 w-1/3">Electoral Sys.</span>
                 <span className="text-center w-1/4 text-blue-600 font-bold">PR</span>
                 <span className="text-center w-1/4 text-red-500 font-bold">Plurality</span>
@@ -297,7 +334,7 @@ const Week1Visuals: React.FC = () => {
               
               <div className="h-px bg-gray-200 my-2"></div>
               
-              <div className="flex justify-between items-center bg-slate-100 p-2 rounded text-sm">
+              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-slate-200 font-black' : 'bg-slate-100'}`}>
                 <span className="font-bold text-slate-800 w-1/3">Outcome</span>
                 <span className="text-center w-1/4 text-slate-600 font-bold">High</span>
                 <span className="text-center w-1/4 text-slate-600 font-bold">Low</span>
@@ -305,12 +342,16 @@ const Week1Visuals: React.FC = () => {
             </div>
             
             <p className="text-xs text-gray-500 italic leading-relaxed">
-              <strong>Logic:</strong> Since cultural and economic factors are the same, the difference in outcome must be caused by the difference in Electoral Systems.
+              <strong>Logic:</strong> Since everything else is the same, the <strong>DIFFERENCE</strong> in Electoral Systems explains the difference in Outcome.
             </p>
           </div>
 
           {/* MDSD */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500">
+          <div 
+            className={`bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500 transition-all cursor-pointer ${hoveredDesign === 'mdsd' ? 'ring-2 ring-purple-200 shadow-md transform scale-[1.01]' : ''}`}
+            onMouseEnter={() => setHoveredDesign('mdsd')}
+            onMouseLeave={() => setHoveredDesign(null)}
+          >
             <div className="flex justify-between items-start mb-4">
               <h4 className="font-bold text-lg text-gray-900">Most Different Systems (MDSD)</h4>
               <span className="text-xs font-mono text-purple-600 bg-purple-50 px-2 py-1 rounded">Method of Agreement</span>
@@ -324,17 +365,17 @@ const Week1Visuals: React.FC = () => {
                 <span className="text-center w-1/4">Case B</span>
               </div>
               
-              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
                 <span className="font-medium w-1/3 text-gray-600">Region</span>
                 <span className="text-center w-1/4 text-red-400 font-bold">Europe</span>
                 <span className="text-center w-1/4 text-red-400 font-bold">Asia</span>
               </div>
-              <div className="flex justify-between items-center bg-gray-50 p-2 rounded text-sm">
+              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
                 <span className="font-medium w-1/3 text-gray-600">Religion</span>
                 <span className="text-center w-1/4 text-red-400 font-bold">Christian</span>
                 <span className="text-center w-1/4 text-red-400 font-bold">Buddhist</span>
               </div>
-              <div className="flex justify-between items-center bg-purple-50 p-2 rounded border border-purple-200 text-sm">
+              <div className={`flex justify-between items-center p-2 rounded border text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-purple-100 border-purple-300 shadow-sm' : 'bg-purple-50 border-purple-200'}`}>
                 <span className="font-bold text-purple-800 w-1/3">Class</span>
                 <span className="text-center w-1/4 text-purple-600 font-bold">Worker</span>
                 <span className="text-center w-1/4 text-purple-600 font-bold">Worker</span>
@@ -342,7 +383,7 @@ const Week1Visuals: React.FC = () => {
               
               <div className="h-px bg-gray-200 my-2"></div>
               
-              <div className="flex justify-between items-center bg-slate-100 p-2 rounded text-sm">
+              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-slate-200 font-black' : 'bg-slate-100'}`}>
                 <span className="font-bold text-slate-800 w-1/3">Outcome</span>
                 <span className="text-center w-1/4 text-slate-600 font-bold">Revolt</span>
                 <span className="text-center w-1/4 text-slate-600 font-bold">Revolt</span>
@@ -350,7 +391,7 @@ const Week1Visuals: React.FC = () => {
             </div>
             
              <p className="text-xs text-gray-500 italic leading-relaxed">
-              <strong>Logic:</strong> Since region and religion are different, the shared outcome (Revolution) must be caused by the shared factor (Social Class).
+              <strong>Logic:</strong> Since everything else is different, the <strong>SAME</strong> factor (Social Class) explains the same Outcome.
             </p>
           </div>
 
@@ -432,16 +473,27 @@ const Week1Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Conceptual Map of Democracy */}
+      {/* 5. Conceptual Map of Democracy - MOVING GRAPH */}
       <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Globe className="text-uwm-gold" /> Lijphart's Conceptual Map of Democracy
-        </h3>
-        <p className="text-gray-600 mb-6 max-w-3xl">
-          Based on Figure 14.1 in the textbook. This map plots the 36 democracies based on the two dimensions. 
-          Note how <strong>United Kingdom</strong> and <strong>New Zealand</strong> are in the "Unitary & Majoritarian" quadrant (top-right), 
-          while <strong>Switzerland</strong> is deep in the "Federal & Consensus" quadrant (bottom-left).
-        </p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <Globe className="text-uwm-gold" /> Lijphart's Conceptual Map
+            </h3>
+            <p className="text-gray-600 text-sm mt-1">Based on Figure 14.1 (1945–1996 Data)</p>
+          </div>
+          <button 
+            onClick={() => setReformSimulated(!reformSimulated)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+              reformSimulated 
+                ? 'bg-red-500 text-white shadow-md' 
+                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            {reformSimulated ? <RefreshCw size={16} /> : <PlayCircle size={16} />}
+            {reformSimulated ? 'Reset Map' : 'Simulate 1996 Reform'}
+          </button>
+        </div>
 
         <div className="bg-white p-4 md:p-8 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="h-[600px] w-full relative">
@@ -477,12 +529,29 @@ const Week1Visuals: React.FC = () => {
                   domain={[-2.5, 2.5]}
                   ticks={[-2, -1, 0, 1, 2]}
                 />
-                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                <Tooltip 
+                  cursor={{ strokeDasharray: '3 3' }} 
+                  content={({ payload }) => {
+                    if (payload && payload.length) {
+                      const data = payload[0].payload;
+                      return (
+                        <div className="bg-white p-3 border shadow-lg rounded text-sm">
+                          <p className="font-bold">{data.name}</p>
+                          <p className="text-gray-500">{data.type}</p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
                 <ReferenceLine x={0} stroke="#94a3b8" />
                 <ReferenceLine y={0} stroke="#94a3b8" />
-                <Scatter name="Democracies" data={mapData} fill="#1e3a8a">
+                <Scatter name="Democracies" data={mapData} fill="#1e3a8a" animationDuration={1000}>
                   {mapData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.x > 0 ? '#3b82f6' : '#6366f1'} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={entry.isTarget && reformSimulated ? '#ef4444' : (entry.x > 0 ? '#3b82f6' : '#6366f1')} 
+                    />
                   ))}
                   <LabelList dataKey="name" position="top" style={{ fontSize: '10px', fontWeight: 'bold' }} />
                 </Scatter>
@@ -490,16 +559,15 @@ const Week1Visuals: React.FC = () => {
             </ResponsiveContainer>
           </div>
 
-          <div className="mt-4 bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-amber-900 space-y-2">
+          <div className={`mt-4 p-4 rounded-lg border-l-4 text-sm space-y-2 transition-colors ${reformSimulated ? 'bg-red-50 border-red-500 text-red-900' : 'bg-amber-50 border-amber-500 text-amber-900'}`}>
             <p className="font-bold flex items-center gap-2">
               <AlertTriangle className="w-4 h-4" /> 
-              Important: Data Context (1945–1996)
+              {reformSimulated ? 'Institutional Change Visualized' : 'Important: Data Context (1945–1996)'}
             </p>
             <p>
-              This map reflects the data analyzed in the 2nd Edition of <em>Patterns of Democracy</em> (published 1999), covering the period <strong>1945–1996</strong>.
-            </p>
-            <p>
-              <strong>Why does this matter?</strong> Political institutions change. For example, <strong>New Zealand</strong> appears as a "Majoritarian" prototype here. However, following its 1996 electoral reform to MMP (Mixed Member Proportional), it has shifted significantly toward the "Consensus" model. If a country's position seems outdated, it serves as evidence of institutional change over time.
+              {reformSimulated 
+                ? "Notice how New Zealand shifts dramatically to the left? In 1996, they abandoned the First-Past-The-Post system (Majoritarian) for Mixed Member Proportional (Consensus). Institutions are not static; they can change."
+                : "This map reflects the data analyzed in Patterns of Democracy (1945–1996). New Zealand appears as a Majoritarian prototype here, but look what happens when we simulate its later reforms..."}
             </p>
           </div>
         </div>
@@ -580,46 +648,68 @@ const Week1Visuals: React.FC = () => {
   );
 };
 
+// --- VISUALS FOR WEEK 2 ---
+
 const Week2Visuals: React.FC = () => {
   return (
     <div className="space-y-12">
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-           <Crown className="text-uwm-gold" /> The Westminster Model (Majoritarian)
+          <Crown className="text-uwm-gold" /> The Westminster Model
         </h3>
-        <p className="text-gray-600 mb-6">
-          The Westminster model is characterized by the concentration of power in the hands of the majority.
-          It is exclusive, competitive, and adversarial. The United Kingdom is the prototype.
-        </p>
         
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+          <p className="text-gray-700 leading-relaxed">
+            Named after the British Parliament, the Westminster model represents the "Majoritarian" ideal. 
+            Its core principle is that the majority should govern and the minority should oppose.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-             <h4 className="font-bold text-lg mb-4 text-blue-800">Key Characteristics</h4>
-             <ul className="space-y-3">
-               {[
-                 "Concentration of executive power (One-party cabinets)",
-                 "Fusion of power (Executive dominance)",
-                 "Asymmetric bicameralism (or Unicameralism)",
-                 "Two-party system",
-                 "Plurality elections (First-Past-The-Post)",
-                 "Unitary and Centralized government",
-                 "Unwritten Constitution & Parliamentary Sovereignty"
-               ].map((item, i) => (
-                 <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                   <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-                   {item}
-                 </li>
-               ))}
+           <div className="bg-blue-900 text-white p-8 rounded-xl shadow-lg">
+             <div className="flex items-center gap-3 mb-6">
+               <Swords className="text-blue-300 w-8 h-8" />
+               <h4 className="text-2xl font-serif font-bold">Exclusivity</h4>
+             </div>
+             <p className="text-blue-100 mb-6">
+               Political power is concentrated in the hands of the majority. The winner takes all, and the loser gets nothing (until the next election).
+             </p>
+             <ul className="space-y-3 text-sm">
+               <li className="flex items-center gap-2">
+                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                 <span>Single-party majority cabinets</span>
+               </li>
+               <li className="flex items-center gap-2">
+                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                 <span>Executive dominance over legislature</span>
+               </li>
+               <li className="flex items-center gap-2">
+                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                 <span>Two-party system</span>
+               </li>
+               <li className="flex items-center gap-2">
+                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                 <span>Majoritarian / Plurality elections</span>
+               </li>
              </ul>
            </div>
 
-           <div className="bg-blue-50 p-6 rounded-xl border border-blue-100">
-             <h4 className="font-bold text-lg mb-4 text-blue-900">Why "Westminster"?</h4>
-             <p className="text-sm text-blue-800 leading-relaxed">
-               Named after the Palace of Westminster in London, the seat of the British Parliament. 
-               This model prioritizes <strong>governing efficiency</strong> and <strong>accountability</strong> over broad representation.
-               Because single-party governments are common, voters know exactly who to blame or reward.
-             </p>
+           <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+             <h4 className="text-xl font-bold text-gray-900 mb-4">Case Study: United Kingdom</h4>
+             <div className="space-y-4">
+               <div className="bg-gray-50 p-4 rounded-lg">
+                 <span className="text-xs font-bold text-gray-500 uppercase">Government</span>
+                 <p className="font-medium">Single-party majority (usually)</p>
+               </div>
+               <div className="bg-gray-50 p-4 rounded-lg">
+                 <span className="text-xs font-bold text-gray-500 uppercase">Constitution</span>
+                 <p className="font-medium">Unwritten / Flexible (Parliamentary Sovereignty)</p>
+               </div>
+               <div className="bg-gray-50 p-4 rounded-lg">
+                 <span className="text-xs font-bold text-gray-500 uppercase">Legislature</span>
+                 <p className="font-medium">Asymmetric Bicameralism (Commons dominates Lords)</p>
+               </div>
+             </div>
            </div>
         </div>
       </section>
