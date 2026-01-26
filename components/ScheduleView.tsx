@@ -185,7 +185,7 @@ const Week1Visuals: React.FC = () => {
       {/* 1. The Scientific Method Flow (Methodology) - MOVED TOP */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <Microscope className="text-uwm-gold" /> The Scientific Method in Politics
+          <Microscope className="text-uwm-gold" /> The Scientific Method in Political Science
         </h3>
         <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
           <div className="flex items-center justify-between min-w-[600px] text-center">
