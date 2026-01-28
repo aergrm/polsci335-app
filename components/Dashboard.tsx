@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { SCHEDULE, ASSIGNMENTS } from '../constants';
 import { Week } from '../types';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { BookOpen, Calendar, AlertCircle } from 'lucide-react';
+import { BookOpen, Calendar, AlertCircle, Clock, MapPin } from 'lucide-react';
 
 const COLORS = ['#1e3a8a', '#2563eb', '#3b82f6', '#60a5fa', '#94a3b8', '#cbd5e1'];
 
@@ -46,15 +46,32 @@ const Dashboard: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       {/* Welcome Banner */}
       <div className="bg-uwm-black text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
-        <div className="relative z-10">
-          <h1 className="text-3xl font-serif font-bold mb-2">POL SCI 335</h1>
-          <p className="text-blue-200 text-lg">Comparative Political Systems</p>
-          <div className="mt-4 flex items-center gap-2 text-sm text-blue-100">
-            <span className="bg-white/10 px-3 py-1 rounded-full">Spring 2026</span>
-            <span className="bg-white/10 px-3 py-1 rounded-full">Ahmet Ergurum</span>
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+          <div>
+            <h1 className="text-3xl font-serif font-bold mb-2">POL SCI 335</h1>
+            <p className="text-blue-200 text-lg mb-4">Comparative Political Systems</p>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-blue-100">
+              <span className="bg-white/10 px-3 py-1 rounded-full border border-white/10">Spring 2026</span>
+              <span className="bg-white/10 px-3 py-1 rounded-full border border-white/10">Ahmet Ergurum</span>
+            </div>
+          </div>
+          
+          <div className="bg-white/10 p-4 rounded-lg border border-white/10 backdrop-blur-sm text-sm space-y-2 min-w-[200px]">
+             <div className="flex items-center gap-2">
+               <Clock className="w-4 h-4 text-uwm-gold" />
+               <span className="font-medium">TR 11:30 AM - 12:45 PM</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <MapPin className="w-4 h-4 text-uwm-gold" />
+               <span className="font-medium">Bolton Hall B60</span>
+             </div>
+             <div className="flex items-center gap-2 text-blue-200 pt-1 border-t border-white/10 mt-1">
+               <span className="text-xs uppercase font-bold">Office:</span>
+               <span>Bolton 680 (Tue 1:30-3:30)</span>
+             </div>
           </div>
         </div>
-        <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-uwm-gold/20 to-transparent"></div>
+        <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-uwm-gold/20 to-transparent pointer-events-none"></div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

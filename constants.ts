@@ -10,11 +10,11 @@ export const SCHEDULE: Week[] = [
   { id: 3, dates: "Feb 10-12", title: "Models of Democracy II", topics: ["Consensus Model", "Group 2 Presentation"], readings: ["Lijphart Ch 3"], due: ["Quiz 1 (Feb 10)"] },
   { id: 4, dates: "Feb 17-19", title: "Party Systems", topics: ["Two-party vs Multiparty", "Effective # of parties"], readings: ["Lijphart Ch 4-5"], due: ["Project Part 1: Proposal (Feb 17)"] },
   { id: 5, dates: "Feb 24-26", title: "Electoral Systems I", topics: ["Majoritarian vs PR", "Electoral Formulas", "Group 3 Presentation"], readings: ["Lijphart Ch 8"] },
-  { id: 6, dates: "Mar 3-5", title: "Electoral Systems II", topics: ["Disproportionality", "Thresholds", "Group 4 Presentation"], readings: ["Lijphart Ch 9"], due: ["Quiz 2 (Mar 3)"] },
+  { id: 6, dates: "Mar 3-5", title: "Electoral Systems II", topics: ["Disproportionality", "Thresholds", "Group 4 Presentation"], readings: ["Lijphart Ch 8 (cont)", "Lijphart Ch 9"], due: ["Quiz 2 (Mar 3)"] },
   { id: 7, dates: "Mar 10-12", title: "Exec-Leg Relations I", topics: ["Cabinets", "Group 5 Presentation"], readings: ["Lijphart Ch 6-7"], due: ["In-Class Essay 1 (Mar 10)"] },
-  { id: 8, dates: "Mar 17-19", title: "Exec-Leg Relations II", topics: ["Cabinet Formation", "Executive Dominance"], readings: ["Lijphart Ch 6-7"], due: ["MIDTERM EXAM (Mar 19)"] },
+  { id: 8, dates: "Mar 17-19", title: "Exec-Leg Relations II", topics: ["Cabinet Formation", "Executive Dominance"], readings: ["Lijphart Ch 6-7 (cont)"], due: ["MIDTERM EXAM (Mar 19)"] },
   { id: 9, dates: "Mar 22-29", title: "SPRING BREAK", topics: ["NO CLASS"], readings: [] },
-  { id: 10, dates: "Mar 31-Apr 2", title: "Legislative Institutions", topics: ["Bicameralism", "Interest Groups"], readings: ["Lijphart Ch 10-11"], due: ["Project Part 2: Annotated Bibliography (Mar 31)"] },
+  { id: 10, dates: "Mar 31-Apr 2", title: "Legislative Institutions", topics: ["Bicameralism", "Interest Groups"], readings: ["Lijphart Ch 11"], due: ["Project Part 2: Annotated Bibliography (Mar 31)"] },
   { id: 11, dates: "Apr 7-9", title: "Constitutions & Courts", topics: ["Judicial Review", "Constitutional Rigidity", "Group 6 Presentation"], readings: ["Lijphart Ch 12"], due: ["Quiz 3 (Apr 7)"] },
   { 
     id: 12, 
@@ -26,9 +26,9 @@ export const SCHEDULE: Week[] = [
       "Group 7 Presentation"
     ], 
     readings: [
+      "Lijphart Ch 10",
       "Lijphart Ch 13",
-      "Rodden (2004)",
-      "Additional readings on Canvas"
+      "Rodden (2004)"
     ] 
   },
   { 
@@ -41,14 +41,15 @@ export const SCHEDULE: Week[] = [
       "Group 8 Presentation"
     ], 
     readings: [
+      "Lijphart Ch 14",
       "Putnam (1988)",
-      "Hagan (1993)"
+      "Bueno de Mesquita & Smith (2012)"
     ], 
     due: ["In-Class Essay 2 (Apr 21)"] 
   },
-  { id: 14, dates: "Apr 28-30", title: "Democratic Performance", topics: ["Measuring Democratic Quality", "Project Presentations Begin"], readings: ["Lijphart Ch 14-16"], due: ["Project Presentations (Apr 30)"] },
+  { id: 14, dates: "Apr 28-30", title: "Democratic Performance", topics: ["Measuring Democratic Quality", "Project Presentations Begin"], readings: ["Lijphart Ch 15-16"], due: ["Project Presentations (Apr 30)"] },
   { id: 15, dates: "May 5-7", title: "Challenges to Democracy", topics: ["Backsliding", "Populism", "Course Conclusion"], readings: ["Lijphart Ch 17"], due: ["Quiz 4 (May 5)", "Presentations Conclude (May 7)"] },
-  { id: 16, dates: "May 15", title: "Finals Week", topics: ["NO FINAL EXAM", "Final Paper Due"], readings: [], due: ["Project Part 4: Final Paper Due (May 15)"] }
+  { id: 16, dates: "May 15", title: "Finals Week", topics: ["NO FINAL EXAM", "Final Paper Due"], readings: [], due: ["Project Part 3: Final Paper Due (May 15)"] }
 ];
 
 export const ASSIGNMENTS: Assignment[] = [
