@@ -197,10 +197,10 @@ const MethodsMatrix: React.FC = () => {
         Landman (Ch 2) argues there is a necessary trade-off between the level of abstraction (generality) and the scope of countries.
       </p>
 
-      {/* Adjusted margins and label position to prevent overlap */}
-      <div className="relative h-64 border-l-2 border-b-2 border-gray-300 ml-16 my-6 mr-4">
-        {/* Y-Axis Label */}
-        <div className="absolute -left-14 top-1/2 -translate-y-1/2 -rotate-90 text-xs font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+      {/* Increased left margin significantly (ml-48) to prevent axis label overlap with Single Country box */}
+      <div className="relative h-64 border-l-2 border-b-2 border-gray-300 ml-48 my-6 mr-4">
+        {/* Y-Axis Label: Moved further left (-left-32) to ensure clearance */}
+        <div className="absolute -left-32 top-1/2 -translate-y-1/2 -rotate-90 text-xs font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
           Level of Abstraction
         </div>
         {/* X-Axis Label */}
@@ -240,8 +240,8 @@ const MethodsMatrix: React.FC = () => {
         </div>
       </div>
 
-      {/* Detail Panel */}
-      <div className="mt-8 bg-gray-50 rounded-xl p-6 min-h-[160px] border border-gray-100 transition-all">
+      {/* Detail Panel: Reduced height and padding when empty */}
+      <div className={`mt-8 bg-gray-50 rounded-xl border border-gray-100 transition-all duration-300 ${hoveredMethod ? 'p-6 min-h-[160px]' : 'p-3 min-h-[50px] flex items-center justify-center'}`}>
         {hoveredMethod ? (
           <div className="animate-fade-in">
             <div className="flex justify-between items-start mb-2">
@@ -270,8 +270,8 @@ const MethodsMatrix: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="h-full flex items-center justify-center text-gray-400">
-            <p>Hover over the boxes in the chart to explore different methods.</p>
+          <div className="text-gray-400 text-xs italic">
+            Hover over the boxes in the chart to explore different methods.
           </div>
         )}
       </div>
@@ -639,244 +639,69 @@ const Week1Visuals: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* 5. Conceptual Map of Democracy - MOVING GRAPH */}
-      <section>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-          <div>
-            <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <Globe className="text-uwm-gold" /> Lijphart's Conceptual Map
-            </h3>
-            <p className="text-gray-600 text-sm mt-1">Based on Figure 14.1 (1945–1996 Data)</p>
-          </div>
-          <button 
-            onClick={() => setReformSimulated(!reformSimulated)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all ${
-              reformSimulated 
-                ? 'bg-red-500 text-white shadow-md' 
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            {reformSimulated ? <RefreshCw size={16} /> : <PlayCircle size={16} />}
-            {reformSimulated ? 'Reset Map' : 'Simulate 1996 Reform'}
-          </button>
-        </div>
-
-        <div className="bg-white p-4 md:p-8 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="h-[600px] w-full relative">
-            
-            {/* Quadrant Labels */}
-            <div className="absolute top-4 right-4 text-xs font-bold text-blue-500 bg-blue-50 px-2 py-1 rounded">Unitary-Majoritarian</div>
-            <div className="absolute top-4 left-4 text-xs font-bold text-indigo-500 bg-indigo-50 px-2 py-1 rounded">Unitary-Consensus</div>
-            <div className="absolute bottom-20 left-4 text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-1 rounded">Federal-Consensus</div>
-            <div className="absolute bottom-20 right-4 text-xs font-bold text-purple-500 bg-purple-50 px-2 py-1 rounded">Federal-Majoritarian</div>
-
-            <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart margin={{ top: 50, right: 30, bottom: 60, left: 50 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  type="number" 
-                  dataKey="x" 
-                  name="Executives-Parties" 
-                  label={{ value: 'Consensus ⟵ Dimension I ⟶ Majoritarian', position: 'bottom', offset: 0 }}
-                  domain={[-2.5, 2.5]}
-                  ticks={[-2, -1, 0, 1, 2]}
-                />
-                <YAxis 
-                  type="number" 
-                  dataKey="y" 
-                  name="Federal-Unitary" 
-                  label={{ 
-                    value: 'Federal ⟵ Dimension II ⟶ Unitary', 
-                    angle: -90, 
-                    position: 'left', // Moved to 'left' outside axis
-                    offset: 10,
-                    style: { textAnchor: 'middle' } 
-                  }}
-                  domain={[-2.5, 2.5]}
-                  ticks={[-2, -1, 0, 1, 2]}
-                />
-                <Tooltip 
-                  cursor={{ strokeDasharray: '3 3' }} 
-                  content={({ payload }) => {
-                    if (payload && payload.length) {
-                      const data = payload[0].payload;
-                      return (
-                        <div className="bg-white p-3 border shadow-lg rounded text-sm">
-                          <p className="font-bold">{data.name}</p>
-                          <p className="text-gray-500">{data.type}</p>
-                        </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-                <ReferenceLine x={0} stroke="#94a3b8" />
-                <ReferenceLine y={0} stroke="#94a3b8" />
-                <Scatter name="Democracies" data={mapData} fill="#1e3a8a" animationDuration={1000}>
-                  {mapData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.isTarget && reformSimulated ? '#ef4444' : (entry.x > 0 ? '#3b82f6' : '#6366f1')} 
-                    />
-                  ))}
-                  <LabelList dataKey="name" position="top" style={{ fontSize: '10px', fontWeight: 'bold' }} />
-                </Scatter>
-              </ScatterChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className={`mt-4 p-4 rounded-lg border-l-4 text-sm space-y-2 transition-colors ${reformSimulated ? 'bg-red-50 border-red-500 text-red-900' : 'bg-amber-50 border-amber-500 text-amber-900'}`}>
-            <p className="font-bold flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4" /> 
-              {reformSimulated ? 'Institutional Change Visualized' : 'Important: Data Context (1945–1996)'}
-            </p>
-            <p>
-              {reformSimulated 
-                ? "Notice how New Zealand shifts dramatically to the left? In 1996, they abandoned the First-Past-The-Post system (Majoritarian) for Mixed Member Proportional (Consensus). Institutions are not static; they can change."
-                : "This map reflects the data analyzed in Patterns of Democracy (1945–1996). New Zealand appears as a Majoritarian prototype here, but look what happens when we simulate its later reforms..."}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. The Two Dimensions Breakdown */}
-      <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Variable className="text-uwm-gold" /> The 10 Variables (Divided by Dimension)
-        </h3>
-        <p className="text-gray-600 mb-8 max-w-3xl">
-          Lijphart argues that democratic institutions cluster into two distinct dimensions. 
-          A country can be majoritarian on one dimension but consensual on the other (e.g., Canada, USA).
-        </p>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Dimension I: Executives-Parties */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
-             <div className="relative z-10">
-               <div className="flex items-center gap-3 mb-4">
-                 <Users className="text-blue-600 w-6 h-6" />
-                 <h4 className="text-lg font-bold text-gray-900">Dimension I: Executives-Parties</h4>
-               </div>
-               <p className="text-xs text-gray-500 mb-6 font-medium uppercase tracking-wide">
-                 Joint Power vs. Concentrated Power
-               </p>
-               
-               <div className="space-y-3">
-                 {[
-                   "Cabinets: Single-party vs. Coalition",
-                   "Executive-Legislative: Dominance vs. Balance",
-                   "Party System: Two-party vs. Multiparty",
-                   "Electoral System: Majoritarian vs. PR",
-                   "Interest Groups: Pluralist vs. Corporatist"
-                 ].map((item, i) => (
-                   <div key={i} className="flex items-center gap-3 text-sm text-gray-700 bg-gray-50 p-2 rounded border border-gray-100">
-                     <span className="font-bold text-blue-400">{i+1}.</span> {item}
-                   </div>
-                 ))}
-               </div>
-             </div>
-          </div>
-
-          {/* Dimension II: Federal-Unitary */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
-             <div className="relative z-10">
-               <div className="flex items-center gap-3 mb-4">
-                 <Split className="text-indigo-600 w-6 h-6" />
-                 <h4 className="text-lg font-bold text-gray-900">Dimension II: Federal-Unitary</h4>
-               </div>
-               <p className="text-xs text-gray-500 mb-6 font-medium uppercase tracking-wide">
-                 Divided Power vs. Unified Power
-               </p>
-               
-               <div className="space-y-3">
-                 {[
-                   "Federalism: Unitary vs. Federal",
-                   "Legislature: Unicameral vs. Bicameral",
-                   "Constitution: Flexible vs. Rigid",
-                   "Judicial Review: Legislature final vs. Court review",
-                   "Central Bank: Dependent vs. Independent"
-                 ].map((item, i) => (
-                   <div key={i} className="flex items-center gap-3 text-sm text-gray-700 bg-gray-50 p-2 rounded border border-gray-100">
-                     <span className="font-bold text-indigo-400">{i+1}.</span> {item}
-                   </div>
-                 ))}
-               </div>
-             </div>
-          </div>
-
-        </div>
-      </section>
-
     </div>
   );
 };
-
-// --- VISUALS FOR WEEK 2 ---
 
 const Week2Visuals: React.FC = () => {
   return (
     <div className="space-y-12">
       <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Crown className="text-uwm-gold" /> The Westminster Model
-        </h3>
-        
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
-          <p className="text-gray-700 leading-relaxed">
-            Named after the British Parliament, the Westminster model represents the "Majoritarian" ideal. 
-            Its core principle is that the majority should govern and the minority should oppose.
-          </p>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Crown className="text-uwm-gold" /> The Westminster Model
+          </h3>
+          
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="md:w-1/2">
+               <p className="text-gray-700 leading-relaxed mb-4">
+                 The Westminster model is the "majoritarian" prototype of democracy. It is named after the Palace of Westminster in London. Its core principle is that the winner of an election should have the power to govern and enact their policy agenda without significant checks and balances, so voters can hold them accountable at the next election.
+               </p>
+               <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                  <h4 className="font-bold text-blue-900 mb-2 text-sm uppercase">Key Philosophy</h4>
+                  <p className="text-blue-800 text-sm italic">
+                    "The majority of the people (50% + 1) should rule."
+                  </p>
+               </div>
+            </div>
+
+            <div className="md:w-1/2 bg-slate-50 p-6 rounded-lg border border-slate-100">
+               <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase border-b border-slate-200 pb-2">10 Key Variables (Majoritarian)</h4>
+               <ul className="space-y-2 text-sm text-slate-700">
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>One-party bare majority cabinets</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Cabinet dominance</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Two-party system</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Majoritarian/Plurality elections</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Pluralist interest groups</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Unitary & centralized</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Unicameralism (or asymmetric)</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Flexible constitutions</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>No judicial review</li>
+                 <li className="flex items-center gap-2"><div className="w-2 h-2 bg-slate-400 rounded-full"></div>Dependent central bank</li>
+               </ul>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-           <div className="bg-blue-900 text-white p-8 rounded-xl shadow-lg">
-             <div className="flex items-center gap-3 mb-6">
-               <Swords className="text-blue-300 w-8 h-8" />
-               <h4 className="text-2xl font-serif font-bold">Exclusivity</h4>
-             </div>
-             <p className="text-blue-100 mb-6">
-               Political power is concentrated in the hands of the majority. The winner takes all, and the loser gets nothing (until the next election).
-             </p>
-             <ul className="space-y-3 text-sm">
-               <li className="flex items-center gap-2">
-                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                 <span>Single-party majority cabinets</span>
-               </li>
-               <li className="flex items-center gap-2">
-                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                 <span>Executive dominance over legislature</span>
-               </li>
-               <li className="flex items-center gap-2">
-                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                 <span>Two-party system</span>
-               </li>
-               <li className="flex items-center gap-2">
-                 <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                 <span>Majoritarian / Plurality elections</span>
-               </li>
-             </ul>
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+           <Globe className="text-uwm-gold" /> Case Study: United Kingdom
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 col-span-2">
+              <h4 className="font-bold text-gray-900 mb-2">Why is it the prototype?</h4>
+              <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                The UK combines nearly all the majoritarian features. The cabinet is usually composed of a single party that has a majority in the House of Commons. The executive (PM & Cabinet) dominates the legislature. The "First-Past-The-Post" electoral system manufactures majorities even when the winning party gets less than 50% of the vote.
+              </p>
+              <div className="bg-yellow-50 p-3 rounded border border-yellow-100 text-xs text-yellow-800">
+                 <strong>Note:</strong> The UK has deviated recently with the creation of the Supreme Court (2009) and devolution to Scotland/Wales, moving slightly away from the pure model.
+              </div>
            </div>
-
-           <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
-             <h4 className="text-xl font-bold text-gray-900 mb-4">Case Study: United Kingdom</h4>
-             <div className="space-y-4">
-               <div className="bg-gray-50 p-4 rounded-lg">
-                 <span className="text-xs font-bold text-gray-500 uppercase">Government</span>
-                 <p className="font-medium">Single-party majority (usually)</p>
-               </div>
-               <div className="bg-gray-50 p-4 rounded-lg">
-                 <span className="text-xs font-bold text-gray-500 uppercase">Constitution</span>
-                 <p className="font-medium">Unwritten / Flexible (Parliamentary Sovereignty)</p>
-               </div>
-               <div className="bg-gray-50 p-4 rounded-lg">
-                 <span className="text-xs font-bold text-gray-500 uppercase">Legislature</span>
-                 <p className="font-medium">Asymmetric Bicameralism (Commons dominates Lords)</p>
-               </div>
-             </div>
+           
+           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
+              <div className="text-6xl font-black text-gray-100 mb-2">UK</div>
+              <p className="text-sm font-bold text-gray-400">The Westminster Prototype</p>
            </div>
         </div>
       </section>

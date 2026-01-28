@@ -75,7 +75,7 @@ const LiveSession: React.FC<LiveSessionProps> = ({ onBack }) => {
       <div className="max-w-4xl mx-auto p-8 animate-fade-in">
         <button onClick={onBack} className="text-sm text-gray-500 hover:text-uwm-black mb-6">← Exit Live Mode</button>
         <h2 className="text-3xl font-serif font-bold mb-2">Live Session Selector</h2>
-        <p className="text-gray-600 mb-8">Select a topic to launch a classroom game show.</p>
+        <p className="text-gray-600 mb-8">Game in class.</p>
         
         <div className="grid gap-4">
           {LIVE_QUIZZES.map(quiz => (
