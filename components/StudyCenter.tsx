@@ -1,12 +1,15 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { DEMOCRACY_DIMENSIONS, CONCEPT_FLASHCARDS, QUIZ_LEVELS, APPROVED_COUNTRIES } from '../constants';
 import { Flashcard, QuizLevel, QuizQuestion } from '../types';
 import { 
   Layers, Brain, ChevronLeft, ChevronRight, Trophy, Lock, Unlock, 
-  CheckCircle, XCircle, RotateCcw, Timer, Zap, Map, Info, HelpCircle 
+  CheckCircle, XCircle, RotateCcw, Timer, Zap, Map, Info, HelpCircle,
+  Presentation
 } from 'lucide-react';
+import LiveSession from './LiveSession'; // Import the new component
 
-type Mode = 'menu' | 'flashcards' | 'quiz' | 'mania' | 'profiler';
+type Mode = 'menu' | 'flashcards' | 'quiz' | 'mania' | 'profiler' | 'live';
 
 const StudyCenter: React.FC = () => {
   const [mode, setMode] = useState<Mode>('menu');
@@ -18,18 +21,19 @@ const StudyCenter: React.FC = () => {
       {mode === 'quiz' && <QuizLevelSelect onBack={() => setMode('menu')} />}
       {mode === 'mania' && <ModelMania onBack={() => setMode('menu')} />}
       {mode === 'profiler' && <CountryProfiler onBack={() => setMode('menu')} />}
+      {mode === 'live' && <LiveSession onBack={() => setMode('menu')} />}
     </div>
   );
 };
 
 const StudyMenu: React.FC<{ onSelect: (mode: Mode) => void }> = ({ onSelect }) => (
-  <div className="max-w-5xl mx-auto w-full space-y-8 p-4">
+  <div className="max-w-6xl mx-auto w-full space-y-8 p-4">
     <div className="text-center space-y-2">
       <h2 className="text-3xl font-serif font-bold text-uwm-black">Study Center</h2>
       <p className="text-gray-600">Master the Lijphart Framework through interactive gameplay.</p>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
       <MenuCard 
         title="Flashcards" 
         desc="Core dimensions and key terminology review." 
@@ -58,6 +62,13 @@ const StudyMenu: React.FC<{ onSelect: (mode: Mode) => void }> = ({ onSelect }) =
         color="bg-emerald-50 text-emerald-600"
         onClick={() => onSelect('profiler')}
       />
+      <MenuCard 
+        title="Live Session" 
+        desc="Game in class" 
+        icon={<Presentation size={28} />}
+        color="bg-rose-50 text-rose-600"
+        onClick={() => onSelect('live')}
+      />
     </div>
   </div>
 );
@@ -71,7 +82,7 @@ const MenuCard = ({ title, desc, icon, color, onClick }: any) => (
       {icon}
     </div>
     <div>
-      <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+      <h3 className="text-lg font-bold text-gray-900 leading-tight">{title}</h3>
       <p className="text-xs text-gray-500 mt-2">{desc}</p>
     </div>
   </button>

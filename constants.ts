@@ -1,5 +1,5 @@
 
-import { Week, Assignment, DemocracyDimension, Flashcard, QuizLevel } from './types';
+import { Week, Assignment, DemocracyDimension, Flashcard, QuizLevel, LiveQuizSession } from './types';
 
 export const INSTRUCTOR = "Ahmet Ergurum";
 export const SEMESTER = "Spring 2026";
@@ -318,6 +318,162 @@ export const QUIZ_LEVELS: QuizLevel[] = [
         ],
         correctAnswer: "Asymmetric Bicameralism",
         explanation: "Power is concentrated in the House of Commons, making the bicameralism unequal (asymmetric)."
+      }
+    ]
+  }
+];
+
+export const LIVE_QUIZZES: LiveQuizSession[] = [
+  {
+    weekId: 1,
+    title: "Week 1: Introduction",
+    isLocked: true,
+    questions: [
+      {
+        id: 'lq1-1',
+        text: "What is the 'Fundamental Problem' of Comparative Politics?",
+        timeLimit: 20,
+        explanation: "Comparative politics struggles with having a small number of countries (N) but a huge number of potential variables (culture, history, economy) that explain differences.",
+        options: [
+          { id: '1a', text: "Too many countries", color: 'red', isCorrect: false },
+          { id: '1b', text: "Many variables, Small N", color: 'blue', isCorrect: true },
+          { id: '1c', text: "Fake News", color: 'yellow', isCorrect: false },
+          { id: '1d', text: "Lack of Theory", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-2',
+        text: "Who is the author of our main textbook?",
+        timeLimit: 20,
+        explanation: "Arend Lijphart wrote 'Patterns of Democracy', the seminal text for this course which defines the Majoritarian vs. Consensus framework.",
+        options: [
+          { id: '2a', text: "Karl Marx", color: 'red', isCorrect: false },
+          { id: '2b', text: "Arend Lijphart", color: 'blue', isCorrect: true },
+          { id: '2c', text: "Max Weber", color: 'yellow', isCorrect: false },
+          { id: '2d', text: "Ahmet Ergurum", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-3',
+        text: "Which two dimensions does Lijphart use to classify democracies?",
+        timeLimit: 20,
+        explanation: "Lijphart argues that democratic institutions cluster into two dimensions: Executives-Parties (Joint Power) and Federal-Unitary (Divided Power).",
+        options: [
+          { id: '3a', text: "Executives-Parties & Federal-Unitary", color: 'red', isCorrect: true },
+          { id: '3b', text: "Good & Bad", color: 'blue', isCorrect: false },
+          { id: '3c', text: "East & West", color: 'yellow', isCorrect: false },
+          { id: '3d', text: "Rich & Poor", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-4',
+        text: "Which statement is 'Normative'?",
+        timeLimit: 20,
+        explanation: "Normative statements make value judgments ('better', 'worse', 'should') about what ought to be. Empirical statements describe facts that can be tested.",
+        options: [
+          { id: '4a', text: "Democracies are better than dictatorships.", color: 'red', isCorrect: true },
+          { id: '4b', text: "Democracies have higher GDP per capita.", color: 'blue', isCorrect: false },
+          { id: '4c', text: "Dictatorships have fewer parties.", color: 'yellow', isCorrect: false },
+          { id: '4d', text: "Voter turnout is 60%.", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-5',
+        text: "MSSD (Most Similar Systems Design) is also known as...",
+        timeLimit: 20,
+        explanation: "MSSD compares countries that are very similar (controlling for variables) but differ in one key outcome, isolating the cause. This is Mill's Method of Difference.",
+        options: [
+          { id: '5a', text: "Method of Difference", color: 'red', isCorrect: true },
+          { id: '5b', text: "Method of Agreement", color: 'blue', isCorrect: false },
+          { id: '5c', text: "Statistical Method", color: 'yellow', isCorrect: false },
+          { id: '5d', text: "Case Study", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-6',
+        text: "Which reasoning moves from Specific Observations to General Theory?",
+        timeLimit: 20,
+        explanation: "Inductive reasoning starts with specific observations/data and builds toward a general theory. Deductive starts with theory/hypothesis and tests it with data.",
+        options: [
+          { id: '6a', text: "Deductive", color: 'red', isCorrect: false },
+          { id: '6b', text: "Inductive", color: 'blue', isCorrect: true },
+          { id: '6c', text: "Reductive", color: 'yellow', isCorrect: false },
+          { id: '6d', text: "Productive", color: 'green', isCorrect: false }
+        ]
+      }
+    ]
+  },
+  {
+    weekId: 2,
+    title: "Week 2: Westminster Model",
+    isLocked: true,
+    questions: [
+      {
+        id: 'lq1',
+        text: "Which of these is NOT a characteristic of the Westminster Model?",
+        timeLimit: 20,
+        explanation: "The Westminster model is characterized by single-party majority cabinets and executive dominance. Multiparty coalitions are a hallmark of the Consensus model.",
+        options: [
+          { id: '1a', text: "Executive Dominance", color: 'red', isCorrect: false },
+          { id: '1b', text: "Multiparty Coalitions", color: 'blue', isCorrect: true },
+          { id: '1c', text: "Unitary Government", color: 'yellow', isCorrect: false },
+          { id: '1d', text: "Plurality Elections", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq2',
+        text: "What does 'Fusion of Power' mean in the UK context?",
+        timeLimit: 20,
+        explanation: "In parliamentary systems like the UK, the Executive (PM and Cabinet) is drawn directly from and is responsible to the Legislature, 'fusing' the branches rather than separating them.",
+        options: [
+          { id: '2a', text: "PM is part of Legislature", color: 'red', isCorrect: true },
+          { id: '2b', text: "Separation of Church & State", color: 'blue', isCorrect: false },
+          { id: '2c', text: "Nuclear Energy", color: 'yellow', isCorrect: false },
+          { id: '2d', text: "Local & Central Gov Work Together", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq3',
+        text: "Which electoral system tends to manufacture majorities?",
+        timeLimit: 20,
+        explanation: "First-Past-The-Post (Plurality) rules often give a party with less than 50% of the vote a majority of the seats, 'manufacturing' a governing majority.",
+        options: [
+          { id: '3a', text: "PR-STV", color: 'red', isCorrect: false },
+          { id: '3b', text: "MMP", color: 'blue', isCorrect: false },
+          { id: '3c', text: "First-Past-The-Post", color: 'yellow', isCorrect: true },
+          { id: '3d', text: "List PR", color: 'green', isCorrect: false }
+        ]
+      }
+    ]
+  },
+  {
+    weekId: 3,
+    title: "Week 3: Consensus Model",
+    isLocked: true,
+    questions: [
+      {
+        id: 'lq4',
+        text: "The Consensus Model aims to...",
+        timeLimit: 20,
+        explanation: "The Consensus model is designed to include as many groups as possible in decision-making, rather than letting a bare majority rule.",
+        options: [
+          { id: '4a', text: "Maximize Efficiency", color: 'red', isCorrect: false },
+          { id: '4b', text: "Concentrate Power", color: 'blue', isCorrect: false },
+          { id: '4c', text: "Share Power / Include Minorities", color: 'yellow', isCorrect: true },
+          { id: '4d', text: "Speed up decision making", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq5',
+        text: "Which country is Lijphart's primary example of Consensus Democracy?",
+        timeLimit: 20,
+        explanation: "Switzerland is the archetypal consensus democracy with its grand coalition executive (Federal Council), multiparty system, and strong federalism.",
+        options: [
+          { id: '5a', text: "United Kingdom", color: 'red', isCorrect: false },
+          { id: '5b', text: "USA", color: 'blue', isCorrect: false },
+          { id: '5c', text: "Switzerland", color: 'yellow', isCorrect: true },
+          { id: '5d', text: "New Zealand", color: 'green', isCorrect: false }
+        ]
       }
     ]
   }

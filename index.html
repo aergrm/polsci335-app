@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,6 +36,14 @@
       .backface-hidden {
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
+      }
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
       }
     </style>
 <script type="importmap">

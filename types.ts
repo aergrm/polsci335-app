@@ -58,3 +58,23 @@ export interface QuizLevel {
   minScoreToUnlock: number; // Percentage
   questions: QuizQuestion[];
 }
+
+export interface LiveQuestion {
+  id: string;
+  text: string;
+  timeLimit: number;
+  explanation: string;
+  options: {
+    id: string;
+    text: string;
+    color: 'red' | 'blue' | 'yellow' | 'green';
+    isCorrect: boolean;
+  }[];
+}
+
+export interface LiveQuizSession {
+  weekId: number;
+  title: string;
+  questions: LiveQuestion[];
+  isLocked?: boolean;
+}

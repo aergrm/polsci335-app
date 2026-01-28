@@ -3,13 +3,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { SCHEDULE } from '../constants';
 import { Week } from '../types';
 import { 
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList, Legend
 } from 'recharts';
 import { 
   ChevronRight, ArrowLeft, Microscope, Scale, 
   Variable, Globe, BookOpen, AlertTriangle, 
   CheckCircle2, Users, Split, Swords, Handshake,
-  Crown, Beaker, PlayCircle, RefreshCw
+  Crown, Beaker, PlayCircle, RefreshCw, BarChart3,
+  Search, FileText, X
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -158,73 +159,329 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
   );
 };
 
-// --- ISOLATED COMPONENT TO PREVENT RE-RENDERS ---
-const ScientificMethodDiagram: React.FC = () => {
-  const [activeSciStep, setActiveSciStep] = useState(0);
+// --- VISUALIZATION COMPONENTS ---
 
-  // Auto-cycle scientific method steps
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveSciStep((prev) => (prev + 1) % 3);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+const MethodsMatrix: React.FC = () => {
+  const [hoveredMethod, setHoveredMethod] = useState<'single' | 'few' | 'many' | null>(null);
+
+  const methods = {
+    single: {
+      title: "Single-Country Studies",
+      desc: "Intensive analysis of one country.",
+      strengths: ["Contextual description", "Generating hypotheses", "Process tracing", "Understanding 'deviant' cases"],
+      weaknesses: ["Cannot generalize (N=1)", "Selection bias", "No control"],
+      example: "Tocqueville's Democracy in America, Putnam's Making Democracy Work (Italy)"
+    },
+    few: {
+      title: "Comparing Few Countries (Small-N)",
+      desc: "Intentional selection of 2-20 countries.",
+      strengths: ["Control through selection (MSSD/MDSD)", "Cultural sensitivity", "Theory building"],
+      weaknesses: ["Limited generalization", "Many variables, small N"],
+      example: "Skocpol's States and Social Revolutions, Moore's Social Origins"
+    },
+    many: {
+      title: "Comparing Many Countries (Large-N)",
+      desc: "Statistical analysis of 50+ countries.",
+      strengths: ["Statistical control", "Strong inferences", "Global generalizations"],
+      weaknesses: ["Conceptual stretching", "Thin data", "Ignores context"],
+      example: "Lipset (1959) Economic Development & Democracy, Gurr (1968) Civil Strife"
+    }
+  };
 
   return (
-    <section>
-      <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-        <Microscope className="text-uwm-gold" /> The Scientific Method in Political Science
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+        <Scale className="text-uwm-gold" /> The Trade-off: Scope vs. Abstraction
       </h3>
-      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
-        <div className="flex items-center justify-between min-w-[600px] text-center">
-          
-          <div className={`flex flex-col items-center gap-2 transition-all duration-500 ${activeSciStep === 0 ? 'scale-105' : 'opacity-70'}`}>
-            <div className={`w-32 h-32 rounded-full border-4 flex items-center justify-center p-4 shadow-sm transition-colors duration-500 ${activeSciStep === 0 ? 'bg-blue-100 border-blue-400' : 'bg-gray-50 border-gray-100'}`}>
-              <span className={`font-bold ${activeSciStep === 0 ? 'text-blue-900' : 'text-gray-400'}`}>Theory</span>
-            </div>
-            <p className="text-xs text-gray-500 max-w-[140px]">A general explanation of how the world works</p>
-          </div>
+      <p className="text-gray-500 text-sm mb-6">
+        Landman (Ch 2) argues there is a necessary trade-off between the level of abstraction (generality) and the scope of countries.
+      </p>
 
-          <div className="h-1 flex-1 bg-gray-100 mx-4 relative">
-            <div 
-              className={`absolute top-1/2 -translate-y-1/2 h-1 bg-blue-400 transition-all duration-[2000ms] ease-linear`} 
-              style={{ width: activeSciStep >= 1 ? '100%' : '0%' }}
-            />
-          </div>
+      {/* Adjusted margins and label position to prevent overlap */}
+      <div className="relative h-64 border-l-2 border-b-2 border-gray-300 ml-16 my-6 mr-4">
+        {/* Y-Axis Label */}
+        <div className="absolute -left-14 top-1/2 -translate-y-1/2 -rotate-90 text-xs font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+          Level of Abstraction
+        </div>
+        {/* X-Axis Label */}
+        <div className="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+          Scope of Countries (N)
+        </div>
 
-          <div className={`flex flex-col items-center gap-2 transition-all duration-500 ${activeSciStep === 1 ? 'scale-105' : 'opacity-70'}`}>
-            <div className={`w-32 h-32 rounded-full border-4 flex items-center justify-center p-4 shadow-sm transition-colors duration-500 ${activeSciStep === 1 ? 'bg-indigo-100 border-indigo-400' : 'bg-gray-50 border-gray-100'}`}>
-              <span className={`font-bold ${activeSciStep === 1 ? 'text-indigo-900' : 'text-gray-400'}`}>Hypothesis</span>
-            </div>
-            <p className="text-xs text-gray-500 max-w-[140px]">A specific, testable prediction</p>
+        {/* Matrix Points */}
+        <div 
+          className="absolute top-4 right-4 cursor-pointer group"
+          onMouseEnter={() => setHoveredMethod('many')}
+          onMouseLeave={() => setHoveredMethod(null)}
+        >
+          <div className={`w-32 h-20 rounded-lg flex items-center justify-center text-center p-2 text-xs font-bold transition-all ${hoveredMethod === 'many' ? 'bg-blue-600 text-white scale-110 z-10 shadow-lg' : 'bg-blue-100 text-blue-800'}`}>
+            Many Countries<br/>(Statistical)
           </div>
+        </div>
 
-          <div className="h-1 flex-1 bg-gray-100 mx-4 relative">
-            <div 
-              className={`absolute top-1/2 -translate-y-1/2 h-1 bg-indigo-400 transition-all duration-[2000ms] ease-linear`} 
-              style={{ width: activeSciStep >= 2 ? '100%' : '0%' }}
-            />
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+          onMouseEnter={() => setHoveredMethod('few')}
+          onMouseLeave={() => setHoveredMethod(null)}
+        >
+          <div className={`w-32 h-20 rounded-lg flex items-center justify-center text-center p-2 text-xs font-bold transition-all ${hoveredMethod === 'few' ? 'bg-indigo-600 text-white scale-110 z-10 shadow-lg' : 'bg-indigo-100 text-indigo-800'}`}>
+            Few Countries<br/>(Comparative)
           </div>
+        </div>
 
-          <div className={`flex flex-col items-center gap-2 transition-all duration-500 ${activeSciStep === 2 ? 'scale-105' : 'opacity-70'}`}>
-            <div className={`w-32 h-32 rounded-full border-4 flex items-center justify-center p-4 shadow-sm transition-colors duration-500 ${activeSciStep === 2 ? 'bg-emerald-100 border-emerald-400' : 'bg-gray-50 border-gray-100'}`}>
-              <span className={`font-bold ${activeSciStep === 2 ? 'text-emerald-900' : 'text-gray-400'}`}>Testing</span>
-            </div>
-            <p className="text-xs text-gray-500 max-w-[140px]">Verifying with data/cases</p>
+        <div 
+          className="absolute bottom-4 left-4 cursor-pointer group"
+          onMouseEnter={() => setHoveredMethod('single')}
+          onMouseLeave={() => setHoveredMethod(null)}
+        >
+          <div className={`w-32 h-20 rounded-lg flex items-center justify-center text-center p-2 text-xs font-bold transition-all ${hoveredMethod === 'single' ? 'bg-slate-800 text-white scale-110 z-10 shadow-lg' : 'bg-slate-200 text-slate-700'}`}>
+            Single Country<br/>(Case Study)
           </div>
-        
         </div>
       </div>
-    </section>
+
+      {/* Detail Panel */}
+      <div className="mt-8 bg-gray-50 rounded-xl p-6 min-h-[160px] border border-gray-100 transition-all">
+        {hoveredMethod ? (
+          <div className="animate-fade-in">
+            <div className="flex justify-between items-start mb-2">
+              <h4 className="text-lg font-bold text-gray-900">{methods[hoveredMethod].title}</h4>
+              <span className="text-xs bg-white border px-2 py-1 rounded text-gray-500 font-mono">
+                {hoveredMethod === 'single' ? 'N=1' : hoveredMethod === 'few' ? 'N=2-20' : 'N=50+'}
+              </span>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">{methods[hoveredMethod].desc}</p>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="font-bold text-green-600 block mb-1">Strengths</span>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  {methods[hoveredMethod].strengths.map((s, i) => <li key={i}>{s}</li>)}
+                </ul>
+              </div>
+              <div>
+                <span className="font-bold text-red-600 block mb-1">Weaknesses</span>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  {methods[hoveredMethod].weaknesses.map((w, i) => <li key={i}>{w}</li>)}
+                </ul>
+              </div>
+            </div>
+            <div className="mt-4 pt-3 border-t border-gray-200 text-xs text-gray-500 italic">
+              <strong>Example:</strong> {methods[hoveredMethod].example}
+            </div>
+          </div>
+        ) : (
+          <div className="h-full flex items-center justify-center text-gray-400">
+            <p>Hover over the boxes in the chart to explore different methods.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ResearchDesignComparator: React.FC = () => {
+  const [mode, setMode] = useState<'mssd' | 'mdsd'>('mssd');
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <div>
+          <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <Microscope className="text-uwm-gold" /> Research Design Systems
+          </h3>
+          <p className="text-sm text-gray-500">Comparing Mill's Methods (Landman Ch 4)</p>
+        </div>
+        <div className="flex bg-gray-100 p-1 rounded-lg">
+          <button 
+            onClick={() => setMode('mssd')}
+            className={`px-4 py-2 text-sm font-bold rounded-md transition-all ${mode === 'mssd' ? 'bg-white shadow-sm text-uwm-black' : 'text-gray-500 hover:text-gray-700'}`}
+          >
+            MSSD (Similar)
+          </button>
+          <button 
+            onClick={() => setMode('mdsd')}
+            className={`px-4 py-2 text-sm font-bold rounded-md transition-all ${mode === 'mdsd' ? 'bg-white shadow-sm text-uwm-black' : 'text-gray-500 hover:text-gray-700'}`}
+          >
+            MDSD (Different)
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Definition Side */}
+        <div className={`p-6 rounded-xl border-l-4 ${mode === 'mssd' ? 'bg-blue-50 border-blue-500' : 'bg-purple-50 border-purple-500'}`}>
+          <h4 className={`text-lg font-bold mb-2 ${mode === 'mssd' ? 'text-blue-900' : 'text-purple-900'}`}>
+            {mode === 'mssd' ? 'Most Similar Systems Design' : 'Most Different Systems Design'}
+          </h4>
+          <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+            {mode === 'mssd' 
+              ? "Compares countries that are very similar (controlling for culture, history, region) but differ in the specific outcome. Based on J.S. Mill's 'Method of Difference'."
+              : "Compares countries that are very different but share the same outcome. The goal is to find the one common factor amidst the diversity. Based on J.S. Mill's 'Method of Agreement'."
+            }
+          </p>
+          
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <h5 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Classic Example</h5>
+            {mode === 'mssd' ? (
+              <div>
+                <p className="font-bold text-gray-800">Regional Studies (e.g. Latin America)</p>
+                <p className="text-xs text-gray-600 mt-1">Why did Costa Rica democratize while El Salvador plunged into civil war?</p>
+                <div className="mt-2 text-xs flex gap-2">
+                  <span className="px-2 py-1 bg-green-100 text-green-700 rounded">Similar: Language, Religion</span>
+                  <span className="px-2 py-1 bg-red-100 text-red-700 rounded">Different: Land Tenure</span>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p className="font-bold text-gray-800">Skocpol (1979): Social Revolutions</p>
+                <p className="text-xs text-gray-600 mt-1">Why did France (1789), Russia (1917), and China (1911) all have social revolutions despite being totally different?</p>
+                <div className="mt-2 text-xs flex gap-2">
+                  <span className="px-2 py-1 bg-red-100 text-red-700 rounded">Different: Time, Culture</span>
+                  <span className="px-2 py-1 bg-green-100 text-green-700 rounded">Same: State Breakdown</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Visual Logic Side */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col justify-center">
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between items-center text-gray-400 text-xs font-bold uppercase tracking-widest pb-2 border-b">
+              <span>Variable</span>
+              <span>Case A</span>
+              <span>Case B</span>
+            </div>
+            
+            {/* Variable Rows */}
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Culture/History</span>
+              {mode === 'mssd' ? (
+                 <>
+                   <span className="text-blue-600 font-bold bg-blue-50 px-2 rounded">Similar</span>
+                   <span className="text-blue-600 font-bold bg-blue-50 px-2 rounded">Similar</span>
+                 </>
+              ) : (
+                 <>
+                   <span className="text-red-500 font-bold bg-red-50 px-2 rounded">Different</span>
+                   <span className="text-red-500 font-bold bg-red-50 px-2 rounded">Different</span>
+                 </>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center">
+               <span className="text-gray-600">Economy</span>
+               {mode === 'mssd' ? (
+                 <>
+                   <span className="text-blue-600 font-bold bg-blue-50 px-2 rounded">Similar</span>
+                   <span className="text-blue-600 font-bold bg-blue-50 px-2 rounded">Similar</span>
+                 </>
+              ) : (
+                 <>
+                   <span className="text-red-500 font-bold bg-red-50 px-2 rounded">Different</span>
+                   <span className="text-red-500 font-bold bg-red-50 px-2 rounded">Different</span>
+                 </>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center py-2 border-t border-b border-gray-100 bg-gray-50 -mx-6 px-6">
+               <span className="font-bold text-gray-800">Key Factor (X)</span>
+               {mode === 'mssd' ? (
+                 <>
+                   <span className="text-red-500 font-bold">Present</span>
+                   <span className="text-red-500 font-bold">Absent</span>
+                 </>
+              ) : (
+                 <>
+                   <span className="text-green-600 font-bold">Present</span>
+                   <span className="text-green-600 font-bold">Present</span>
+                 </>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center pt-2">
+               <span className="font-black text-uwm-black">Outcome (Y)</span>
+               {mode === 'mssd' ? (
+                 <>
+                   <span className="text-uwm-black font-bold">Outcome 1</span>
+                   <span className="text-gray-400 font-bold">Outcome 2</span>
+                 </>
+              ) : (
+                 <>
+                   <span className="text-uwm-black font-bold">Same Outcome</span>
+                   <span className="text-uwm-black font-bold">Same Outcome</span>
+                 </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
 // --- VISUALS FOR WEEK 1 ---
 
+const ScientificMethodDiagram: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <Microscope className="text-uwm-gold" /> The Scientific Method in Politics
+      </h3>
+      
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 relative">
+        {/* Connecting Line (Desktop) */}
+        <div className="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-100 -z-0"></div>
+
+        {/* Step 1 */}
+        <div className="relative z-10 bg-white p-4 rounded-lg border border-gray-200 w-full md:w-1/4 flex flex-col items-center text-center shadow-sm hover:border-uwm-gold transition-colors">
+          <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold mb-3">1</div>
+          <h4 className="font-bold text-gray-800 text-sm mb-1">Puzzle</h4>
+          <p className="text-xs text-gray-500">"Why are some countries rich and others poor?"</p>
+        </div>
+
+        {/* Arrow Mobile */}
+        <div className="md:hidden text-gray-300">▼</div>
+
+        {/* Step 2 */}
+        <div className="relative z-10 bg-white p-4 rounded-lg border border-gray-200 w-full md:w-1/4 flex flex-col items-center text-center shadow-sm hover:border-uwm-gold transition-colors">
+          <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold mb-3">2</div>
+          <h4 className="font-bold text-gray-800 text-sm mb-1">Theory</h4>
+          <p className="text-xs text-gray-500">"Democracy encourages economic growth."</p>
+        </div>
+
+        {/* Arrow Mobile */}
+        <div className="md:hidden text-gray-300">▼</div>
+
+        {/* Step 3 */}
+        <div className="relative z-10 bg-white p-4 rounded-lg border border-gray-200 w-full md:w-1/4 flex flex-col items-center text-center shadow-sm hover:border-uwm-gold transition-colors">
+          <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-3">3</div>
+          <h4 className="font-bold text-gray-800 text-sm mb-1">Hypothesis</h4>
+          <p className="text-xs text-gray-500">"If X (Democracy) increases, then Y (GDP) increases."</p>
+        </div>
+
+        {/* Arrow Mobile */}
+        <div className="md:hidden text-gray-300">▼</div>
+
+        {/* Step 4 */}
+        <div className="relative z-10 bg-white p-4 rounded-lg border border-gray-200 w-full md:w-1/4 flex flex-col items-center text-center shadow-sm hover:border-uwm-gold transition-colors">
+          <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold mb-3">4</div>
+          <h4 className="font-bold text-gray-800 text-sm mb-1">Test (Data)</h4>
+          <p className="text-xs text-gray-500">Compare GDP data across 50 countries (Large-N) or 2 cases (Small-N).</p>
+        </div>
+      </div>
+      
+      <div className="mt-6 bg-gray-50 p-4 rounded-lg text-xs text-gray-600 border border-gray-100 flex gap-2">
+         <div className="font-bold text-uwm-black">Note:</div>
+         <div>Political science moves from specific puzzles to general theories (Inductive) or from general theories to specific tests (Deductive).</div>
+      </div>
+    </div>
+  );
+};
+
 const Week1Visuals: React.FC = () => {
   // --- STATE FOR INTERACTIVITY ---
   const [reformSimulated, setReformSimulated] = useState(false);
-  const [hoveredDesign, setHoveredDesign] = useState<'mssd' | 'mdsd' | null>(null);
 
   // Data for Conceptual Map (Approximate coordinates from Lijphart Ch 14, Fig 14.1)
   // Memoized to prevent re-renders of the chart
@@ -259,15 +516,16 @@ const Week1Visuals: React.FC = () => {
 
       {/* 2. The Fundamental Problem (Methodology) */}
       <section>
-        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <AlertTriangle className="text-uwm-gold" /> The Comparative Method Challenge
-        </h3>
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="md:w-1/2">
+             <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="text-uwm-gold w-5 h-5" />
+                <span className="text-xs font-bold uppercase tracking-widest text-gray-400">The Problem</span>
+             </div>
              <h4 className="text-2xl font-serif font-bold text-white mb-2">"Many Variables, Small N"</h4>
              <p className="text-slate-300 leading-relaxed">
-               In comparative politics, we often have too many possible explanations (variables) and too few countries (cases) to test them on. 
-               It's like trying to solve an algebra equation with 5 unknowns but only 2 equations.
+               Lijphart (1971) identifies the core problem of comparative politics: we often have too many possible explanations (variables) and too few countries (cases) to test them on. 
+               We cannot use experimental methods like chemists, so we must use logic and statistics to control our variables.
              </p>
           </div>
           
@@ -284,119 +542,27 @@ const Week1Visuals: React.FC = () => {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
-                <span><strong>MSSD</strong>: Compare similar countries.</span>
+                <span><strong>Comparative Method</strong>: Focus on comparable cases.</span>
               </li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* 3. Research Design Strategy: MSSD vs MDSD - INTERACTIVE */}
+      {/* 3. METHODS EXPLORER */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <Beaker className="text-uwm-gold" /> Research Design: Solving the "Small N" Problem
+          <Beaker className="text-uwm-gold" /> Methods of Political Inquiry
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
-          {/* MSSD */}
-          <div 
-            className={`bg-white p-6 rounded-xl shadow-sm border-t-4 border-emerald-500 transition-all cursor-pointer ${hoveredDesign === 'mssd' ? 'ring-2 ring-emerald-200 shadow-md transform scale-[1.01]' : ''}`}
-            onMouseEnter={() => setHoveredDesign('mssd')}
-            onMouseLeave={() => setHoveredDesign(null)}
-          >
-            <div className="flex justify-between items-start mb-4">
-              <h4 className="font-bold text-lg text-gray-900">Most Similar Systems (MSSD)</h4>
-              <span className="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Method of Difference</span>
-            </div>
-            
-            {/* Visual Table */}
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
-                <span className="w-1/3">Variable</span>
-                <span className="text-center w-1/4">Case A</span>
-                <span className="text-center w-1/4">Case B</span>
-              </div>
-              
-              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
-                <span className="font-medium w-1/3 text-gray-600">Culture</span>
-                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
-                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
-              </div>
-              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
-                <span className="font-medium w-1/3 text-gray-600">Economy</span>
-                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
-                <span className="text-center w-1/4 text-emerald-600 font-bold">Same</span>
-              </div>
-              <div className={`flex justify-between items-center p-2 rounded border text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-blue-100 border-blue-300 shadow-sm' : 'bg-blue-50 border-blue-200'}`}>
-                <span className="font-bold text-blue-800 w-1/3">Electoral Sys.</span>
-                <span className="text-center w-1/4 text-blue-600 font-bold">PR</span>
-                <span className="text-center w-1/4 text-red-500 font-bold">Plurality</span>
-              </div>
-              
-              <div className="h-px bg-gray-200 my-2"></div>
-              
-              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mssd' ? 'bg-slate-200 font-black' : 'bg-slate-100'}`}>
-                <span className="font-bold text-slate-800 w-1/3">Outcome</span>
-                <span className="text-center w-1/4 text-slate-600 font-bold">High</span>
-                <span className="text-center w-1/4 text-slate-600 font-bold">Low</span>
-              </div>
-            </div>
-            
-            <p className="text-xs text-gray-500 italic leading-relaxed">
-              <strong>Logic:</strong> Since everything else is the same, the <strong>DIFFERENCE</strong> in Electoral Systems explains the difference in Outcome.
-            </p>
-          </div>
+        
+        {/* The Trade-off Matrix */}
+        <MethodsMatrix />
+        
+        <div className="mt-8"></div>
+        
+        {/* Research Design Comparator */}
+        <ResearchDesignComparator />
 
-          {/* MDSD */}
-          <div 
-            className={`bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500 transition-all cursor-pointer ${hoveredDesign === 'mdsd' ? 'ring-2 ring-purple-200 shadow-md transform scale-[1.01]' : ''}`}
-            onMouseEnter={() => setHoveredDesign('mdsd')}
-            onMouseLeave={() => setHoveredDesign(null)}
-          >
-            <div className="flex justify-between items-start mb-4">
-              <h4 className="font-bold text-lg text-gray-900">Most Different Systems (MDSD)</h4>
-              <span className="text-xs font-mono text-purple-600 bg-purple-50 px-2 py-1 rounded">Method of Agreement</span>
-            </div>
-            
-            {/* Visual Table */}
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
-                <span className="w-1/3">Variable</span>
-                <span className="text-center w-1/4">Case A</span>
-                <span className="text-center w-1/4">Case B</span>
-              </div>
-              
-              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
-                <span className="font-medium w-1/3 text-gray-600">Region</span>
-                <span className="text-center w-1/4 text-red-400 font-bold">Europe</span>
-                <span className="text-center w-1/4 text-red-400 font-bold">Asia</span>
-              </div>
-              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-gray-100 opacity-50' : 'bg-gray-50'}`}>
-                <span className="font-medium w-1/3 text-gray-600">Religion</span>
-                <span className="text-center w-1/4 text-red-400 font-bold">Christian</span>
-                <span className="text-center w-1/4 text-red-400 font-bold">Buddhist</span>
-              </div>
-              <div className={`flex justify-between items-center p-2 rounded border text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-purple-100 border-purple-300 shadow-sm' : 'bg-purple-50 border-purple-200'}`}>
-                <span className="font-bold text-purple-800 w-1/3">Class</span>
-                <span className="text-center w-1/4 text-purple-600 font-bold">Worker</span>
-                <span className="text-center w-1/4 text-purple-600 font-bold">Worker</span>
-              </div>
-              
-              <div className="h-px bg-gray-200 my-2"></div>
-              
-              <div className={`flex justify-between items-center p-2 rounded text-sm transition-colors ${hoveredDesign === 'mdsd' ? 'bg-slate-200 font-black' : 'bg-slate-100'}`}>
-                <span className="font-bold text-slate-800 w-1/3">Outcome</span>
-                <span className="text-center w-1/4 text-slate-600 font-bold">Revolt</span>
-                <span className="text-center w-1/4 text-slate-600 font-bold">Revolt</span>
-              </div>
-            </div>
-            
-             <p className="text-xs text-gray-500 italic leading-relaxed">
-              <strong>Logic:</strong> Since everything else is different, the <strong>SAME</strong> factor (Social Class) explains the same Outcome.
-            </p>
-          </div>
-
-        </div>
       </section>
       
       {/* 4. The Core Definition: Majoritarian vs Consensus */}
