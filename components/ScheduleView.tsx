@@ -11,7 +11,7 @@ import {
   Variable, Globe, BookOpen, AlertTriangle, 
   CheckCircle2, Users, Split, Swords, Handshake,
   Crown, Beaker, PlayCircle, RefreshCw, BarChart3,
-  Search, FileText, X, ArrowDown
+  Search, FileText, X, ArrowDown, Gavel, Landmark
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -722,6 +722,90 @@ const FusionOfPowerDiagram: React.FC = () => {
   );
 };
 
+const AdversarialSeatingChart: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+      <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">Adversarial Architecture</h4>
+        <p className="text-sm text-gray-600">
+          The physical layout of the House of Commons forces a "Government vs. Opposition" dynamic.
+        </p>
+      </div>
+
+      <div className="flex-grow flex flex-col items-center justify-center gap-8">
+         {/* UK Layout */}
+         <div className="relative w-48 h-32 border-2 border-slate-200 rounded-lg p-2 bg-slate-50">
+            <span className="absolute top-1 left-1 text-[10px] font-bold text-slate-400">UK COMMONS</span>
+            
+            {/* Government Benches */}
+            <div className="absolute left-2 top-8 bottom-8 w-8 bg-blue-100 border border-blue-300 rounded flex flex-col justify-center items-center">
+               <span className="text-[8px] font-bold text-blue-800 -rotate-90">GOVT</span>
+            </div>
+            
+            {/* Table */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-16 bg-uwm-gold rounded opacity-50"></div>
+
+            {/* Opposition Benches */}
+            <div className="absolute right-2 top-8 bottom-8 w-8 bg-red-100 border border-red-300 rounded flex flex-col justify-center items-center">
+               <span className="text-[8px] font-bold text-red-800 rotate-90">OPPOSITION</span>
+            </div>
+
+            {/* Swords Line */}
+            <div className="absolute bottom-2 w-full text-center text-[8px] text-slate-400 italic">
+               "Two sword lengths apart"
+            </div>
+         </div>
+
+         <div className="text-xs text-center text-gray-500 max-w-[200px]">
+            <strong>Consequence:</strong> Debate is confrontational. You support the government or you oppose it.
+         </div>
+      </div>
+    </div>
+  );
+};
+
+const AsymmetricBicameralism: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">Asymmetric Bicameralism</h4>
+        <p className="text-sm text-gray-600">
+          In the Westminster model, the two chambers are not equal. The Lower House reigns supreme.
+        </p>
+      </div>
+      
+      <div className="flex-grow flex items-end justify-center gap-4 pb-4 border-b border-gray-100 relative">
+         {/* House of Lords */}
+         <div className="flex flex-col items-center gap-2">
+            <span className="text-xs font-bold text-gray-400">House of Lords</span>
+            <div className="w-16 h-24 bg-gray-200 rounded-t-lg flex items-center justify-center text-center p-2 text-xs text-gray-500">
+               Delay Power Only
+            </div>
+            <div className="w-20 h-2 bg-gray-300 rounded-full"></div>
+         </div>
+
+         {/* Scale Fulcrum */}
+         <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[20px] border-b-gray-800"></div>
+
+         {/* House of Commons */}
+         <div className="flex flex-col items-center gap-2">
+            <span className="text-xs font-bold text-uwm-black">House of Commons</span>
+            <div className="w-24 h-40 bg-uwm-black rounded-t-lg flex items-center justify-center text-center p-2 text-xs text-white shadow-xl">
+               <div className="space-y-2">
+                 <Crown className="w-6 h-6 mx-auto text-uwm-gold" />
+                 <span>Supreme Authority</span>
+               </div>
+            </div>
+            <div className="w-28 h-2 bg-gray-800 rounded-full"></div>
+         </div>
+      </div>
+      <div className="pt-4 text-xs text-gray-500 text-center">
+         The "Fusion of Power" resides almost entirely in the Commons.
+      </div>
+    </div>
+  )
+}
+
 const Week2Visuals: React.FC = () => {
   return (
     <div className="space-y-12 animate-fade-in">
@@ -764,10 +848,32 @@ const Week2Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* Visuals Section (New Charts) */}
+      {/* Visuals Section (Updated Grid) */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+         <div className="lg:col-span-1">
+            <ManufacturedMajorityChart />
+         </div>
+         <div className="lg:col-span-1">
+            <FusionOfPowerDiagram />
+         </div>
+         <div className="lg:col-span-1">
+            <AdversarialSeatingChart />
+         </div>
+      </section>
+
+      {/* Additional Visuals Row */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-         <ManufacturedMajorityChart />
-         <FusionOfPowerDiagram />
+         <AsymmetricBicameralism />
+         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
+            <div className="bg-slate-900 text-white p-4 rounded-full mb-4">
+               <Gavel className="w-8 h-8 text-uwm-gold" />
+            </div>
+            <h4 className="text-lg font-bold text-gray-900 mb-2">No Judicial Review</h4>
+            <p className="text-sm text-gray-600 mb-4">
+              Historically, the UK Parliament was sovereign. No court could strike down an Act of Parliament.
+              <br/><span className="text-xs text-gray-400 italic">(Note: Changed slightly with UK Supreme Court in 2009, but principle remains strong)</span>
+            </p>
+         </div>
       </section>
 
       {/* Case Study Section */}
