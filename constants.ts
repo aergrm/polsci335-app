@@ -346,11 +346,11 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
         id: 'lq1-2',
         text: "Who is the author of our main textbook?",
         timeLimit: 20,
-        explanation: "Arend Lijphart wrote 'Patterns of Democracy', the seminal text for this course which defines the Majoritarian vs. Consensus framework.",
+        explanation: "Lijphart, duh?",
         options: [
           { id: '2a', text: "Karl Marx", color: 'red', isCorrect: false },
           { id: '2b', text: "Arend Lijphart", color: 'blue', isCorrect: true },
-          { id: '2c', text: "Max Weber", color: 'yellow', isCorrect: false },
+          { id: '2c', text: "Emmanuel Macron", color: 'yellow', isCorrect: false },
           { id: '2d', text: "Ahmet Ergurum", color: 'green', isCorrect: false }
         ]
       },

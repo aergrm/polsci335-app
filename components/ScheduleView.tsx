@@ -3,14 +3,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { SCHEDULE } from '../constants';
 import { Week } from '../types';
 import { 
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList, Legend
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList, Legend,
+  BarChart, Bar
 } from 'recharts';
 import { 
   ChevronRight, ArrowLeft, Microscope, Scale, 
   Variable, Globe, BookOpen, AlertTriangle, 
   CheckCircle2, Users, Split, Swords, Handshake,
   Crown, Beaker, PlayCircle, RefreshCw, BarChart3,
-  Search, FileText, X
+  Search, FileText, X, ArrowDown
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -643,9 +644,88 @@ const Week1Visuals: React.FC = () => {
   );
 };
 
+const ManufacturedMajorityChart: React.FC = () => {
+  // Approximate data from a typical UK election (e.g., 2005) showing disproportionality
+  const data = [
+    { name: 'Labour', votes: 35.2, seats: 55.2, fill: '#ef4444' }, // 35% vote -> 55% seats
+    { name: 'Conservative', votes: 32.4, seats: 30.7, fill: '#3b82f6' },
+    { name: 'Lib Dem', votes: 22.0, seats: 9.6, fill: '#eab308' }, // 22% vote -> 9% seats (punished)
+    { name: 'Others', votes: 10.4, seats: 4.5, fill: '#94a3b8' }
+  ];
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full">
+      <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">The "Manufactured Majority"</h4>
+        <p className="text-sm text-gray-600">
+          How First-Past-The-Post (FPTP) creates parliamentary majorities from minority votes. 
+          Notice how the winner (Labour) gets a "seat bonus" while smaller parties (Lib Dem) are punished.
+        </p>
+      </div>
+      <div className="h-64 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical" margin={{ left: 40 }}>
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+            <XAxis type="number" unit="%" domain={[0, 60]} />
+            <YAxis dataKey="name" type="category" width={80} style={{ fontSize: '12px', fontWeight: 'bold' }} />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="votes" name="Percent of Votes" fill="#9ca3af" barSize={15} radius={[0, 4, 4, 0]} />
+            <Bar dataKey="seats" name="Percent of Seats" fill="#1e3a8a" barSize={15} radius={[0, 4, 4, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+};
+
+const FusionOfPowerDiagram: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+      <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">Fusion of Power (UK)</h4>
+        <p className="text-sm text-gray-600">
+          Unlike the US Separation of Powers, the UK Executive is <strong>inside</strong> the Legislature.
+        </p>
+      </div>
+
+      <div className="flex-grow flex items-center justify-center py-4">
+        <div className="relative w-64 h-64">
+           {/* Voters */}
+           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full text-center">
+             <div className="flex justify-center gap-1 mb-1">
+               <Users className="w-5 h-5 text-gray-400" />
+               <Users className="w-5 h-5 text-gray-400" />
+               <Users className="w-5 h-5 text-gray-400" />
+             </div>
+             <span className="text-xs font-bold uppercase text-gray-500 tracking-widest">Voters</span>
+             <ArrowDown className="w-6 h-6 text-gray-300 mx-auto mt-1" />
+           </div>
+
+           {/* Parliament Box */}
+           <div className="absolute top-20 left-0 w-full h-40 border-4 border-slate-800 rounded-xl bg-slate-50 flex flex-col items-center pt-2">
+              <span className="text-sm font-black text-slate-800 uppercase">Parliament</span>
+              <span className="text-xs text-slate-500">(Legislature)</span>
+
+              {/* Cabinet Box (Inside) */}
+              <div className="mt-4 w-3/4 h-20 bg-uwm-gold rounded-lg shadow-lg flex flex-col items-center justify-center text-white relative">
+                 <span className="font-bold">Cabinet</span>
+                 <span className="text-xs opacity-80">(Executive)</span>
+                 
+                 {/* Connection Lines */}
+                 <div className="absolute -top-4 w-0.5 h-4 bg-gray-400"></div>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Week2Visuals: React.FC = () => {
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 animate-fade-in">
+      {/* Intro Section */}
       <section>
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -684,6 +764,13 @@ const Week2Visuals: React.FC = () => {
         </div>
       </section>
 
+      {/* Visuals Section (New Charts) */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <ManufacturedMajorityChart />
+         <FusionOfPowerDiagram />
+      </section>
+
+      {/* Case Study Section */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
            <Globe className="text-uwm-gold" /> Case Study: United Kingdom
