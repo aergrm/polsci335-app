@@ -328,7 +328,7 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
   {
     weekId: 1,
     title: "Week 1: Introduction",
-    isLocked: true,
+    isLocked: false,
     questions: [
       {
         id: 'lq1-1',
@@ -400,6 +400,66 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
           { id: '6b', text: "Inductive", color: 'blue', isCorrect: true },
           { id: '6c', text: "Reductive", color: 'yellow', isCorrect: false },
           { id: '6d', text: "Productive", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-7',
+        text: "In the hypothesis 'Economic Development leads to Democracy', what is 'Democracy'?",
+        timeLimit: 20,
+        explanation: "The Dependent Variable (Y) is the effect or outcome we are trying to explain. The Independent Variable (X) is the cause (Development).",
+        options: [
+          { id: '7a', text: "Independent Variable (X)", color: 'red', isCorrect: false },
+          { id: '7b', text: "Dependent Variable (Y)", color: 'blue', isCorrect: true },
+          { id: '7c', text: "Control Variable (Z)", color: 'yellow', isCorrect: false },
+          { id: '7d', text: "Spurious Variable", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-8',
+        text: "Case Studies (N=1) are strong in ____ but weak in ____.",
+        timeLimit: 20,
+        explanation: "Case studies provide deep contextual detail (internal validity) but cannot easily be generalized to the whole world (external validity).",
+        options: [
+          { id: '8a', text: "Breadth; Depth", color: 'red', isCorrect: false },
+          { id: '8b', text: "Math; English", color: 'blue', isCorrect: false },
+          { id: '8c', text: "Depth; Generalization", color: 'yellow', isCorrect: true },
+          { id: '8d', text: "Theory; Data", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-9',
+        text: "The Westminster Model is based on the principle of...",
+        timeLimit: 20,
+        explanation: "The Westminster (Majoritarian) model concentrates power in the hands of the majority to ensure effective governance.",
+        options: [
+          { id: '9a', text: "Majority Rule", color: 'red', isCorrect: true },
+          { id: '9b', text: "Proportionality", color: 'blue', isCorrect: false },
+          { id: '9c', text: "Minority Veto", color: 'yellow', isCorrect: false },
+          { id: '9d', text: "Divided Power", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-10',
+        text: "Which dimension is characterized by 'Joint Power'?",
+        timeLimit: 20,
+        explanation: "The Executives-Parties dimension concentrates power within the central government (Joint Power), while the Federal-Unitary dimension divides power (Divided Power).",
+        options: [
+          { id: '10a', text: "Federal-Unitary", color: 'red', isCorrect: false },
+          { id: '10b', text: "Executives-Parties", color: 'blue', isCorrect: true },
+          { id: '10c', text: "Left-Right", color: 'yellow', isCorrect: false },
+          { id: '10d', text: "Global-Local", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq1-11',
+        text: "The Consensus Model is recommended for...",
+        timeLimit: 20,
+        explanation: "Lijphart argues Consensus democracy is superior for 'plural societies' with deep religious, cultural, or linguistic divisions.",
+        options: [
+          { id: '11a', text: "Homogeneous Societies", color: 'red', isCorrect: false },
+          { id: '11b', text: "Plural / Divided Societies", color: 'blue', isCorrect: true },
+          { id: '11c', text: "Small Islands", color: 'yellow', isCorrect: false },
+          { id: '11d', text: "Military Dictatorships", color: 'green', isCorrect: false }
         ]
       }
     ]
