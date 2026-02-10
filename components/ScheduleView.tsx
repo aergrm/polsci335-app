@@ -11,7 +11,8 @@ import {
   Variable, Globe, BookOpen, AlertTriangle, 
   CheckCircle2, Users, Split, Swords, Handshake,
   Crown, Beaker, PlayCircle, RefreshCw, BarChart3,
-  Search, FileText, X, ArrowDown, Gavel, Landmark
+  Search, FileText, X, ArrowDown, Gavel, Landmark,
+  Briefcase, Building2, Vote, MessageSquare, Map as MapIcon, Flag
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -47,7 +48,7 @@ const ScheduleView: React.FC = () => {
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pr-8">
               <div className="md:w-1/4">
                 <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 ${
-                   week.id === 1 || week.id === 2 ? 'bg-uwm-gold text-white' : 'bg-gray-100 text-gray-600'
+                   week.id === 1 || week.id === 2 || week.id === 3 ? 'bg-uwm-gold text-white' : 'bg-gray-100 text-gray-600'
                 }`}>
                   Week {week.id}
                 </span>
@@ -112,6 +113,8 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
         <Week1Visuals />
       ) : week.id === 2 ? (
         <Week2Visuals />
+      ) : week.id === 3 ? (
+        <Week3Visuals />
       ) : (
         <div className="bg-white p-12 rounded-xl shadow-sm border border-gray-100 text-center">
           <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -162,6 +165,7 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
 
 // --- VISUALIZATION COMPONENTS ---
 
+// ... (Week 1 and 2 components remain unchanged) ...
 const MethodsMatrix: React.FC = () => {
   const [hoveredMethod, setHoveredMethod] = useState<'single' | 'few' | 'many' | null>(null);
 
@@ -421,8 +425,6 @@ const ResearchDesignComparator: React.FC = () => {
   );
 };
 
-// --- VISUALS FOR WEEK 1 ---
-
 const ScientificMethodDiagram: React.FC = () => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
@@ -481,41 +483,10 @@ const ScientificMethodDiagram: React.FC = () => {
 };
 
 const Week1Visuals: React.FC = () => {
-  // --- STATE FOR INTERACTIVITY ---
-  const [reformSimulated, setReformSimulated] = useState(false);
-
-  // Data for Conceptual Map (Approximate coordinates from Lijphart Ch 14, Fig 14.1)
-  // Memoized to prevent re-renders of the chart
-  const mapData = useMemo(() => [
-    { name: 'UK', x: 1.2, y: 1.1, type: 'Majoritarian (Unitary)' },
-    { 
-      name: 'New Zealand', 
-      x: reformSimulated ? -0.8 : 1.8,  // Moves left on reform
-      y: 1.9, 
-      type: reformSimulated ? 'Mixed (Post-1996)' : 'Majoritarian (Unitary)',
-      isTarget: true
-    },
-    { name: 'Barbados', x: 1.4, y: 0.4, type: 'Majoritarian (Unitary)' },
-    { name: 'USA', x: 0.7, y: -1.9, type: 'Majoritarian (Federal)' },
-    { name: 'Canada', x: 1.0, y: -1.5, type: 'Majoritarian (Federal)' },
-    { name: 'Switzerland', x: -1.6, y: -1.3, type: 'Consensus (Federal)' },
-    { name: 'Belgium', x: -0.9, y: -0.2, type: 'Consensus (Federal)' },
-    { name: 'Germany', x: -0.7, y: -2.1, type: 'Consensus (Federal)' },
-    { name: 'Israel', x: -1.3, y: 0.9, type: 'Consensus (Unitary)' },
-    { name: 'India', x: -0.6, y: -1.0, type: 'Consensus (Federal)' },
-    // Corrected Japan: Unitary (Positive Y) & Slightly Majoritarian (Positive X) per Lijphart 2nd Ed
-    { name: 'Japan', x: 0.2, y: 0.9, type: 'Majoritarian (Unitary)' }, 
-    { name: 'France', x: 0.7, y: 0.1, type: 'Majoritarian (Unitary)' },
-    { name: 'Sweden', x: -0.8, y: 1.1, type: 'Consensus (Unitary)' },
-  ], [reformSimulated]);
-
   return (
     <div className="space-y-12">
-
-      {/* 1. The Scientific Method Flow (Methodology) - ISOLATED COMPONENT */}
       <ScientificMethodDiagram />
 
-      {/* 2. The Fundamental Problem (Methodology) */}
       <section>
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="md:w-1/2">
@@ -550,30 +521,21 @@ const Week1Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. METHODS EXPLORER */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Beaker className="text-uwm-gold" /> Methods of Political Inquiry
         </h3>
-        
-        {/* The Trade-off Matrix */}
         <MethodsMatrix />
-        
         <div className="mt-8"></div>
-        
-        {/* Research Design Comparator */}
         <ResearchDesignComparator />
-
       </section>
       
-      {/* 4. The Core Definition: Majoritarian vs Consensus */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Scale className="text-uwm-gold" /> The Core Definition: Who Governs?
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Majoritarian Card */}
           <div className="bg-white rounded-2xl shadow-lg border-t-8 border-blue-600 overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
             <div className="p-8">
               <div className="flex justify-between items-start mb-6">
@@ -606,7 +568,6 @@ const Week1Visuals: React.FC = () => {
             </div>
           </div>
 
-          {/* Consensus Card */}
           <div className="bg-white rounded-2xl shadow-lg border-t-8 border-indigo-600 overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
             <div className="p-8">
               <div className="flex justify-between items-start mb-6">
@@ -645,11 +606,10 @@ const Week1Visuals: React.FC = () => {
 };
 
 const ManufacturedMajorityChart: React.FC = () => {
-  // Approximate data from a typical UK election (e.g., 2005) showing disproportionality
   const data = [
-    { name: 'Labour', votes: 35.2, seats: 55.2, fill: '#ef4444' }, // 35% vote -> 55% seats
+    { name: 'Labour', votes: 35.2, seats: 55.2, fill: '#ef4444' },
     { name: 'Conservative', votes: 32.4, seats: 30.7, fill: '#3b82f6' },
-    { name: 'Lib Dem', votes: 22.0, seats: 9.6, fill: '#eab308' }, // 22% vote -> 9% seats (punished)
+    { name: 'Lib Dem', votes: 22.0, seats: 9.6, fill: '#eab308' },
     { name: 'Others', votes: 10.4, seats: 4.5, fill: '#94a3b8' }
   ];
 
@@ -809,7 +769,6 @@ const AsymmetricBicameralism: React.FC = () => {
 const Week2Visuals: React.FC = () => {
   return (
     <div className="space-y-12 animate-fade-in">
-      {/* Intro Section */}
       <section>
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -848,7 +807,6 @@ const Week2Visuals: React.FC = () => {
         </div>
       </section>
 
-      {/* Visuals Section (Updated Grid) */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
          <div className="lg:col-span-1">
             <ManufacturedMajorityChart />
@@ -861,7 +819,6 @@ const Week2Visuals: React.FC = () => {
          </div>
       </section>
 
-      {/* Additional Visuals Row */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
          <AsymmetricBicameralism />
          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
@@ -876,7 +833,6 @@ const Week2Visuals: React.FC = () => {
          </div>
       </section>
 
-      {/* Case Study Section */}
       <section>
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
            <Globe className="text-uwm-gold" /> Case Study: United Kingdom
@@ -901,5 +857,420 @@ const Week2Visuals: React.FC = () => {
     </div>
   );
 };
+
+// --- WEEK 3 VISUALS ---
+
+const SwissMagicFormula: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">The "Magic Formula" (Zauberformel)</h4>
+        <p className="text-sm text-gray-600">
+          The Swiss Federal Council (Executive) is a Grand Coalition of the four major parties. 
+          From 1959-2003, seats were fixed at 2:2:2:1.
+        </p>
+      </div>
+
+      <div className="flex-grow flex items-center justify-center gap-2">
+         {/* FDP */}
+         <div className="flex flex-col items-center gap-1">
+            <div className="bg-blue-100 text-blue-600 p-2 rounded-lg border border-blue-200 flex flex-col items-center w-16">
+               <Users className="w-5 h-5 mb-1" />
+               <span className="font-bold text-lg">2</span>
+            </div>
+            <span className="text-[10px] font-bold text-gray-500 uppercase">FDP</span>
+         </div>
+         <span className="text-gray-300 font-bold">+</span>
+         {/* CVP */}
+         <div className="flex flex-col items-center gap-1">
+            <div className="bg-orange-100 text-orange-600 p-2 rounded-lg border border-orange-200 flex flex-col items-center w-16">
+               <Users className="w-5 h-5 mb-1" />
+               <span className="font-bold text-lg">2</span>
+            </div>
+            <span className="text-[10px] font-bold text-gray-500 uppercase">CVP</span>
+         </div>
+         <span className="text-gray-300 font-bold">+</span>
+         {/* SPS */}
+         <div className="flex flex-col items-center gap-1">
+            <div className="bg-red-100 text-red-600 p-2 rounded-lg border border-red-200 flex flex-col items-center w-16">
+               <Users className="w-5 h-5 mb-1" />
+               <span className="font-bold text-lg">2</span>
+            </div>
+            <span className="text-[10px] font-bold text-gray-500 uppercase">SPS</span>
+         </div>
+         <span className="text-gray-300 font-bold">+</span>
+         {/* SVP */}
+         <div className="flex flex-col items-center gap-1">
+            <div className="bg-green-100 text-green-600 p-2 rounded-lg border border-green-200 flex flex-col items-center w-16">
+               <Users className="w-5 h-5 mb-1" />
+               <span className="font-bold text-lg">1</span>
+            </div>
+            <span className="text-[10px] font-bold text-gray-500 uppercase">SVP</span>
+         </div>
+      </div>
+      
+      <div className="mt-6 bg-slate-50 p-3 rounded-lg text-xs text-slate-600 text-center">
+         This ensures 70-80% of voters are represented in the government at all times.
+      </div>
+    </div>
+  );
+}
+
+const SwissDirectDemocracy: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'referendum' | 'initiative'>('referendum');
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">Direct Democracy</h4>
+        <p className="text-sm text-gray-600">
+          Switzerland allows citizens to challenge laws or propose amendments directly.
+        </p>
+      </div>
+
+      <div className="flex bg-gray-100 p-1 rounded-lg mb-4">
+        <button 
+          onClick={() => setActiveTab('referendum')}
+          className={`flex-1 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'referendum' ? 'bg-white shadow-sm text-red-600' : 'text-gray-500'}`}
+        >
+          Optional Referendum
+        </button>
+        <button 
+          onClick={() => setActiveTab('initiative')}
+          className={`flex-1 py-1 text-xs font-bold rounded-md transition-all ${activeTab === 'initiative' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500'}`}
+        >
+          Popular Initiative
+        </button>
+      </div>
+
+      <div className="flex-grow flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-100 text-center">
+         {activeTab === 'referendum' ? (
+           <div className="animate-fade-in space-y-4">
+             <div className="flex justify-center mb-2">
+               <Vote className="w-12 h-12 text-red-500" />
+             </div>
+             <h5 className="font-bold text-gray-800">Challenge a Law</h5>
+             <p className="text-xs text-gray-600">
+               If Parliament passes a law you dislike, you can stop it.
+             </p>
+             <div className="flex gap-2 justify-center text-xs font-mono bg-white p-2 rounded border">
+                <span className="text-red-600 font-bold">50,000</span>
+                <span>Signatures</span>
+                <span className="text-gray-400">in 100 days</span>
+             </div>
+             <div className="text-[10px] text-gray-500 mt-2">
+               Result: National vote (Simple Majority)
+             </div>
+           </div>
+         ) : (
+           <div className="animate-fade-in space-y-4">
+             <div className="flex justify-center mb-2">
+               <FileText className="w-12 h-12 text-blue-500" />
+             </div>
+             <h5 className="font-bold text-gray-800">Change Constitution</h5>
+             <p className="text-xs text-gray-600">
+               Propose a new amendment to the Federal Constitution.
+             </p>
+             <div className="flex gap-2 justify-center text-xs font-mono bg-white p-2 rounded border">
+                <span className="text-blue-600 font-bold">100,000</span>
+                <span>Signatures</span>
+                <span className="text-gray-400">in 18 months</span>
+             </div>
+             <div className="text-[10px] text-gray-500 mt-2">
+               Result: National vote (Double Majority: People + Cantons)
+             </div>
+           </div>
+         )}
+      </div>
+    </div>
+  );
+}
+
+const BelgiumFederalismPuzzle: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">The Belgian "Layer Cake"</h4>
+        <p className="text-sm text-gray-600">
+          Belgium has "Incongruent Federalism" with two overlapping layers of government.
+        </p>
+      </div>
+
+      <div className="flex-grow space-y-4">
+         {/* Layer 1: Regions */}
+         <div className="relative border-2 border-dashed border-emerald-200 rounded-lg p-3 bg-emerald-50">
+            <span className="absolute -top-3 left-2 bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">
+               Layer 1: Regions (Territory)
+            </span>
+            <div className="flex gap-2 mt-2">
+               <div className="flex-1 bg-white p-2 rounded text-center shadow-sm border border-emerald-100">
+                  <MapIcon className="w-4 h-4 mx-auto text-emerald-500 mb-1" />
+                  <span className="text-[10px] font-bold text-emerald-900">Flanders</span>
+               </div>
+               <div className="flex-1 bg-white p-2 rounded text-center shadow-sm border border-emerald-100">
+                  <MapIcon className="w-4 h-4 mx-auto text-emerald-500 mb-1" />
+                  <span className="text-[10px] font-bold text-emerald-900">Brussels</span>
+               </div>
+               <div className="flex-1 bg-white p-2 rounded text-center shadow-sm border border-emerald-100">
+                  <MapIcon className="w-4 h-4 mx-auto text-emerald-500 mb-1" />
+                  <span className="text-[10px] font-bold text-emerald-900">Wallonia</span>
+               </div>
+            </div>
+            <p className="text-[10px] text-emerald-700 mt-2 text-center">Powers: Economy, Transport, Environment</p>
+         </div>
+
+         {/* Layer 2: Communities */}
+         <div className="relative border-2 border-dashed border-indigo-200 rounded-lg p-3 bg-indigo-50">
+            <span className="absolute -top-3 left-2 bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">
+               Layer 2: Communities (People)
+            </span>
+            <div className="flex gap-2 mt-2">
+               <div className="flex-1 bg-white p-2 rounded text-center shadow-sm border border-indigo-100">
+                  <MessageSquare className="w-4 h-4 mx-auto text-indigo-500 mb-1" />
+                  <span className="text-[10px] font-bold text-indigo-900">Dutch</span>
+               </div>
+               <div className="flex-1 bg-white p-2 rounded text-center shadow-sm border border-indigo-100">
+                  <MessageSquare className="w-4 h-4 mx-auto text-indigo-500 mb-1" />
+                  <span className="text-[10px] font-bold text-indigo-900">French</span>
+               </div>
+               <div className="flex-1 bg-white p-2 rounded text-center shadow-sm border border-indigo-100">
+                  <MessageSquare className="w-4 h-4 mx-auto text-indigo-500 mb-1" />
+                  <span className="text-[10px] font-bold text-indigo-900">German</span>
+               </div>
+            </div>
+            <p className="text-[10px] text-indigo-700 mt-2 text-center">Powers: Language, Culture, Education</p>
+         </div>
+      </div>
+    </div>
+  );
+}
+
+const EuConsensusTriangle: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">EU: The Consensus Machine</h4>
+        <p className="text-sm text-gray-600">
+          The EU functions as a super-consensus system requiring agreement among 3 bodies.
+        </p>
+      </div>
+
+      <div className="flex-grow relative h-48">
+         {/* Top: Commission */}
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+            <div className="bg-blue-600 text-white p-2 rounded-lg shadow-lg mb-1">
+               <Briefcase className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] font-bold text-blue-900 uppercase">Commission</span>
+            <span className="text-[9px] text-gray-400">Union Interest</span>
+         </div>
+
+         {/* Left: Parliament */}
+         <div className="absolute bottom-0 left-0 flex flex-col items-center">
+            <div className="bg-blue-500 text-white p-2 rounded-lg shadow-lg mb-1">
+               <Users className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] font-bold text-blue-900 uppercase">Parliament</span>
+            <span className="text-[9px] text-gray-400">Citizens' Interest</span>
+         </div>
+
+         {/* Right: Council */}
+         <div className="absolute bottom-0 right-0 flex flex-col items-center">
+            <div className="bg-blue-800 text-white p-2 rounded-lg shadow-lg mb-1">
+               <Flag className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] font-bold text-blue-900 uppercase">Council</span>
+            <span className="text-[9px] text-gray-400">States' Interest</span>
+         </div>
+
+         {/* Connecting Arrows */}
+         <svg className="absolute inset-0 w-full h-full pointer-events-none z-[-1]">
+            <path d="M 130 40 L 50 140" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />
+            <path d="M 170 40 L 250 140" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />
+            <path d="M 60 150 L 240 150" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />
+         </svg>
+         
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-uwm-gold text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-sm">
+            Co-Decision
+         </div>
+      </div>
+    </div>
+  );
+}
+
+const CorporatismDiagram: React.FC = () => {
+   return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">Democratic Corporatism</h4>
+        <p className="text-sm text-gray-600">
+          Interest groups (unions, employers) are organized and integrated into the policy-making process ("Social Partnership").
+        </p>
+      </div>
+       
+       <div className="flex-grow relative flex items-center justify-center py-4">
+          {/* Triangle Structure */}
+          <div className="relative w-64 h-48">
+             {/* Top: State */}
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
+                <div className="bg-slate-800 text-white p-3 rounded-full shadow-lg">
+                   <Landmark className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold text-slate-800 mt-1 uppercase">State</span>
+             </div>
+
+             {/* Left: Labor */}
+             <div className="absolute bottom-0 left-0 flex flex-col items-center z-10">
+                <div className="bg-blue-600 text-white p-3 rounded-full shadow-lg">
+                   <Users className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold text-blue-800 mt-1 uppercase">Labor</span>
+             </div>
+
+             {/* Right: Business */}
+             <div className="absolute bottom-0 right-0 flex flex-col items-center z-10">
+                <div className="bg-emerald-600 text-white p-3 rounded-full shadow-lg">
+                   <Briefcase className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold text-emerald-800 mt-1 uppercase">Business</span>
+             </div>
+
+             {/* Connecting Lines */}
+             <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                {/* State to Labor */}
+                <line x1="50%" y1="20%" x2="15%" y2="80%" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />
+                {/* State to Business */}
+                <line x1="50%" y1="20%" x2="85%" y2="80%" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />
+                {/* Labor to Business (The Partnership) */}
+                <line x1="15%" y1="80%" x2="85%" y2="80%" stroke="#3b82f6" strokeWidth="4" />
+             </svg>
+             
+             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white px-2 text-[10px] font-bold text-blue-500 border border-blue-200 rounded-full whitespace-nowrap">
+                Collective Bargaining
+             </div>
+          </div>
+       </div>
+    </div>
+   );
+}
+
+const PRAlignmentChart: React.FC = () => {
+  const data = [
+      { name: 'Party A', votes: 30, seats: 30, fill: '#3b82f6' },
+      { name: 'Party B', votes: 25, seats: 25, fill: '#ef4444' },
+      { name: 'Party C', votes: 20, seats: 20, fill: '#22c55e' },
+      { name: 'Party D', votes: 15, seats: 15, fill: '#eab308' },
+      { name: 'Small', votes: 10, seats: 10, fill: '#94a3b8' },
+  ];
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full">
+      <div className="mb-6 flex justify-between items-start">
+        <div>
+          <h4 className="text-lg font-bold text-gray-900">Proportional Representation</h4>
+          <p className="text-sm text-gray-600">
+            In Consensus models, the goal is proportionality. If a party gets 10% of the vote, they should get ~10% of the seats.
+          </p>
+        </div>
+        <div className="bg-green-100 p-2 rounded-full text-green-700">
+           <Scale className="w-6 h-6" />
+        </div>
+      </div>
+      <div className="h-64 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical" margin={{ left: 40 }}>
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+            <XAxis type="number" unit="%" domain={[0, 40]} />
+            <YAxis dataKey="name" type="category" width={60} style={{ fontSize: '12px', fontWeight: 'bold' }} />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="votes" name="Percent of Votes" fill="#9ca3af" barSize={15} radius={[0, 4, 4, 0]} />
+            <Bar dataKey="seats" name="Percent of Seats" fill="#22c55e" barSize={15} radius={[0, 4, 4, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+const Week3Visuals: React.FC = () => {
+  return (
+    <div className="space-y-12 animate-fade-in">
+       {/* Intro */}
+       <section>
+         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+           <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+             <Handshake className="text-uwm-gold" /> The Consensus Model
+           </h3>
+           <div className="flex flex-col md:flex-row gap-8">
+             <div className="md:w-1/2">
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  While the Westminster model concentrates power, the Consensus model <strong>shares, disperses, and limits power</strong>.
+                  It is designed for plural societies (divided by religion, language, ethnicity) where majority rule would be dangerous.
+                  Instead of "Government vs. Opposition", it emphasizes "Rule by Consensus".
+                </p>
+                <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                   <h4 className="font-bold text-indigo-900 mb-2 text-sm uppercase">Key Philosophy</h4>
+                   <p className="text-indigo-800 text-sm italic">
+                     "The majority should not rule alone; minorities must be included."
+                   </p>
+                </div>
+             </div>
+             
+             <div className="md:w-1/2 bg-slate-50 p-6 rounded-lg border border-slate-100">
+                <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase border-b border-slate-200 pb-2">10 Key Variables (Consensus)</h4>
+                <ul className="space-y-2 text-sm text-slate-700">
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Executive power-sharing (Coalitions)</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Balance of power (Exec-Leg)</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Multiparty system</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Proportional Representation</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Corporatism (Interest Groups)</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Federal & Decentralized</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Strong Bicameralism</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Rigid Constitution</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Judicial Review</li>
+                  <li className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div>Independent Central Bank</li>
+                </ul>
+             </div>
+           </div>
+         </div>
+       </section>
+
+       {/* Switzerland Section */}
+       <section>
+          <div className="flex items-center gap-2 mb-6">
+             <Globe className="text-uwm-gold w-6 h-6" />
+             <h3 className="text-xl font-bold text-gray-800">Case Study: Switzerland</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <SwissMagicFormula />
+            <SwissDirectDemocracy />
+          </div>
+       </section>
+
+       {/* Belgium & EU Section */}
+       <section>
+          <div className="flex items-center gap-2 mb-6">
+             <Globe className="text-uwm-gold w-6 h-6" />
+             <h3 className="text-xl font-bold text-gray-800">Case Study: Belgium & The EU</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BelgiumFederalismPuzzle />
+            <EuConsensusTriangle />
+          </div>
+       </section>
+
+       {/* General Concepts */}
+       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-1">
+             <CorporatismDiagram />
+          </div>
+          <div className="md:col-span-2">
+             <PRAlignmentChart />
+          </div>
+       </section>
+    </div>
+  )
+}
 
 export default ScheduleView;

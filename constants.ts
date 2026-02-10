@@ -217,6 +217,13 @@ export const QUIZ_LEVELS: QuizLevel[] = [
         options: ["Westminster Model", "Consensus Model"],
         correctAnswer: "Consensus Model",
         explanation: "Consensus models protect minority rights through rigid constitutions that are hard to amend."
+      },
+      {
+        id: 'q1-6',
+        question: "Which model is associated with 'Interest Group Pluralism'?",
+        options: ["Westminster Model", "Consensus Model"],
+        correctAnswer: "Westminster Model",
+        explanation: "The Westminster model features 'Pluralism' (free-for-all competition) rather than the 'Corporatism' (organized social partnership) of the Consensus model."
       }
     ]
   },
@@ -425,42 +432,6 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
           { id: '8c', text: "Depth; Generalization", color: 'yellow', isCorrect: true },
           { id: '8d', text: "Theory; Data", color: 'green', isCorrect: false }
         ]
-      },
-      {
-        id: 'lq1-9',
-        text: "The Westminster Model is based on the principle of...",
-        timeLimit: 20,
-        explanation: "The Westminster (Majoritarian) model concentrates power in the hands of the majority to ensure effective governance.",
-        options: [
-          { id: '9a', text: "Majority Rule", color: 'red', isCorrect: true },
-          { id: '9b', text: "Proportionality", color: 'blue', isCorrect: false },
-          { id: '9c', text: "Minority Veto", color: 'yellow', isCorrect: false },
-          { id: '9d', text: "Divided Power", color: 'green', isCorrect: false }
-        ]
-      },
-      {
-        id: 'lq1-10',
-        text: "Which dimension is characterized by 'Joint Power'?",
-        timeLimit: 20,
-        explanation: "The Executives-Parties dimension concentrates power within the central government (Joint Power), while the Federal-Unitary dimension divides power (Divided Power).",
-        options: [
-          { id: '10a', text: "Federal-Unitary", color: 'red', isCorrect: false },
-          { id: '10b', text: "Executives-Parties", color: 'blue', isCorrect: true },
-          { id: '10c', text: "Left-Right", color: 'yellow', isCorrect: false },
-          { id: '10d', text: "Global-Local", color: 'green', isCorrect: false }
-        ]
-      },
-      {
-        id: 'lq1-11',
-        text: "The Consensus Model is recommended for...",
-        timeLimit: 20,
-        explanation: "Lijphart argues Consensus democracy is superior for 'plural societies' with deep religious, cultural, or linguistic divisions.",
-        options: [
-          { id: '11a', text: "Homogeneous Societies", color: 'red', isCorrect: false },
-          { id: '11b', text: "Plural / Divided Societies", color: 'blue', isCorrect: true },
-          { id: '11c', text: "Small Islands", color: 'yellow', isCorrect: false },
-          { id: '11d', text: "Military Dictatorships", color: 'green', isCorrect: false }
-        ]
       }
     ]
   },
@@ -503,6 +474,78 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
           { id: '3b', text: "MMP", color: 'blue', isCorrect: false },
           { id: '3c', text: "First-Past-The-Post", color: 'yellow', isCorrect: true },
           { id: '3d', text: "List PR", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq2-4',
+        text: "The Westminster Model is based on the principle of...",
+        timeLimit: 20,
+        explanation: "The Westminster (Majoritarian) model concentrates power in the hands of the majority to ensure effective governance.",
+        options: [
+          { id: '9a', text: "Majority Rule", color: 'red', isCorrect: true },
+          { id: '9b', text: "Proportionality", color: 'blue', isCorrect: false },
+          { id: '9c', text: "Minority Veto", color: 'yellow', isCorrect: false },
+          { id: '9d', text: "Divided Power", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq2-5',
+        text: "Which dimension is characterized by 'Joint Power'?",
+        timeLimit: 20,
+        explanation: "The Executives-Parties dimension concentrates power within the central government (Joint Power), while the Federal-Unitary dimension divides power (Divided Power).",
+        options: [
+          { id: '10a', text: "Federal-Unitary", color: 'red', isCorrect: false },
+          { id: '10b', text: "Executives-Parties", color: 'blue', isCorrect: true },
+          { id: '10c', text: "Left-Right", color: 'yellow', isCorrect: false },
+          { id: '10d', text: "Global-Local", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq2-6',
+        text: "The Consensus Model is recommended for...",
+        timeLimit: 20,
+        explanation: "Lijphart argues Consensus democracy is superior for 'plural societies' with deep religious, cultural, or linguistic divisions.",
+        options: [
+          { id: '11a', text: "Homogeneous Societies", color: 'red', isCorrect: false },
+          { id: '11b', text: "Plural / Divided Societies", color: 'blue', isCorrect: true },
+          { id: '11c', text: "Small Islands", color: 'yellow', isCorrect: false },
+          { id: '11d', text: "Military Dictatorships", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq2-8',
+        text: "In Ch 2, Lijphart identifies this country as a 'purer' example of the Westminster Model than the UK (pre-1996).",
+        timeLimit: 20,
+        explanation: "Before its 1996 switch to MMP, New Zealand was an even clearer example of Westminster majoritarianism (unicameral, unitary, unwritten constitution) than the UK itself.",
+        options: [
+          { id: '8a', text: "New Zealand", color: 'red', isCorrect: true },
+          { id: '8b', text: "Canada", color: 'blue', isCorrect: false },
+          { id: '8c', text: "Barbados", color: 'yellow', isCorrect: false },
+          { id: '8d', text: "Australia", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq2-9',
+        text: "Because the House of Lords has very little power compared to the House of Commons, the UK's legislature is...",
+        timeLimit: 20,
+        explanation: "Asymmetric bicameralism means the two chambers have unequal power. The Commons is supreme; the Lords can only delay legislation.",
+        options: [
+          { id: '9a', text: "Symmetric Bicameral", color: 'red', isCorrect: false },
+          { id: '9b', text: "Asymmetric Bicameral", color: 'blue', isCorrect: true },
+          { id: '9c', text: "Perfectly Unicameral", color: 'yellow', isCorrect: false },
+          { id: '9d', text: "Federal", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq2-10',
+        text: "Why is the British Constitution described as 'Flexible'?",
+        timeLimit: 20,
+        explanation: "Because it is unwritten/uncodified, Parliament can change fundamental laws (constitutional matters) with a simple majority vote, just like regular laws.",
+        options: [
+          { id: '10a', text: "It bends physically", color: 'red', isCorrect: false },
+          { id: '10b', text: "It is hard to change", color: 'blue', isCorrect: false },
+          { id: '10c', text: "Requires 2/3 majority to change", color: 'yellow', isCorrect: false },
+          { id: '10d', text: "Changed by simple majority", color: 'green', isCorrect: true }
         ]
       }
     ]
