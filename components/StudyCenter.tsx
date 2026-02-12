@@ -5,11 +5,38 @@ import { Flashcard, QuizLevel, QuizQuestion } from '../types';
 import { 
   Layers, Brain, ChevronLeft, ChevronRight, Trophy, Lock, Unlock, 
   CheckCircle, XCircle, RotateCcw, Timer, Zap, Map, Info, HelpCircle,
-  Presentation
+  Presentation, Users, Shuffle, Copy, Edit3, Trash2, UserMinus, UserCheck
 } from 'lucide-react';
 import LiveSession from './LiveSession'; // Import the new component
 
-type Mode = 'menu' | 'flashcards' | 'quiz' | 'mania' | 'profiler' | 'live';
+type Mode = 'menu' | 'flashcards' | 'quiz' | 'mania' | 'profiler' | 'live' | 'randomizer';
+
+const CLASS_ROSTER = [
+  "Blakeman, Ellyn Mary",
+  "Bosetski, Paige Elizabeth",
+  "Charles, Dominique Alakeh",
+  "Clark-Bailey, Constance G",
+  "Czaplewski, Layla Grace",
+  "Fatayer, Salam",
+  "Gerber, Skylar Jean",
+  "Grajkowski, Sydney Grace",
+  "Kipfer, Jay",
+  "Krause, Daniel Carl",
+  "Lane, William Ishaq",
+  "Marin, Aiden Nathaniel",
+  "May, Bri",
+  "Montenegro Nevarez, Suheidy",
+  "Pangerc, Colby",
+  "Roop, Robert Walker",
+  "Sanchez, Jurgen Javier",
+  "Simonova, Sara",
+  "Spivey, Jonathan",
+  "Steffen, Cade Martin",
+  "Tackett, Ethan Robert",
+  "Wagner, Kaylyn Rae",
+  "Wery-Trejo, Jacqueline Rosa",
+  "Zavala, Natalie"
+];
 
 const StudyCenter: React.FC = () => {
   const [mode, setMode] = useState<Mode>('menu');
@@ -22,6 +49,7 @@ const StudyCenter: React.FC = () => {
       {mode === 'mania' && <ModelMania onBack={() => setMode('menu')} />}
       {mode === 'profiler' && <CountryProfiler onBack={() => setMode('menu')} />}
       {mode === 'live' && <LiveSession onBack={() => setMode('menu')} />}
+      {mode === 'randomizer' && <GroupRandomizer onBack={() => setMode('menu')} />}
     </div>
   );
 };
@@ -33,7 +61,7 @@ const StudyMenu: React.FC<{ onSelect: (mode: Mode) => void }> = ({ onSelect }) =
       <p className="text-gray-600">Master the Lijphart Framework through interactive gameplay.</p>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
       <MenuCard 
         title="Flashcards" 
         desc="Core dimensions and key terminology review." 
@@ -69,6 +97,13 @@ const StudyMenu: React.FC<{ onSelect: (mode: Mode) => void }> = ({ onSelect }) =
         color="bg-rose-50 text-rose-600"
         onClick={() => onSelect('live')}
       />
+      <MenuCard 
+        title="Group Randomizer" 
+        desc="Instantly organize class into random groups." 
+        icon={<Users size={28} />}
+        color="bg-violet-50 text-violet-600"
+        onClick={() => onSelect('randomizer')}
+      />
     </div>
   </div>
 );
@@ -87,6 +122,197 @@ const MenuCard = ({ title, desc, icon, color, onClick }: any) => (
     </div>
   </button>
 );
+
+// --- NEW TOOL: GROUP RANDOMIZER ---
+
+const GroupRandomizer: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const [students, setStudents] = useState<{name: string, isPresent: boolean}[]>(
+    CLASS_ROSTER.map(name => ({ name, isPresent: true }))
+  );
+  const [numGroups, setNumGroups] = useState(6);
+  const [groups, setGroups] = useState<string[][]>([]);
+  const [generated, setGenerated] = useState(false);
+
+  const togglePresence = (index: number) => {
+    const newStudents = [...students];
+    newStudents[index].isPresent = !newStudents[index].isPresent;
+    setStudents(newStudents);
+  };
+
+  const handleGenerate = () => {
+    const activeNames = students.filter(s => s.isPresent).map(s => s.name);
+    
+    if (activeNames.length === 0) return;
+
+    // Fisher-Yates Shuffle
+    const names = [...activeNames];
+    for (let i = names.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [names[i], names[j]] = [names[j], names[i]];
+    }
+
+    // Distribute into groups (Round Robin to ensure even distribution)
+    const newGroups: string[][] = Array.from({ length: numGroups }, () => []);
+    
+    names.forEach((name, index) => {
+      newGroups[index % numGroups].push(name);
+    });
+
+    // Remove empty groups if names < numGroups
+    setGroups(newGroups.filter(g => g.length > 0));
+    setGenerated(true);
+  };
+
+  const handleCopyToClipboard = (groupIndex: number, groupMembers: string[]) => {
+    const text = `Group ${groupIndex + 1}: ${groupMembers.join(', ')}`;
+    navigator.clipboard.writeText(text);
+  };
+
+  const presentCount = students.filter(s => s.isPresent).length;
+
+  return (
+    <div className="max-w-6xl mx-auto w-full p-4 space-y-6 animate-fade-in">
+      <div className="flex justify-between items-center mb-6">
+        <button onClick={onBack} className="text-sm text-gray-500 hover:text-uwm-black">← Back to Menu</button>
+        <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+          <Users className="text-violet-600" /> Class Group Generator
+        </h2>
+      </div>
+
+      {!generated ? (
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-end border-b border-gray-100 pb-4 gap-4">
+               <div>
+                  <h3 className="font-bold text-gray-800 text-lg">Daily Attendance</h3>
+                  <p className="text-sm text-gray-500">
+                    Click the icon to mark students absent before generating groups.
+                  </p>
+               </div>
+               <div className="flex items-center gap-4 bg-gray-50 px-4 py-2 rounded-lg">
+                  <span className="text-sm font-bold text-gray-600">Present: {presentCount} / {students.length}</span>
+                  <button 
+                    onClick={() => setStudents(students.map(s => ({ ...s, isPresent: true })))}
+                    className="text-xs text-blue-600 hover:underline"
+                  >
+                    Reset All
+                  </button>
+               </div>
+            </div>
+
+            {/* Student Roster Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 max-h-[500px] overflow-y-auto pr-2">
+              {students.map((student, idx) => (
+                <div 
+                  key={idx} 
+                  className={`flex items-center justify-between p-3 rounded-lg border transition-all ${
+                    student.isPresent 
+                      ? 'bg-white border-gray-200 hover:border-violet-300' 
+                      : 'bg-gray-100 border-gray-200 opacity-60'
+                  }`}
+                >
+                  <span className={`text-sm font-medium ${student.isPresent ? 'text-gray-800' : 'text-gray-400 line-through'}`}>
+                    {student.name}
+                  </span>
+                  <button
+                    onClick={() => togglePresence(idx)}
+                    className={`p-1.5 rounded-full transition-colors ${
+                      student.isPresent 
+                        ? 'text-gray-400 hover:bg-red-100 hover:text-red-500' 
+                        : 'text-gray-400 hover:bg-green-100 hover:text-green-500'
+                    }`}
+                    title={student.isPresent ? "Mark Absent" : "Mark Present"}
+                  >
+                    {student.isPresent ? <UserMinus size={16} /> : <UserCheck size={16} />}
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Controls */}
+            <div className="flex flex-col md:flex-row gap-6 items-center bg-gray-50 p-4 rounded-lg mt-6 border border-gray-100">
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-bold text-gray-700 mb-2">
+                  Number of Groups: <span className="text-violet-600 text-lg">{numGroups}</span>
+                </label>
+                <input
+                  type="range"
+                  min="2"
+                  max="10"
+                  value={numGroups}
+                  onChange={(e) => setNumGroups(parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                />
+              </div>
+              <div className="flex-shrink-0">
+                 <button
+                  onClick={handleGenerate}
+                  disabled={presentCount < 2}
+                  className="bg-violet-600 hover:bg-violet-700 text-white px-8 py-3 rounded-lg font-bold shadow-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <Shuffle size={20} /> Generate Groups
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex justify-center text-xs text-gray-400">
+               <span>Algorithm: Fisher-Yates Shuffle (Unbiased)</span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="flex justify-between items-center bg-white p-4 rounded-lg border border-gray-200 shadow-sm sticky top-0 z-10">
+             <div className="text-sm text-gray-500 font-bold">
+               {groups.flat().length} Students • {groups.length} Groups
+             </div>
+             <div className="flex gap-2">
+               <button 
+                 onClick={() => setGenerated(false)} 
+                 className="px-4 py-2 text-sm font-bold text-gray-600 hover:text-black flex items-center gap-2"
+               >
+                 <Edit3 size={16} /> Adjust Attendance
+               </button>
+               <button 
+                 onClick={handleGenerate} 
+                 className="px-4 py-2 bg-violet-100 text-violet-700 rounded-lg text-sm font-bold hover:bg-violet-200 flex items-center gap-2"
+               >
+                 <RotateCcw size={16} /> Re-Shuffle
+               </button>
+             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {groups.map((group, idx) => (
+              <div key={idx} className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-center mb-3 pb-2 border-b border-gray-50">
+                  <h3 className="font-bold text-gray-800 text-lg">Group {idx + 1}</h3>
+                  <button 
+                    onClick={() => handleCopyToClipboard(idx, group)}
+                    className="text-gray-400 hover:text-violet-600 p-1 rounded hover:bg-violet-50 transition-colors"
+                    title="Copy group list"
+                  >
+                    <Copy size={16} />
+                  </button>
+                </div>
+                <ul className="space-y-2">
+                  {group.map((student, sIdx) => (
+                    <li key={sIdx} className="flex items-center gap-2 text-gray-600 text-sm">
+                      <div className="w-6 h-6 rounded-full bg-violet-50 text-violet-500 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                        {student.charAt(0).toUpperCase()}
+                      </div>
+                      {student}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // --- NEW GAME: MODEL MANIA (SORTING) ---
 
