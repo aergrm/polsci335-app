@@ -4,7 +4,7 @@ import { SCHEDULE } from '../constants';
 import { Week } from '../types';
 import { 
   ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, LabelList, Legend,
-  BarChart, Bar
+  BarChart, Bar, PieChart, Pie
 } from 'recharts';
 import { 
   ChevronRight, ArrowLeft, Microscope, Scale, 
@@ -12,7 +12,8 @@ import {
   CheckCircle2, Users, Split, Swords, Handshake,
   Crown, Beaker, PlayCircle, RefreshCw, BarChart3,
   Search, FileText, X, ArrowDown, Gavel, Landmark,
-  Briefcase, Building2, Vote, MessageSquare, Map as MapIcon, Flag
+  Briefcase, Building2, Vote, MessageSquare, Map as MapIcon, Flag,
+  Factory, Cross, Tractor, GraduationCap, Calculator
 } from 'lucide-react';
 
 const ScheduleView: React.FC = () => {
@@ -115,6 +116,8 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
         <Week2Visuals />
       ) : week.id === 3 ? (
         <Week3Visuals />
+      ) : week.id === 4 ? (
+        <Week4Visuals />
       ) : (
         <div className="bg-white p-12 rounded-xl shadow-sm border border-gray-100 text-center">
           <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -165,7 +168,8 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
 
 // --- VISUALIZATION COMPONENTS ---
 
-// ... (Week 1 and 2 components remain unchanged) ...
+// ... (Week 1, 2, 3 components remain unchanged) ...
+
 const MethodsMatrix: React.FC = () => {
   const [hoveredMethod, setHoveredMethod] = useState<'single' | 'few' | 'many' | null>(null);
 
@@ -478,6 +482,212 @@ const ScientificMethodDiagram: React.FC = () => {
          <div className="font-bold text-uwm-black">Note:</div>
          <div>Political science moves from specific puzzles to general theories (Inductive) or from general theories to specific tests (Deductive).</div>
       </div>
+    </div>
+  );
+};
+
+// --- WEEK 4 VISUALS (PARTY SYSTEMS) ---
+
+const EnpCalculator: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6 flex justify-between items-start">
+         <div>
+          <h4 className="text-lg font-bold text-gray-900">Effective Number of Parties (N)</h4>
+          <p className="text-sm text-gray-600">
+            The Laakso/Taagepera Index counts parties but weights them by size. 
+          </p>
+         </div>
+         <div className="bg-violet-100 p-2 rounded-full text-violet-700">
+            <Calculator className="w-6 h-6" />
+         </div>
+      </div>
+
+      <div className="flex-grow flex flex-col gap-6">
+         {/* Formula */}
+         <div className="bg-slate-800 text-white p-4 rounded-lg text-center font-mono text-lg shadow-inner">
+            N = 1 / Σ ( s<sub>i</sub><sup>2</sup> )
+         </div>
+
+         {/* Example: 2 Party */}
+         <div className="grid grid-cols-2 gap-4">
+            <div className="bg-blue-50 p-3 rounded border border-blue-100">
+               <h5 className="font-bold text-blue-900 text-xs uppercase mb-2">System A (2-Party)</h5>
+               <div className="flex gap-1 h-2 mb-2">
+                  <div className="w-1/2 bg-blue-500"></div>
+                  <div className="w-1/2 bg-red-500"></div>
+               </div>
+               <div className="text-xs text-gray-600">50% + 50%</div>
+               <div className="font-bold text-blue-800 mt-1">N = 2.0</div>
+            </div>
+
+            <div className="bg-indigo-50 p-3 rounded border border-indigo-100">
+               <h5 className="font-bold text-indigo-900 text-xs uppercase mb-2">System B (Multiparty)</h5>
+               <div className="flex gap-1 h-2 mb-2">
+                  <div className="w-1/3 bg-blue-500"></div>
+                  <div className="w-1/3 bg-red-500"></div>
+                  <div className="w-1/3 bg-green-500"></div>
+               </div>
+               <div className="text-xs text-gray-600">33% + 33% + 33%</div>
+               <div className="font-bold text-indigo-800 mt-1">N = 3.0</div>
+            </div>
+         </div>
+         
+         <div className="text-xs text-gray-500 italic mt-auto">
+           A system with 10 parties where one party holds 90% of seats effectively behaves like a 1-party system (N ≈ 1.2).
+         </div>
+      </div>
+    </div>
+  );
+}
+
+const CleavageMap: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">Lipset & Rokkan's 4 Cleavages</h4>
+        <p className="text-sm text-gray-600">
+          The "Frozen Cleavages" of 1920s Europe that still shape party systems today.
+        </p>
+      </div>
+
+      <div className="flex-grow grid grid-cols-2 gap-4">
+         {/* Cleavage 1 */}
+         <div className="bg-amber-50 p-4 rounded-lg border border-amber-100 flex flex-col items-center text-center">
+            <div className="bg-white p-2 rounded-full mb-2 shadow-sm">
+               <Cross className="w-5 h-5 text-amber-600" />
+            </div>
+            <h5 className="font-bold text-gray-800 text-sm">State vs. Church</h5>
+            <p className="text-xs text-gray-500 mt-1">Secular Liberals vs. Religious Conservatives</p>
+         </div>
+
+         {/* Cleavage 2 */}
+         <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-100 flex flex-col items-center text-center">
+            <div className="bg-white p-2 rounded-full mb-2 shadow-sm">
+               <Tractor className="w-5 h-5 text-emerald-600" />
+            </div>
+            <h5 className="font-bold text-gray-800 text-sm">Land vs. Industry</h5>
+            <p className="text-xs text-gray-500 mt-1">Agrarian/Rural vs. Urban Industrialists</p>
+         </div>
+
+         {/* Cleavage 3 */}
+         <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 flex flex-col items-center text-center">
+            <div className="bg-white p-2 rounded-full mb-2 shadow-sm">
+               <Factory className="w-5 h-5 text-blue-600" />
+            </div>
+            <h5 className="font-bold text-gray-800 text-sm">Owner vs. Worker</h5>
+            <p className="text-xs text-gray-500 mt-1">Bourgeoisie vs. Proletariat (Class Conflict)</p>
+         </div>
+
+         {/* Cleavage 4 */}
+         <div className="bg-purple-50 p-4 rounded-lg border border-purple-100 flex flex-col items-center text-center">
+            <div className="bg-white p-2 rounded-full mb-2 shadow-sm">
+               <MapIcon className="w-5 h-5 text-purple-600" />
+            </div>
+            <h5 className="font-bold text-gray-800 text-sm">Center vs. Periphery</h5>
+            <p className="text-xs text-gray-500 mt-1">National Culture vs. Regional Minorities</p>
+         </div>
+      </div>
+    </div>
+  );
+}
+
+const LeftRightSpectrum: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">The Left-Right Spectrum</h4>
+        <p className="text-sm text-gray-600">
+          The dominant socioeconomic dimension in modern politics.
+        </p>
+      </div>
+
+      <div className="flex-grow flex flex-col justify-center py-4">
+         <div className="relative h-2 bg-gradient-to-r from-red-500 via-gray-300 to-blue-500 rounded-full w-full my-8">
+            {/* Left */}
+            <div className="absolute -top-8 left-0 text-center">
+               <span className="font-bold text-red-600 text-xs uppercase">Left</span>
+            </div>
+            <div className="absolute top-4 left-0 text-center w-24">
+               <span className="text-[10px] text-gray-500">State Intervention<br/>Equality</span>
+            </div>
+
+            {/* Right */}
+            <div className="absolute -top-8 right-0 text-center">
+               <span className="font-bold text-blue-600 text-xs uppercase">Right</span>
+            </div>
+             <div className="absolute top-4 right-0 text-center w-24">
+               <span className="text-[10px] text-gray-500">Free Market<br/>Individualism</span>
+            </div>
+
+            {/* Parties */}
+            <div className="absolute -top-3 left-[20%] w-6 h-6 bg-red-500 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-[8px] text-white font-bold">
+               SOC
+            </div>
+            <div className="absolute -top-3 left-[45%] w-6 h-6 bg-yellow-400 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-[8px] text-white font-bold">
+               LIB
+            </div>
+            <div className="absolute -top-3 left-[75%] w-6 h-6 bg-blue-600 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-[8px] text-white font-bold">
+               CON
+            </div>
+         </div>
+      </div>
+    </div>
+  );
+}
+
+const Week4Visuals: React.FC = () => {
+  return (
+    <div className="space-y-12 animate-fade-in">
+      <section>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Users className="text-uwm-gold" /> Party Systems (Ch 5)
+          </h3>
+          <p className="text-gray-700 leading-relaxed mb-8 max-w-3xl">
+            A party system is defined not just by the number of parties, but by how they interact. 
+            Lijphart focuses on the <strong>Effective Number of Parties</strong> to distinguish between 
+            Two-Party (Westminster) and Multiparty (Consensus) systems.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+             <EnpCalculator />
+             <CleavageMap />
+             <LeftRightSpectrum />
+          </div>
+        </div>
+      </section>
+      
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+           <Globe className="text-uwm-gold" /> System Comparison
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Two Party */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600">
+             <h4 className="font-bold text-lg mb-2 text-blue-900">Two-Party System</h4>
+             <p className="text-sm text-gray-600 mb-4">
+               Dominance by two major parties. One party usually wins a majority of seats and governs alone.
+             </p>
+             <div className="flex gap-2 text-xs font-bold">
+               <span className="bg-gray-100 px-2 py-1 rounded text-gray-600">Example: USA, UK</span>
+               <span className="bg-blue-100 px-2 py-1 rounded text-blue-600">Westminster</span>
+             </div>
+          </div>
+
+          {/* Multiparty */}
+          <div className="bg-white p-6 rounded-xl shadow-sm border-t-4 border-indigo-600">
+             <h4 className="font-bold text-lg mb-2 text-indigo-900">Multiparty System</h4>
+             <p className="text-sm text-gray-600 mb-4">
+               Three or more parties have significant legislative presence. Coalitions are necessary to govern.
+             </p>
+             <div className="flex gap-2 text-xs font-bold">
+               <span className="bg-gray-100 px-2 py-1 rounded text-gray-600">Example: Netherlands, Israel</span>
+               <span className="bg-indigo-100 px-2 py-1 rounded text-indigo-600">Consensus</span>
+             </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

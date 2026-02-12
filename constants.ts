@@ -335,7 +335,7 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
   {
     weekId: 1,
     title: "Week 1: Introduction",
-    isLocked: true,
+    isLocked: false,
     questions: [
       {
         id: 'lq1-1',
@@ -438,7 +438,7 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
   {
     weekId: 2,
     title: "Week 2: Westminster Model",
-    isLocked: true,
+    isLocked: false,
     questions: [
       {
         id: 'lq1',
@@ -553,7 +553,7 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
   {
     weekId: 3,
     title: "Week 3: Consensus Model",
-    isLocked: true,
+    isLocked: false,
     questions: [
       {
         id: 'lq4',
@@ -577,6 +577,73 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
           { id: '5b', text: "USA", color: 'blue', isCorrect: false },
           { id: '5c', text: "Switzerland", color: 'yellow', isCorrect: true },
           { id: '5d', text: "New Zealand", color: 'green', isCorrect: false }
+        ]
+      }
+    ]
+  },
+  {
+    weekId: 4,
+    title: "Week 4: Party Systems",
+    isLocked: true,
+    questions: [
+      {
+        id: 'lq4-1',
+        text: "What does the 'Effective Number of Parties' (N) measure?",
+        timeLimit: 20,
+        explanation: "Unlike the raw number of parties, the Effective Number (Laakso/Taagepera index) weights parties by their size (votes or seats) to show how many 'count'.",
+        options: [
+          { id: '1a', text: "Total number of registered parties", color: 'red', isCorrect: false },
+          { id: '1b', text: "Parties weighted by their size", color: 'blue', isCorrect: true },
+          { id: '1c', text: "Only parties in government", color: 'yellow', isCorrect: false },
+          { id: '1d', text: "Number of extremist parties", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq4-2',
+        text: "Which of these is NOT one of Lipset & Rokkan's 4 classic social cleavages?",
+        timeLimit: 20,
+        explanation: "The four frozen cleavages are: Center-Periphery, State-Church, Land-Industry (Rural-Urban), and Owner-Worker (Class). 'Internet-Offline' is not one.",
+        options: [
+          { id: '2a', text: "Owner - Worker (Class)", color: 'red', isCorrect: false },
+          { id: '2b', text: "State - Church", color: 'blue', isCorrect: false },
+          { id: '2c', text: "Internet - Offline", color: 'yellow', isCorrect: true },
+          { id: '2d', text: "Center - Periphery", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq4-3',
+        text: "Which dimension is the most important issue dimension in almost all democracies?",
+        timeLimit: 20,
+        explanation: "The Socioeconomic (Left-Right) dimension, concerning the role of the state in the economy vs free market, is the dominant axis of competition.",
+        options: [
+          { id: '3a', text: "Foreign Policy", color: 'red', isCorrect: false },
+          { id: '3b', text: "Socioeconomic (Left-Right)", color: 'blue', isCorrect: true },
+          { id: '3c', text: "Regime Support", color: 'yellow', isCorrect: false },
+          { id: '3d', text: "Monarchy vs Republic", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq4-4',
+        text: "In the Westminster Model, the party system is typically...",
+        timeLimit: 20,
+        explanation: "The Westminster model concentrates power and usually features a Two-Party system (e.g., Labour vs Tories), resulting in one-party majority cabinets.",
+        options: [
+          { id: '4a', text: "Multiparty", color: 'red', isCorrect: false },
+          { id: '4b', text: "Two-Party", color: 'blue', isCorrect: true },
+          { id: '4c', text: "One-Party Dictatorship", color: 'yellow', isCorrect: false },
+          { id: '4d', text: "No Parties", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq4-5',
+        text: "What is a 'Hung Parliament'?",
+        timeLimit: 20,
+        explanation: "A Hung Parliament occurs in a majoritarian system when no single party wins >50% of the seats, forcing a coalition or minority government.",
+        options: [
+          { id: '5a', text: "Parliament is suspended", color: 'red', isCorrect: false },
+          { id: '5b', text: "No party has a majority of seats", color: 'blue', isCorrect: true },
+          { id: '5c', text: "The King dissolves parliament", color: 'yellow', isCorrect: false },
+          { id: '5d', text: "Voter turnout is too low", color: 'green', isCorrect: false }
         ]
       }
     ]
