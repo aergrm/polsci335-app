@@ -118,6 +118,8 @@ const WeekDetailView: React.FC<{ week: Week, onBack: () => void }> = ({ week, on
         <Week3Visuals />
       ) : week.id === 4 ? (
         <Week4Visuals />
+      ) : week.id === 5 ? (
+        <Week5Visuals />
       ) : (
         <div className="bg-white p-12 rounded-xl shadow-sm border border-gray-100 text-center">
           <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -686,6 +688,319 @@ const Week4Visuals: React.FC = () => {
                <span className="bg-indigo-100 px-2 py-1 rounded text-indigo-600">Consensus</span>
              </div>
           </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const DhondtCalculator: React.FC = () => {
+  const [votes, setVotes] = useState({ A: 10000, B: 6000, C: 3000, D: 1000 });
+  const [seats, setSeats] = useState(5);
+
+  const calculateDhondt = () => {
+    let allocation = { A: 0, B: 0, C: 0, D: 0 };
+    let rounds: { round: number, winner: string, maxVal: number, currentDivisors: any }[] = [];
+    
+    // Deep copy for calculation
+    let currentVotes = { ...votes };
+    
+    for (let i = 0; i < seats; i++) {
+      let maxVal = -1;
+      let winner = '';
+      
+      // Find winner for this seat
+      Object.keys(votes).forEach(party => {
+        const key = party as keyof typeof votes;
+        // D'Hondt formula: V / (s + 1)
+        const val = votes[key] / (allocation[key] + 1);
+        if (val > maxVal) {
+          maxVal = val;
+          winner = party;
+        }
+      });
+
+      if (winner) {
+        allocation[winner as keyof typeof allocation]++;
+        rounds.push({
+          round: i + 1,
+          winner,
+          maxVal,
+          currentDivisors: {
+            A: votes.A / (allocation.A + (winner === 'A' ? 0 : 1)), // Show value BEFORE increment for display? No, standard is V/(s+1)
+            // Actually for display it's nicer to show the value that WON.
+          } 
+        });
+      }
+    }
+    return allocation;
+  };
+
+  const allocation = calculateDhondt();
+  const totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+      <div className="mb-6 flex justify-between items-start">
+        <div>
+          <h4 className="text-lg font-bold text-gray-900">D'Hondt Method Calculator</h4>
+          <p className="text-sm text-gray-600">
+            The most common PR formula (used in Spain, Belgium, etc.). It slightly favors large parties.
+          </p>
+        </div>
+        <div className="bg-blue-100 p-2 rounded-full text-blue-700">
+          <Calculator className="w-6 h-6" />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Controls */}
+        <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
+          <div className="flex justify-between items-center mb-2">
+            <label className="font-bold text-sm text-gray-700">District Seats (M): {seats}</label>
+            <input 
+              type="range" min="1" max="10" value={seats} 
+              onChange={(e) => setSeats(parseInt(e.target.value))}
+              className="w-32"
+            />
+          </div>
+          
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs">
+                <span className="font-bold text-blue-700">Party A Votes</span>
+                <span>{votes.A.toLocaleString()}</span>
+              </div>
+              <input 
+                type="range" min="0" max="20000" step="100" value={votes.A} 
+                onChange={(e) => setVotes({...votes, A: parseInt(e.target.value)})}
+                className="w-full accent-blue-600"
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs">
+                <span className="font-bold text-red-700">Party B Votes</span>
+                <span>{votes.B.toLocaleString()}</span>
+              </div>
+              <input 
+                type="range" min="0" max="20000" step="100" value={votes.B} 
+                onChange={(e) => setVotes({...votes, B: parseInt(e.target.value)})}
+                className="w-full accent-red-600"
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs">
+                <span className="font-bold text-green-700">Party C Votes</span>
+                <span>{votes.C.toLocaleString()}</span>
+              </div>
+              <input 
+                type="range" min="0" max="20000" step="100" value={votes.C} 
+                onChange={(e) => setVotes({...votes, C: parseInt(e.target.value)})}
+                className="w-full accent-green-600"
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs">
+                <span className="font-bold text-orange-700">Party D Votes</span>
+                <span>{votes.D.toLocaleString()}</span>
+              </div>
+              <input 
+                type="range" min="0" max="20000" step="100" value={votes.D} 
+                onChange={(e) => setVotes({...votes, D: parseInt(e.target.value)})}
+                className="w-full accent-orange-600"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Results */}
+        <div className="flex flex-col justify-center">
+          <h5 className="font-bold text-gray-800 mb-8 text-center">Seat Allocation</h5>
+          <div className="flex items-end justify-center gap-4 h-40 border-b border-gray-200 pb-2 px-4">
+             {Object.entries(allocation).map(([party, count]) => {
+               const color = party === 'A' ? 'bg-blue-500' : party === 'B' ? 'bg-red-500' : party === 'C' ? 'bg-green-500' : 'bg-orange-500';
+               const height = (count / seats) * 100;
+               return (
+                 <div key={party} className="flex flex-col items-center w-12 group relative">
+                    <div className="absolute -top-6 font-bold text-gray-800">
+                      {count}
+                    </div>
+                    <div 
+                      className={`${color} w-full rounded-t-md transition-all duration-500 relative`}
+                      style={{ height: `${Math.max(height, 2)}%` }}
+                    >
+                    </div>
+                    <div className="mt-2 font-bold text-gray-600">{party}</div>
+                 </div>
+               );
+             })}
+          </div>
+          
+          <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+             <div className="flex justify-between p-2 bg-gray-50 rounded">
+               <span>Party A:</span>
+               <span className="font-bold">{((votes.A / totalVotes) * 100).toFixed(1)}% Votes → {((allocation.A / seats) * 100).toFixed(1)}% Seats</span>
+             </div>
+             <div className="flex justify-between p-2 bg-gray-50 rounded">
+               <span>Party B:</span>
+               <span className="font-bold">{((votes.B / totalVotes) * 100).toFixed(1)}% Votes → {((allocation.B / seats) * 100).toFixed(1)}% Seats</span>
+             </div>
+             <div className="flex justify-between p-2 bg-gray-50 rounded">
+               <span>Party C:</span>
+               <span className="font-bold">{((votes.C / totalVotes) * 100).toFixed(1)}% Votes → {((allocation.C / seats) * 100).toFixed(1)}% Seats</span>
+             </div>
+             <div className="flex justify-between p-2 bg-gray-50 rounded">
+               <span>Party D:</span>
+               <span className="font-bold">{((votes.D / totalVotes) * 100).toFixed(1)}% Votes → {((allocation.D / seats) * 100).toFixed(1)}% Seats</span>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PluralityVsPr: React.FC = () => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+       <div className="mb-6">
+        <h4 className="text-lg font-bold text-gray-900">Plurality (FPTP) vs. PR</h4>
+        <p className="text-sm text-gray-600">
+          How the same vote distribution leads to different outcomes.
+        </p>
+      </div>
+
+      <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-6">
+         {/* Plurality */}
+         <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+            <div className="flex items-center gap-2 mb-3">
+               <div className="p-1.5 bg-blue-100 rounded text-blue-700">
+                 <Crown className="w-4 h-4" />
+               </div>
+               <h5 className="font-bold text-blue-900">Plurality (Winner-Take-All)</h5>
+            </div>
+            <p className="text-xs text-blue-800 mb-4">
+               In a single-member district (M=1), the candidate with the most votes wins 100% of the power (the seat). All other votes are "wasted".
+            </p>
+            
+            <div className="space-y-3">
+               <div className="relative pt-4">
+                  <div className="flex justify-between text-xs font-bold mb-1">
+                     <span>Candidate A (40%)</span>
+                     <span className="text-green-600">WINNER</span>
+                  </div>
+                  <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
+                     <div className="h-full bg-blue-600 w-[40%]"></div>
+                  </div>
+               </div>
+               <div className="relative">
+                  <div className="flex justify-between text-xs font-bold mb-1 text-gray-500">
+                     <span>Candidate B (35%)</span>
+                     <span>Loser</span>
+                  </div>
+                  <div className="h-4 bg-gray-200 rounded-full overflow-hidden opacity-50">
+                     <div className="h-full bg-red-500 w-[35%]"></div>
+                  </div>
+               </div>
+               <div className="relative">
+                  <div className="flex justify-between text-xs font-bold mb-1 text-gray-500">
+                     <span>Candidate C (25%)</span>
+                     <span>Loser</span>
+                  </div>
+                  <div className="h-4 bg-gray-200 rounded-full overflow-hidden opacity-50">
+                     <div className="h-full bg-green-500 w-[25%]"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         {/* PR */}
+         <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+            <div className="flex items-center gap-2 mb-3">
+               <div className="p-1.5 bg-indigo-100 rounded text-indigo-700">
+                 <BarChart3 className="w-4 h-4" />
+               </div>
+               <h5 className="font-bold text-indigo-900">Proportional Representation</h5>
+            </div>
+            <p className="text-xs text-indigo-800 mb-4">
+               In a multi-member district (e.g., M=10), seats are shared. 40% of votes ≈ 40% of seats. Fewer votes are wasted.
+            </p>
+            
+            <div className="flex h-32 gap-1 items-end justify-center px-4">
+               <div className="w-1/3 bg-blue-500 h-[40%] rounded-t flex items-center justify-center text-white text-xs font-bold">4 Seats</div>
+               <div className="w-1/3 bg-red-500 h-[35%] rounded-t flex items-center justify-center text-white text-xs font-bold">3.5 Seats</div>
+               <div className="w-1/3 bg-green-500 h-[25%] rounded-t flex items-center justify-center text-white text-xs font-bold">2.5 Seats</div>
+            </div>
+            <div className="text-center text-xs text-gray-500 mt-2">
+               (Assuming 10 seat district)
+            </div>
+         </div>
+      </div>
+    </div>
+  );
+}
+
+const Week5Visuals: React.FC = () => {
+  return (
+    <div className="space-y-12 animate-fade-in">
+      <section>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <Vote className="text-uwm-gold" /> Electoral Systems (Ch 8)
+          </h3>
+          <p className="text-gray-700 leading-relaxed mb-8 max-w-3xl">
+            Electoral systems are the "rules of the game" that determine how votes are translated into seats. 
+            The two main families are <strong>Majoritarian</strong> (Plurality) and <strong>Proportional Representation</strong> (PR).
+          </p>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+             <PluralityVsPr />
+             <DhondtCalculator />
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+           <MapIcon className="text-uwm-gold" /> District Magnitude (M)
+        </h3>
+        <div className="bg-white p-8 rounded-xl shadow-sm border-l-4 border-uwm-gold">
+           <div className="flex flex-col md:flex-row gap-8 items-center">
+              <div className="md:w-1/3 text-center md:text-left">
+                 <div className="text-6xl font-black text-gray-200 mb-2">M</div>
+                 <h4 className="text-2xl font-bold text-gray-900 mb-2">District Magnitude</h4>
+                 <p className="text-gray-600">
+                   The number of seats elected from a single district. It is the <strong>most important</strong> variable determining proportionality.
+                 </p>
+              </div>
+              
+              <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div className="flex justify-between items-center mb-2">
+                       <span className="font-bold text-gray-800">Small M (e.g., M=1)</span>
+                       <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Disproportional</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-2">Used in US, UK, Canada.</p>
+                    <div className="flex gap-1">
+                       <div className="h-8 w-full bg-blue-500 rounded flex items-center justify-center text-white font-bold text-xs">Winner</div>
+                    </div>
+                 </div>
+
+                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div className="flex justify-between items-center mb-2">
+                       <span className="font-bold text-gray-800">Large M (e.g., M=150)</span>
+                       <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Proportional</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-2">Used in Netherlands.</p>
+                    <div className="flex gap-1">
+                       <div className="h-8 w-1/4 bg-blue-500 rounded"></div>
+                       <div className="h-8 w-1/4 bg-red-500 rounded"></div>
+                       <div className="h-8 w-1/4 bg-green-500 rounded"></div>
+                       <div className="h-8 w-1/4 bg-yellow-500 rounded"></div>
+                    </div>
+                 </div>
+              </div>
+           </div>
         </div>
       </section>
     </div>
