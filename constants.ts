@@ -612,26 +612,26 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
       },
       {
         id: 'lq4-3',
-        text: "Which dimension is the most important issue dimension in almost all democracies?",
+        text: "According to Duverger's Law, Plurality (First-Past-The-Post) elections tend to produce...",
         timeLimit: 20,
-        explanation: "The Socioeconomic (Left-Right) dimension, concerning the role of the state in the economy vs free market, is the dominant axis of competition.",
+        explanation: "Duverger's Law states that plurality rule tends to produce a two-party system due to the mechanical and psychological effects of the electoral system.",
         options: [
-          { id: '3a', text: "Foreign Policy", color: 'red', isCorrect: false },
-          { id: '3b', text: "Socioeconomic (Left-Right)", color: 'blue', isCorrect: true },
-          { id: '3c', text: "Regime Support", color: 'yellow', isCorrect: false },
-          { id: '3d', text: "Monarchy vs Republic", color: 'green', isCorrect: false }
+          { id: '3a', text: "Multiparty Systems", color: 'red', isCorrect: false },
+          { id: '3b', text: "Two-Party Systems", color: 'blue', isCorrect: true },
+          { id: '3c', text: "Dictatorships", color: 'yellow', isCorrect: false },
+          { id: '3d', text: "Unstable Governments", color: 'green', isCorrect: false }
         ]
       },
       {
         id: 'lq4-4',
-        text: "In the Westminster Model, the party system is typically...",
+        text: "Which new issue dimension arose in the late 20th century, often associated with Green parties?",
         timeLimit: 20,
-        explanation: "The Westminster model concentrates power and usually features a Two-Party system (e.g., Labour vs Tories), resulting in one-party majority cabinets.",
+        explanation: "This dimension (Inglehart) pits economic growth against environmental protection and lifestyle freedom.",
         options: [
-          { id: '4a', text: "Multiparty", color: 'red', isCorrect: false },
-          { id: '4b', text: "Two-Party", color: 'blue', isCorrect: true },
-          { id: '4c', text: "One-Party Dictatorship", color: 'yellow', isCorrect: false },
-          { id: '4d', text: "No Parties", color: 'green', isCorrect: false }
+          { id: '4a', text: "Church vs State", color: 'red', isCorrect: false },
+          { id: '4b', text: "Materialist vs Post-Materialist", color: 'blue', isCorrect: true },
+          { id: '4c', text: "Center vs Periphery", color: 'yellow', isCorrect: false },
+          { id: '4d', text: "Owners vs Workers", color: 'green', isCorrect: false }
         ]
       },
       {
@@ -644,6 +644,73 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
           { id: '5b', text: "No party has a majority of seats", color: 'blue', isCorrect: true },
           { id: '5c', text: "The King dissolves parliament", color: 'yellow', isCorrect: false },
           { id: '5d', text: "Voter turnout is too low", color: 'green', isCorrect: false }
+        ]
+      }
+    ]
+  },
+  {
+    weekId: 5,
+    title: "Week 5: Electoral Systems I",
+    isLocked: true,
+    questions: [
+      {
+        id: 'lq5-1',
+        text: "What is 'District Magnitude' (M)?",
+        timeLimit: 20,
+        explanation: "District Magnitude is the number of representatives elected from a single district. It is the most critical factor in determining proportionality.",
+        options: [
+          { id: '1a', text: "The physical size of a district", color: 'red', isCorrect: false },
+          { id: '1b', text: "The number of voters in a district", color: 'blue', isCorrect: false },
+          { id: '1c', text: "The number of seats per district", color: 'yellow', isCorrect: true },
+          { id: '1d', text: "The campaign spending limit", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq5-2',
+        text: "Which electoral system is most associated with the Westminster Model?",
+        timeLimit: 20,
+        explanation: "The Westminster model typically uses Plurality (First-Past-The-Post) in single-member districts to manufacture single-party majorities.",
+        options: [
+          { id: '2a', text: "Proportional Representation (PR)", color: 'red', isCorrect: false },
+          { id: '2b', text: "Plurality / First-Past-The-Post", color: 'blue', isCorrect: true },
+          { id: '2c', text: "Single Transferable Vote", color: 'yellow', isCorrect: false },
+          { id: '2d', text: "Mixed Member Proportional", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq5-3',
+        text: "What is the primary goal of Proportional Representation (PR)?",
+        timeLimit: 20,
+        explanation: "PR aims to translate votes into seats as accurately as possible, so that 20% of the votes equals roughly 20% of the seats.",
+        options: [
+          { id: '3a', text: "To create a strong one-party government", color: 'red', isCorrect: false },
+          { id: '3b', text: "To mirror vote shares in seat shares", color: 'blue', isCorrect: true },
+          { id: '3c', text: "To exclude extremist parties", color: 'yellow', isCorrect: false },
+          { id: '3d', text: "To ensure local representation", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq5-4',
+        text: "In a Single-Member District (M=1), how many votes do you need to win?",
+        timeLimit: 20,
+        explanation: "In a plurality system (Winner-Take-All), you only need a plurality—one more vote than the second-place candidate—not necessarily a majority (>50%).",
+        options: [
+          { id: '4a', text: "A majority (>50%)", color: 'red', isCorrect: false },
+          { id: '4b', text: "Two-thirds (66%)", color: 'blue', isCorrect: false },
+          { id: '4c', text: "A plurality (more than anyone else)", color: 'yellow', isCorrect: true },
+          { id: '4d', text: "Unanimous consent", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq5-5',
+        text: "Which of these is a formula used to calculate seat distribution in PR systems?",
+        timeLimit: 20,
+        explanation: "The D'Hondt method is a divisor formula used in many PR countries (e.g., Spain, Belgium) to allocate seats.",
+        options: [
+          { id: '5a', text: "Duverger's Law", color: 'red', isCorrect: false },
+          { id: '5b', text: "D'Hondt Method", color: 'blue', isCorrect: true },
+          { id: '5c', text: "Median Voter Theorem", color: 'yellow', isCorrect: false },
+          { id: '5d', text: "Pareto Optimality", color: 'green', isCorrect: false }
         ]
       }
     ]
