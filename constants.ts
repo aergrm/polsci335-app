@@ -820,7 +820,7 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
   {
     weekId: 7,
     title: "Week 7: Exec-Leg Relations I",
-    isLocked: true,
+    isLocked: false,
     questions: [
       {
         id: 'lq7-1',
