@@ -1,4 +1,3 @@
-
 import { Week, Assignment, DemocracyDimension, Flashcard, QuizLevel, LiveQuizSession } from './types';
 
 export const INSTRUCTOR = "Ahmet Ergurum";
@@ -584,7 +583,7 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
   {
     weekId: 4,
     title: "Week 4: Party Systems",
-    isLocked: true,
+    isLocked: false,
     questions: [
       {
         id: 'lq4-1',
@@ -651,7 +650,7 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
   {
     weekId: 5,
     title: "Week 5: Electoral Systems I",
-    isLocked: true,
+    isLocked: false,
     questions: [
       {
         id: 'lq5-1',
@@ -711,6 +710,236 @@ export const LIVE_QUIZZES: LiveQuizSession[] = [
           { id: '5b', text: "D'Hondt Method", color: 'blue', isCorrect: true },
           { id: '5c', text: "Median Voter Theorem", color: 'yellow', isCorrect: false },
           { id: '5d', text: "Pareto Optimality", color: 'green', isCorrect: false }
+        ]
+      }
+    ]
+  },
+  {
+    weekId: 6,
+    title: "Week 6: Electoral Systems II",
+    isLocked: false,
+    questions: [
+      {
+        id: 'lq6-1',
+        text: "Which index is commonly used to measure the disproportionality of an electoral system?",
+        timeLimit: 20,
+        explanation: "The Gallagher Index (Least Squares Index) measures the difference between vote percentages and seat percentages. Lower scores mean higher proportionality.",
+        options: [
+          { id: '1a', text: "Gini Coefficient", color: 'red', isCorrect: false },
+          { id: '1b', text: "Gallagher Index", color: 'blue', isCorrect: true },
+          { id: '1c', text: "Human Development Index", color: 'yellow', isCorrect: false },
+          { id: '1d', text: "Corruption Perceptions Index", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq6-2',
+        text: "What is an 'Electoral Threshold'?",
+        timeLimit: 20,
+        explanation: "An electoral threshold is the minimum share of the vote (e.g., 5% in Germany) a party must secure to be eligible for any seats in parliament.",
+        options: [
+          { id: '2a', text: "The minimum age to vote", color: 'red', isCorrect: false },
+          { id: '2b', text: "The minimum percentage of votes to win seats", color: 'blue', isCorrect: true },
+          { id: '2c', text: "The maximum number of terms a PM can serve", color: 'yellow', isCorrect: false },
+          { id: '2d', text: "The number of signatures needed to run", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq6-3',
+        text: "In a Mixed Member Proportional (MMP) system (like Germany), how many votes does a voter typically cast?",
+        timeLimit: 20,
+        explanation: "Voters cast two votes: one for a local district candidate (plurality) and one for a party list (PR). The party vote determines the overall seat distribution.",
+        options: [
+          { id: '3a', text: "One", color: 'red', isCorrect: false },
+          { id: '3b', text: "Two (Candidate & Party)", color: 'blue', isCorrect: true },
+          { id: '3c', text: "Three", color: 'yellow', isCorrect: false },
+          { id: '3d', text: "Ranked preferences", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq6-4',
+        text: "What is 'Malapportionment'?",
+        timeLimit: 20,
+        explanation: "Malapportionment occurs when districts vary greatly in population size, meaning votes in smaller districts count more (e.g., US Senate, rural bias).",
+        options: [
+          { id: '4a', text: "When districts have unequal numbers of voters", color: 'red', isCorrect: true },
+          { id: '4b', text: "When votes are counted incorrectly", color: 'blue', isCorrect: false },
+          { id: '4c', text: "When parties are banned", color: 'yellow', isCorrect: false },
+          { id: '4d', text: "When the executive dissolves parliament", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq6-5',
+        text: "Which system allows voters to rank candidates in order of preference in multi-member districts?",
+        timeLimit: 20,
+        explanation: "Single Transferable Vote (STV) allows voters to rank candidates (1, 2, 3...). Surplus votes from winners and votes from eliminated losers are transferred.",
+        options: [
+          { id: '5a', text: "First-Past-The-Post", color: 'red', isCorrect: false },
+          { id: '5b', text: "Single Transferable Vote (STV)", color: 'blue', isCorrect: true },
+          { id: '5c', text: "Closed List PR", color: 'yellow', isCorrect: false },
+          { id: '5d', text: "Two-Round System", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq6-6',
+        text: "What is the key difference between Pluralism and Corporatism?",
+        timeLimit: 20,
+        explanation: "Pluralism is characterized by free-for-all competition among many uncoordinated groups, while Corporatism involves organized, concerted cooperation between peak associations.",
+        options: [
+          { id: '6a', text: "Pluralism has fewer groups", color: 'red', isCorrect: false },
+          { id: '6b', text: "Corporatism bans interest groups", color: 'blue', isCorrect: false },
+          { id: '6c', text: "Pluralism is competitive; Corporatism is coordinated", color: 'yellow', isCorrect: true },
+          { id: '6d', text: "Corporatism is only found in dictatorships", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq6-7',
+        text: "Which three actors are typically involved in 'Tripartite Concertation'?",
+        timeLimit: 20,
+        explanation: "Democratic corporatism relies on the social partnership between the Government, Labor Unions, and Business/Employer Associations.",
+        options: [
+          { id: '7a', text: "Executive, Legislature, Judiciary", color: 'red', isCorrect: false },
+          { id: '7b', text: "Government, Labor, Business", color: 'blue', isCorrect: true },
+          { id: '7c', text: "Church, State, Military", color: 'yellow', isCorrect: false },
+          { id: '7d', text: "Farmers, Students, Pensioners", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq6-8',
+        text: "According to Lijphart, Interest Group Corporatism is associated with which model of democracy?",
+        timeLimit: 20,
+        explanation: "Corporatism is a trait of the Consensus model, as it seeks to include major economic interests in decision-making, unlike the competitive Pluralism of the Westminster model.",
+        options: [
+          { id: '8a', text: "Westminster Model", color: 'red', isCorrect: false },
+          { id: '8b', text: "Consensus Model", color: 'blue', isCorrect: true },
+          { id: '8c', text: "Presidential Model", color: 'yellow', isCorrect: false },
+          { id: '8d', text: "Authoritarian Model", color: 'green', isCorrect: false }
+        ]
+      }
+    ]
+  },
+  {
+    weekId: 7,
+    title: "Week 7: Exec-Leg Relations I",
+    isLocked: true,
+    questions: [
+      {
+        id: 'lq7-1',
+        text: "What defines a 'Minimal Winning Coalition'?",
+        timeLimit: 20,
+        explanation: "A minimal winning coalition contains just enough parties to secure a parliamentary majority (>50%). If any one party leaves, the coalition loses its majority.",
+        options: [
+          { id: '1a', text: "A coalition of all major parties", color: 'red', isCorrect: false },
+          { id: '1b', text: "A coalition with just enough seats to govern (>50%)", color: 'blue', isCorrect: true },
+          { id: '1c', text: "A government formed by a single minority party", color: 'yellow', isCorrect: false },
+          { id: '1d', text: "A coalition that lost the popular vote", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-2',
+        text: "Why might parties form an 'Oversized' (Surplus Majority) Cabinet?",
+        timeLimit: 20,
+        explanation: "Oversized cabinets include more parties than strictly necessary. They are often formed to amend the constitution (which may require a 2/3 supermajority) or to ensure national unity during a crisis.",
+        options: [
+          { id: '2a', text: "To save money on elections", color: 'red', isCorrect: false },
+          { id: '2b', text: "To pass constitutional amendments or handle crises", color: 'blue', isCorrect: true },
+          { id: '2c', text: "Because the constitution requires it", color: 'yellow', isCorrect: false },
+          { id: '2d', text: "To prevent the opposition from speaking", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-3',
+        text: "Which of the following is a defining characteristic of a Parliamentary system?",
+        timeLimit: 20,
+        explanation: "In parliamentary systems, the executive (Prime Minister and Cabinet) is dependent on the confidence of the legislature and can be dismissed via a vote of no confidence.",
+        options: [
+          { id: '3a', text: "The head of government is directly elected", color: 'red', isCorrect: false },
+          { id: '3b', text: "The executive is dependent on the legislature's confidence", color: 'blue', isCorrect: true },
+          { id: '3c', text: "The president serves a fixed term", color: 'yellow', isCorrect: false },
+          { id: '3d', text: "Strict separation of powers", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-4',
+        text: "In a Presidential system, the relationship between the executive and legislature is based on:",
+        timeLimit: 20,
+        explanation: "Presidential systems are characterized by a separation of powers, where both the president and the legislature are independently elected for fixed terms and cannot easily dismiss each other.",
+        options: [
+          { id: '4a', text: "Fusion of power", color: 'red', isCorrect: false },
+          { id: '4b', text: "Separation of powers", color: 'blue', isCorrect: true },
+          { id: '4c', text: "Executive dominance", color: 'yellow', isCorrect: false },
+          { id: '4d', text: "Legislative supremacy", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-5',
+        text: "According to Lijphart, which system tends to produce the highest degree of executive dominance?",
+        timeLimit: 20,
+        explanation: "Single-party majority parliamentary systems (like the UK Westminster model) produce the highest executive dominance because the cabinet controls a disciplined majority in the legislature.",
+        options: [
+          { id: '5a', text: "Presidential systems", color: 'red', isCorrect: false },
+          { id: '5b', text: "Single-party majority parliamentary systems", color: 'blue', isCorrect: true },
+          { id: '5c', text: "Multiparty parliamentary systems", color: 'yellow', isCorrect: false },
+          { id: '5d', text: "The Swiss directorial system", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-6',
+        text: "What is a 'Constructive Vote of No Confidence'?",
+        timeLimit: 20,
+        explanation: "Used in countries like Germany, it requires the legislature to simultaneously agree on a replacement head of government when voting to dismiss the current one, ensuring stability.",
+        options: [
+          { id: '6a', text: "A vote that automatically triggers new elections", color: 'red', isCorrect: false },
+          { id: '6b', text: "A vote requiring a 2/3 supermajority to dismiss the PM", color: 'blue', isCorrect: false },
+          { id: '6c', text: "A vote where parliament must agree on a successor to dismiss the PM", color: 'yellow', isCorrect: true },
+          { id: '6d', text: "A vote initiated by the President to dissolve parliament", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-7',
+        text: "What characterizes a 'Minority Government'?",
+        timeLimit: 20,
+        explanation: "A minority government is formed by a party or coalition that does not control a majority of seats (>50%) in the legislature, relying on ad hoc support from other parties to pass laws.",
+        options: [
+          { id: '7a', text: "A government representing ethnic minorities", color: 'red', isCorrect: false },
+          { id: '7b', text: "A cabinet that does not control a majority of legislative seats", color: 'blue', isCorrect: true },
+          { id: '7c', text: "A government formed after losing an election", color: 'yellow', isCorrect: false },
+          { id: '7d', text: "A cabinet with fewer ministers than usual", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-8',
+        text: "What is a 'Minimal Connected Winning Coalition'?",
+        timeLimit: 20,
+        explanation: "This theory suggests that coalitions will form among parties that are adjacent to each other on the ideological spectrum, minimizing policy compromises.",
+        options: [
+          { id: '8a', text: "A coalition of parties that share a border region", color: 'red', isCorrect: false },
+          { id: '8b', text: "A coalition of ideologically adjacent parties with no unnecessary members", color: 'blue', isCorrect: true },
+          { id: '8c', text: "A coalition formed via social media connections", color: 'yellow', isCorrect: false },
+          { id: '8d', text: "A coalition that includes the median voter", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-9',
+        text: "In a Semi-Presidential system, what is 'Cohabitation'?",
+        timeLimit: 20,
+        explanation: "Cohabitation occurs when the directly elected President and the Prime Minister (who relies on legislative confidence) belong to opposing political parties.",
+        options: [
+          { id: '9a', text: "When the President and PM belong to opposing parties", color: 'red', isCorrect: true },
+          { id: '9b', text: "When the executive and legislature share the same building", color: 'blue', isCorrect: false },
+          { id: '9c', text: "When two parties merge into one", color: 'yellow', isCorrect: false },
+          { id: '9d', text: "When the cabinet includes non-politician experts", color: 'green', isCorrect: false }
+        ]
+      },
+      {
+        id: 'lq7-10',
+        text: "According to Lijphart's analysis, which type of cabinet tends to be the most durable (lasts the longest)?",
+        timeLimit: 20,
+        explanation: "Single-party majority cabinets are generally the most durable because they do not suffer from the internal disagreements that can break apart coalition governments.",
+        options: [
+          { id: '10a', text: "Minority coalitions", color: 'red', isCorrect: false },
+          { id: '10b', text: "Oversized coalitions", color: 'blue', isCorrect: false },
+          { id: '10c', text: "Single-party majority cabinets", color: 'yellow', isCorrect: true },
+          { id: '10d', text: "Minimal winning coalitions", color: 'green', isCorrect: false }
         ]
       }
     ]
